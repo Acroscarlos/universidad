@@ -1,0 +1,203 @@
+\documentclass[11pt,letterpaper]{article}
+
+% ==============================================================================
+% PAQUETES ESENCIALES
+% ==============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{array}
+
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\decimalpoint
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% ==============================================================================
+% ENCABEZADO DEL DOCUMENTO
+% ==============================================================================
+\title{\textbf{Implementación y Evaluación Comparativa de Técnicas de Selección en Algoritmos Genéticos}}
+\author{\textbf{Carlos Carreño} \\ Algoritmos Genéticos para Ingenieros -- Tarea \#3}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent Este trabajo abordó la implementación y evaluación comparativa de diversas técnicas de selección aplicadas sobre la población inicial de un Algoritmo Genético Simple (AGS). Para ello, se realizó una descripción matemática y algorítmica de seis esquemas fundamentales agrupados en tres familias: Selección Proporcional (Ruleta, Sobrante Estocástico con y sin reemplazo, Universal Estocástica y Muestreo Determinístico), Selección por Torneo (Determinístico y Probabilístico) y Selección Uniforme, esto permitió entender cómo cada operador distribuía las copias reproductivas ante distintas magnitudes de adaptación. Una vez comprendido el funcionamiento del método base por ruleta desarrollado en la fase previa, se establecieron los criterios de prueba sobre una población inicial cuya función de adaptación estuvo conformada por números enteros aleatorios entre $1$ y $1000$. Para garantizar una evaluación objetiva, se comparó el número real de copias asignadas por cada técnica frente al valor esperado teórico de selección proporcional y se cuantificó la presión selectiva resultante. Finalmente, se utilizó el entorno de programación en Python para simular y validar el comportamiento de cada operador, este paso es importante para garantizar que el proceso de selección de padres mantenga un equilibrio adecuado entre explotación genética y diversidad poblacional. El desarrollo de estas pruebas permitió identificar con bases estadísticas las ventajas y limitaciones de cada técnica de selección dentro del ciclo evolutivo.
+\end{abstract}
+
+% ==============================================================================
+\section{Planteamiento del Problema e Introducción}
+% ==============================================================================
+Los Algoritmos Genéticos (AG) son métodos adaptativos de búsqueda estocástica y optimización inspirados en los principios de la evolución natural y la genética poblacional. Dentro de la estructura modular de un Algoritmo Genético Simple, el operador de selección desempeña una función medular, ya que es el encargado de escoger a los individuos más aptos de la población actual para conformar el grupo reproductor que dará origen a la siguiente generación mediante los operadores de cruce y mutación. Por esta razón, es esencial que el mecanismo de selección asigne las oportunidades de reproducción de manera confiable y acorde con la calidad de cada solución candidata.
+
+En la implementación básica desarrollada durante la Tarea 2, el sistema de selección estuvo gobernado exclusivamente por el método de la ruleta estocástica. En este esquema, a cada individuo se le asigna una porción de una ruleta circular proporcional a su valor de adaptación (fitness), y se realizan $N$ giros independientes para elegir a los padres. Sin embargo, una limitación importante de la ruleta tradicional es su elevada varianza estocástica en poblaciones de tamaño finito. Una desviación aleatoria durante los giros puede provocar que individuos sobresalientes no sean seleccionados en ninguna ocasión, o por el contrario, que un único individuo de alto desempeño acapare la totalidad de la piscina reproductiva, ocasionando una convergencia prematura hacia óptimos locales y perdiendo la diversidad genética del sistema.
+
+En vista de esta situación, este trabajo propuso la incorporación y evaluación de un conjunto ampliado de técnicas de selección sobre una población inicial con valores de adaptación enteros comprendidos entre $1$ y $1000$. Para llevar a cabo esta propuesta, primero se formularon las ecuaciones que rigen el valor esperado de copias en los métodos proporcionales, competitivos y uniformes. Luego se reutilizó y adaptó la arquitectura modular programada en Python durante la Tarea 2 para integrar los ocho operadores de selección requeridos, y finalmente, se evaluó mediante simulación computacional la frecuencia de selección y la presión selectiva ejercida por cada método. Todo esto se hizo con el fin de contar con criterios sólidos para escoger el operador de selección más adecuado según los requerimientos de convergencia del problema de optimización.
+
+% ==============================================================================
+\section{Marco Teórico: Técnicas de Selección}
+% ==============================================================================
+Sea una población $P$ conformada por $N$ individuos, donde cada individuo $i \in \{1, 2, \dots, N\}$ posee un valor de adaptación positivo $f_i \in [1, 1000]$. La adaptación acumulada de toda la población viene dada por $\sum_{j=1}^{N} f_j$, y el promedio poblacional se define como $\bar{f} = \frac{1}{N}\sum_{j=1}^{N} f_j$.
+
+\subsection{Selección Proporcional (SP)}
+En los métodos de Selección Proporcional, la probabilidad teórica $p_i$ de que un individuo $i$ sea escogido en un evento individual es directamente proporcional a su adaptación:
+\begin{equation}
+    p_i = \frac{f_i}{\sum_{j=1}^{N} f_j}
+    \label{eq:prob_sp}
+\end{equation}
+Al seleccionar $N$ padres para conformar la siguiente generación, el número esperado de copias $e_i$ que debe recibir cada individuo $i$ se expresa como:
+\begin{equation}
+    e_i = N \cdot p_i = \frac{f_i}{\bar{f}}
+    \label{eq:val_esperado}
+\end{equation}
+Cada valor esperado $e_i$ puede descomponerse en su parte entera $\lfloor e_i \rfloor$ y su residuo o parte fraccionaria $r_i$:
+\begin{equation}
+    r_i = e_i - \lfloor e_i \rfloor, \quad \text{con } r_i \in [0, 1)
+    \label{eq:parte_frac}
+\end{equation}
+
+\begin{enumerate}
+    \item \textbf{Ruleta (SP):} Construye una distribución de probabilidad acumulada $F_k = \sum_{j=1}^{k} f_j$. Para elegir cada padre, se genera un número aleatorio uniforme $u \sim U\left(0, \sum_{j=1}^{N} f_j\right)$ y se selecciona el primer individuo $k$ que cumple $F_k \ge u$. El procedimiento se repite $N$ veces de forma independiente.
+    
+    \item \textbf{Sobrante Estocástico con Reemplazo (SP):} Reduce el error de muestreo de la ruleta asignando primero de manera determinista $\lfloor e_i \rfloor$ copias a cada individuo $i$. Los cupos restantes hasta completar $N$, dados por $M = N - \sum_{i=1}^{N} \lfloor e_i \rfloor$, se seleccionan girando una ruleta cuyas probabilidades son proporcionales a las partes fraccionarias $r_i$, permitiendo que un mismo individuo sea elegido más de una vez en la fase residual.
+    
+    \item \textbf{Sobrante Estocástico sin Reemplazo (SP):} Al igual que el método anterior, asigna inicialmente $\lfloor e_i \rfloor$ copias directas a cada individuo. Posteriormente, para completar los $M$ padres faltantes, se recorre la población realizando ensayos de Bernoulli (moneda cargada) donde el individuo $i$ recibe una copia adicional si un número aleatorio $u \sim U(0,1)$ cumple $u < r_i$. Una vez que un individuo gana una copia en la fase fraccionaria, es retirado de los candidatos restantes (sin reemplazo) hasta completar los $N$ padres.
+    
+    \item \textbf{Universal Estocástica -- SUS (SP):} Elimina el sesgo de la ruleta simple utilizando un único giro aleatorio inicial $u \sim U\left(0, \frac{\sum f_j}{N}\right)$ y colocando $N$ punteros igualmente espaciados a una distancia constante $\Delta = \frac{\sum f_j}{N}$. Las posiciones de los punteros quedan definidas por:
+    \begin{equation}
+        P_k = u + (k - 1)\Delta, \quad k = 1, 2, \dots, N
+    \end{equation}
+    Garantiza analíticamente que cualquier individuo reciba al menos $\lfloor e_i \rfloor$ copias y como máximo $\lceil e_i \rceil$ copias.
+    
+    \item \textbf{Muestreo Determinístico (SP):} Elimina por completo el componente aleatorio. Primero asigna $\lfloor e_i \rfloor$ copias a cada individuo $i$, y luego ordena la población de mayor a menor según su parte fraccionaria $r_i$. Los primeros $M = N - \sum_{i=1}^{N} \lfloor e_i \rfloor$ individuos de dicha lista ordenada reciben exactamente una copia adicional.
+\end{enumerate}
+
+\subsection{Selección por Torneo (ST)}
+En la Selección por Torneo no se requiere calcular sumatorias globales de adaptación, sino que se realizan $N$ contiendas locales independientes:
+\begin{enumerate}
+    \item \textbf{Torneo Determinístico:} Se escogen al azar $k$ individuos de la población (tamaño del torneo, típicamente $k \ge 2$) y se selecciona de forma determinista como padre al individuo con mayor adaptación dentro del subconjunto:
+    \begin{equation}
+        \text{Ganador} = \arg\max_{j \in S_k} \{f_j\}
+    \end{equation}
+    \item \textbf{Torneo Probabilístico:} Se escogen $k=2$ individuos al azar y se ordenan según su adaptación ($f_{\text{mejor}} \ge f_{\text{peor}}$). Se genera un número aleatorio $u \sim U(0,1)$; si $u < p$ (donde $p \in (0.5, 1.0]$ es un parámetro de presión fijado en $0.75$), se selecciona al individuo más apto; de lo contrario, se selecciona al menos apto.
+\end{enumerate}
+
+\subsection{Selección Uniforme (SU)}
+Asigna a todos los miembros de la población exactamente la misma probabilidad de ser elegidos, ignorando el valor de la función de adaptación:
+\begin{equation}
+    p_i = \frac{1}{N}, \quad \forall i \in \{1, 2, \dots, N\}
+\end{equation}
+Este método actúa como referencia experimental de búsqueda sin presión selectiva.
+
+% ==============================================================================
+\section{Metodología e Implementación}
+% ==============================================================================
+Para evaluar el desempeño de los operadores descritos, se reutilizó la estructura modular en Python desarrollada en la Tarea 2. Se implementó la función \texttt{inicializar\_poblacion\_t3()}, la cual genera una población de tamaño $N = 20$ individuos codificados en binario y les asigna valores de función de adaptación enteros distribuidos uniformemente entre $1$ y $1000$. 
+
+Con el propósito de facilitar la visualización e interpretación del sesgo de selección, los individuos de la población inicial fueron ordenados de forma ascendente según su adaptación ($f_1 \le f_2 \le \dots \le f_{20}$). Posteriormente, se ejecutaron las ocho variantes de selección sobre exactamente la misma población inicial, registrando tanto el número de copias asignadas a cada individuo como la adaptación promedio de la población de padres resultante.
+
+% ==============================================================================
+\section{Resultados y Discusión}
+% ==============================================================================
+En la Tabla \ref{tab:conteo_seleccion} se presentan los resultados obtenidos al aplicar las ocho técnicas de selección sobre la población inicial de $N = 20$ individuos, cuyos valores de adaptación oscilaron entre $31$ (Individuo \#1) y $914$ (Individuo \#20), con un promedio poblacional inicial de $\bar{f} = 450.35$. Asimismo, se incluye la columna del valor esperado teórico $e_i$ calculado mediante la Ecuación (\ref{eq:val_esperado}).
+
+\begin{table}[H]
+\centering
+\caption{Conteo de copias seleccionadas por individuo para cada técnica de selección ($N = 20$).}
+\label{tab:conteo_seleccion}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}ccccccccccc@{}}
+\toprule
+\textbf{Ind.} & \textbf{Fitness ($f_i$)} & \textbf{Val. Esp. ($e_i$)} & \textbf{Ruleta} & \textbf{Sob. CR} & \textbf{Sob. SR} & \textbf{SUS} & \textbf{M. Det.} & \textbf{T. Det. ($k=3$)} & \textbf{T. Prob. ($p=0.75$)} & \textbf{Uniforme} \\ \midrule
+\#1  & 31  & 0.138 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\#2  & 33  & 0.147 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 \\
+\#3  & 95  & 0.422 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 2 \\
+\#4  & 104 & 0.462 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+\#5  & 115 & 0.511 & 0 & 1 & 1 & 0 & 1 & 0 & 2 & 0 \\
+\#6  & 143 & 0.635 & 1 & 0 & 1 & 1 & 1 & 0 & 1 & 1 \\
+\#7  & 229 & 1.017 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 1 \\
+\#8  & 251 & 1.115 & 0 & 1 & 1 & 1 & 1 & 0 & 2 & 1 \\
+\#9  & 285 & 1.266 & 1 & 2 & 1 & 1 & 1 & 1 & 0 & 0 \\
+\#10 & 379 & 1.683 & 3 & 2 & 2 & 2 & 2 & 0 & 1 & 0 \\
+\#11 & 433 & 1.923 & 3 & 2 & 2 & 2 & 2 & 2 & 1 & 1 \\
+\#12 & 518 & 2.300 & 3 & 2 & 2 & 2 & 2 & 0 & 1 & 2 \\
+\#13 & 559 & 2.483 & 4 & 2 & 2 & 3 & 2 & 1 & 0 & 2 \\
+\#14 & 605 & 2.687 & 1 & 3 & 3 & 2 & 3 & 4 & 2 & 0 \\
+\#15 & 619 & 2.749 & 1 & 3 & 3 & 3 & 3 & 1 & 1 & 1 \\
+\#16 & 693 & 3.078 & 1 & 3 & 3 & 3 & 3 & 0 & 3 & 0 \\
+\#17 & 719 & 3.193 & 3 & 3 & 3 & 3 & 3 & 3 & 1 & 0 \\
+\#18 & 755 & 3.353 & 2 & 3 & 3 & 3 & 3 & 2 & 0 & 3 \\
+\#19 & 759 & 3.371 & 2 & 3 & 3 & 4 & 3 & 5 & 2 & 2 \\
+\#20 & 914 & 4.059 & 5 & 4 & 4 & 4 & 4 & 1 & 3 & 2 \\ \midrule
+\textbf{Total} & \textbf{9007} & \textbf{20.000} & \textbf{20} & \textbf{20} & \textbf{20} & \textbf{20} & \textbf{20} & \textbf{20} & \textbf{20} & \textbf{20} \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Al analizar los datos de la Tabla \ref{tab:conteo_seleccion}, se evidencia el comportamiento particular de cada familia de operadores:
+\begin{itemize}
+    \item \textbf{Varianza en Selección Proporcional:} La \textbf{Ruleta} presentó desviaciones notables respecto al valor esperado $e_i$. Por ejemplo, los individuos \#7 y \#8 ($e_i > 1.0$) recibieron $0$ copias, mientras que el individuo \#13 ($e_i = 2.483$) recibió $4$ copias. Por el contrario, los métodos de \textbf{Sobrante Estocástico (con y sin reemplazo)}, \textbf{Universal Estocástica (SUS)} y \textbf{Muestreo Determinístico} respetaron estrictamente la cota mínima entera $\lfloor e_i \rfloor$ para todos los individuos de la población, reduciendo drásticamente el ruido de muestreo.
+    \item \textbf{Comportamiento del Torneo:} El \textbf{Torneo Determinístico ($k=3$)} eliminó por completo a los primeros ocho individuos de menor adaptación, concentrando las selecciones en el tercio superior de la población (el individuo \#19 alcanzó $5$ copias). Por su parte, el \textbf{Torneo Probabilístico ($p=0.75$)} permitió que individuos de adaptación intermedia-baja (como el \#5 y el \#8) conservaran presencia reproductiva.
+\end{itemize}
+
+Para cuantificar el efecto global sobre la evolución, en la Tabla \ref{tab:presion_selectiva} se resume la adaptación promedio de los padres seleccionados por cada técnica.
+
+\begin{table}[H]
+\centering
+\caption{Resumen comparativo de presión selectiva ejercida por cada técnica.}
+\label{tab:presion_selectiva}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Técnica de Selección} & \textbf{Fitness Promedio de Padres} & \textbf{Máximo de Copias de 1 Individuo} \\ \midrule
+Población Inicial (Referencia sin selección) & 450.35 & 1 \\ \midrule
+1. Ruleta (SP)                               & 613.25 & 5 \\
+2.1 Sobrante Estocástico con Reemplazo (SP)  & 587.60 & 4 \\
+2.2 Sobrante Estocástico sin Reemplazo (SP)  & 575.50 & 4 \\
+3. Universal Estocástica -- SUS (SP)         & 596.05 & 4 \\
+4. Muestreo Determinístico (SP)              & 594.90 & 4 \\
+5.1 Torneo Determinístico ($k=3$) (ST)       & 665.85 & 5 \\
+5.2 Torneo Probabilístico ($k=2, p=0.75$) (ST)& 551.80 & 3 \\
+6. Selección Uniforme (SU)                   & 471.40 & 3 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+% Espacio para insertar la figura generada por el script de Python
+\begin{figure}[H]
+    \centering
+    % Descomentar la siguiente linea al subir la imagen generada por Python a Overleaf:
+    % \includegraphics[width=0.95\textwidth]{grafica_comparativa_tarea3.png}
+    \fbox{\parbox{0.9\textwidth}{\centering \vspace{1.2cm} \textit{[Espacio reservado para la Figura 1: Panel comparativo de las 8 técnicas de selección vs. Valor Esperado Teórico generado por el código en Python]} \vspace{1.2cm}}}
+    \caption{Comparación gráfica del número de copias seleccionadas por individuo frente a la curva de valor esperado teórico ($e_i$).}
+    \label{fig:panel_seleccion}
+\end{figure}
+
+Como se observa en la Tabla \ref{tab:presion_selectiva} y en la representación de la Figura \ref{fig:panel_seleccion}, el \textbf{Torneo Determinístico ($k=3$)} ejerció la mayor presión selectiva, elevando la adaptación promedio de la población de $450.35$ a $665.85$ (un incremento del $47.8\%$). Los esquemas proporcionales de baja varianza (\textbf{SUS}, \textbf{Muestreo Determinístico} y \textbf{Sobrante Estocástico}) ubicaron el promedio de los padres alrededor de $587 - 596$, coincidiendo con la esperanza matemática teórica de la distribución proporcional. Finalmente, la \textbf{Selección Uniforme} mantuvo un promedio de $471.40$, cercano a la media original de la población inicial, confirmando la ausencia de empuje evolutivo hacia las regiones de mayor aptitud.
+
+% ==============================================================================
+\section{Conclusiones}
+% ==============================================================================
+El desarrollo y evaluación de las seis técnicas de selección y sus variantes permitió establecer las siguientes conclusiones:
+\begin{enumerate}
+    \item La técnica de \textbf{Selección Universal Estocástica (SUS)} y el \textbf{Sobrante Estocástico sin Reemplazo} demostraron ser las alternativas más confiables dentro de la familia proporcional, ya que garantizan cero sesgo y mínima dispersión respecto al valor esperado $e_i$, evitando las fluctuaciones extremas observadas en la ruleta simple.
+    \item El \textbf{Muestreo Determinístico} reproduce con exactitud las frecuencias esperadas, pero al carecer de estocasticidad en la asignación de residuos fraccionarios, penaliza sistemáticamente a los individuos de baja adaptación, lo que puede reducir la diversidad genética en etapas tempranas.
+    \item La \textbf{Selección por Torneo} ofrece la ventaja computacional de no requerir el cálculo global de sumatorias ni el escalado previo de la función de adaptación, permitiendo regular directamente la presión selectiva a través del tamaño de contienda $k$ o de la probabilidad de umbral $p$.
+    \item La \textbf{Selección Uniforme} no resulta viable como motor principal de optimización debido a su nula presión selectiva, aunque constituye una línea base útil para verificar experimentalmente el aporte real de los operadores evolutivos.
+\end{enumerate}
+
+\end{document}

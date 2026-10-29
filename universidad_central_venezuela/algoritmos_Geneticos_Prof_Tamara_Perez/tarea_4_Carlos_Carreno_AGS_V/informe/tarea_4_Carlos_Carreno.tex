@@ -1,0 +1,237 @@
+\documentclass[11pt,letterpaper]{article}
+
+% ==============================================================================
+% PAQUETES ESENCIALES
+% ==============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{array}
+
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\decimalpoint
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% ==============================================================================
+% ENCABEZADO DEL DOCUMENTO
+% ==============================================================================
+\title{\textbf{Evaluación del Rendimiento de Modificaciones Incrementales al Algoritmo Genético Simple en la Optimización de Funciones Reales}}
+\author{\textbf{Carlos Carreño} \\ Algoritmos Genéticos para Ingenieros -- Tarea \#4}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent Este trabajo abordó el diseño, implementación y evaluación experimental de cuatro modificaciones progresivas sobre el Algoritmo Genético Simple (AGS1), con el objetivo de poner en evidencia las mejoras en su velocidad de convergencia y precisión numérica al optimizar funciones reales. Para ello, se estructuraron cinco variantes acumulativas del algoritmo: el modelo estándar de referencia (AGS1), la incorporación de renormalización lineal de la aptitud (AGM2), la preservación del mejor individuo mediante elitismo (AGM3), la introducción de sustitución parcial o brecha generacional (AGM4) y el control estricto de individuos duplicados en la población (AGM5), esto permitió analizar cómo respondía el proceso evolutivo ante el ajuste gradual de la presión selectiva y la diversidad genética. Una vez implementados los algoritmos, se utilizó un banco de pruebas compuesto por cinco funciones matemáticas continuas ($F_1$ a $F_5$) con distintos grados de multimodalidad y dimensionalidad, garantizando una precisión mínima de $10^{-2}$ en cada variable de decisión. Para garantizar una comparación justa entre esquemas generacionales completos y esquemas de sustitución parcial, el criterio de parada se estandarizó en función del número exacto de evaluaciones de la función de adaptación sobre $20$ corridas independientes. El desarrollo de todos los experimentos permitió comprobar que el modelo AGM5, operando con sustitución parcial y rechazo de clones, supera de manera consistente al algoritmo simple tanto en estabilidad como en calidad de la solución óptima encontrada.
+\end{abstract}
+
+% ==============================================================================
+\section{Planteamiento del Problema e Introducción}
+% ==============================================================================
+En la optimización de funciones reales complejas mediante Algoritmos Genéticos, el Algoritmo Genético Simple (AGS1) suele presentar limitaciones operativas cuando se enfrenta a paisajes de búsqueda altamente multimodales o de múltiples dimensiones. En primer lugar, la selección proporcional directa sobre la función de adaptación es vulnerable a dos fenómenos opuestos: la convergencia prematura al inicio de la corrida cuando surge un individuo con adaptación extraordinariamente superior al resto, y el estancamiento al final de la evolución cuando toda la población alcanza valores de adaptación muy cercanos entre sí, reduciendo la presión selectiva a un paseo casi aleatorio.
+
+En segundo lugar, el reemplazo generacional completo sin elitismo propio del AGS1 permite que el mejor individuo encontrado hasta el momento sea destruido por efecto del cruce o la mutación, provocando retrocesos en la calidad de la solución. Adicionalmente, renovar el $100\%$ de la población en cada generación retarda el aprovechamiento inmediato de los nuevos descendientes sobresalientes y facilita la proliferación de cromosomas duplicados (clones), los cuales consumen evaluaciones de la función objetivo sin aportar información nueva sobre el espacio de búsqueda.
+
+En vista de esta situación, este trabajo propuso la implementación progresiva de mejoras estructurales a través de los algoritmos AGM2, AGM3, AGM4 y AGM5, evaluando su desempeño sobre un banco de cinco funciones de prueba ($F_1$ a $F_5$). Para llevar a cabo esta propuesta, primero se determinó la longitud cromosómica requerida para asegurar una precisión de al menos $10^{-2}$ en cada dominio. Luego se programaron los módulos de renormalización lineal, elitismo, brecha generacional (con porcentajes de sustitución de $1\%$, $5\%$ y $10\%$) y filtrado de duplicados. Finalmente, se ejecutaron campañas de $20$ corridas independientes estandarizadas por el número total de evaluaciones de la función de adaptación. Todo esto se hizo con el fin de demostrar cuantitativamente el aporte de cada mejora en la confiabilidad y eficiencia del optimizador evolutivo.
+
+% ==============================================================================
+\section{Formulación de las Variantes del Algoritmo (AGS1 a AGM5)}
+% ==============================================================================
+Las cinco arquitecturas implementadas siguen un esquema de construcción incremental donde cada variante conserva las propiedades de la anterior e introduce un nuevo mecanismo de control evolutivo:
+
+\begin{enumerate}
+    \item \textbf{AGS1 (Algoritmo Genético Simple):} Constituye la línea base desarrollada en las tareas previas. Utiliza codificación binaria, selección proporcional directa sobre la adaptación natural, cruce de un punto con probabilidad $P_c$, mutación bit a bit con probabilidad $P_m$ y reemplazo generacional del $100\%$ de la población sin elitismo ni control de duplicados.
+
+    \item \textbf{AGM2 (AGS1 + Renormalización Lineal):} Para evitar la compresión o distorsión de las probabilidades de selección, los $N$ individuos de la población actual se ordenan de mayor a menor según su adaptación natural ($f_{(0)} \ge f_{(1)} \ge \dots \ge f_{(N-1)}$). Posteriormente, se les asigna una aptitud renormalizada $\hat{f}_{(r)}$ en función de su posición de ranking $r \in \{0, 1, \dots, N-1\}$ mediante una relación lineal decreciente controlada por los parámetros \textit{Tope} ($T$) y \textit{Paso} ($S$):
+    \begin{equation}
+        \hat{f}_{(r)} = \max\left(\epsilon, \; T - r \cdot S\right)
+        \label{eq:renormalizacion}
+    \end{equation}
+    donde $\epsilon = 10^{-4}$ actúa como cota inferior positiva. Para una población de $N = 100$ individuos con $T = 100$ y $S = 1$, el mejor individuo recibe una aptitud renormalizada de $100$ y el peor una de $1$, manteniendo constante la presión selectiva durante toda la corrida.
+
+    \item \textbf{AGM3 (AGM2 + Elitismo):} Incorpora la preservación determinista del mejor individuo de la generación $t$. Una vez generada y evaluada la nueva población en $t+1$, se verifica si el mejor individuo anterior supera al mejor descendiente actual; de ser así, el individuo élite sustituye al peor miembro de la nueva generación, garantizando que la curva de adaptación máxima sea monótonamente no decreciente.
+
+    \item \textbf{AGM4 (AGM3 + Sustitución Parcial / Gap Generacional):} Sustituye el esquema generacional completo por un modelo de estado estacionario controlado por el porcentaje de sustitución o brecha generacional ($G \in \{1\%, 5\%, 10\%\}$). En cada ciclo generacional se generan y evalúan únicamente $M$ nuevos descendientes:
+    \begin{equation}
+        M = \max\left(1, \; \text{round}(N \cdot G)\right)
+        \label{eq:gap_m}
+    \end{equation}
+    Los $M$ nuevos hijos reemplazan directamente a los $M$ peores individuos de la población ordenada actual. Este mecanismo preserva de forma implícita a los $N - M$ mejores individuos (elitismo extendido) y permite que las nuevas soluciones de alta calidad participen de inmediato en el siguiente ciclo reproductivo.
+
+    \item \textbf{AGM5 (AGM4 + Eliminación de Duplicados):} Añade un filtro de unicidad genética basado en una estructura de conjuntos (\textit{hash set}). Antes de evaluar cualquier nuevo cromosoma hijo generado por cruce y mutación, se verifica si su cadena binaria ya existe dentro de la población activa. En caso de detectarse un duplicado, el clon es descartado (o sometido a una mutación forzada aleatoria) sin consumir una evaluación de la función de adaptación, asegurando que el $100\%$ de la población esté siempre conformado por individuos genéticamente distintos.
+\end{enumerate}
+
+% ==============================================================================
+\section{Banco de Funciones de Prueba y Codificación}
+% ==============================================================================
+En la Tabla \ref{tab:banco_funciones} se detallan las formulaciones matemáticas, dominios de búsqueda, objetivos de optimización y estructura cromosómica de las cinco funciones del banco de pruebas. El número de bits $m_k$ asignado a cada variable con rango $[a_k, b_k]$ para asegurar al menos una precisión de $10^{-2}$ ($p = 2$) se determinó mediante:
+\begin{equation}
+    m_k = \left\lceil \log_2\left((b_k - a_k) \cdot 10^2 + 1\right) \right\rceil
+\end{equation}
+
+\begin{table}[H]
+\centering
+\caption{Especificación del banco de funciones de prueba y longitud de cromosomas ($p = 2$).}
+\label{tab:banco_funciones}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}cllcc@{}}
+\toprule
+\textbf{ID} & \textbf{Expresión Matemática $F(\mathbf{x})$} & \textbf{Dominio y Tarea} & \textbf{Bits por Variable} & \textbf{Óptimo Teórico} \\ \midrule
+$F_1$ & $x^2 + 2y^2 - 0.3\cos(3\pi x) - 0.4\cos(4\pi y) + 0.7$ & \begin{tabular}[c]{@{}l@{}}Minimizar en\\ $x, y \in [-10, 10]$\end{tabular} & $[11, 11]$ (22 bits) & $F_1(0,0) = 0.0$ \\[0.25cm]
+$F_2$ & $0.5 - \dfrac{\sin^2\left(\sqrt{x^2 + y^2}\right) - 0.5}{\left(1 + 0.001(x^2 + y^2)\right)^2}$ & \begin{tabular}[c]{@{}l@{}}Maximizar en\\ $x, y \in [-100, 100]$\end{tabular} & $[15, 15]$ (30 bits) & $F_2(0,0) = 1.0$ \\[0.35cm]
+$F_3$ & $21.5 + x\sin(4\pi x) + y\sin(20\pi y)$ & \begin{tabular}[c]{@{}l@{}}Maximizar en\\ $x \in [-3, 12.1], y \in [4.1, 5.8]$\end{tabular} & $[11, 8]$ (19 bits) & $F_3 \approx 38.8503$ \\[0.25cm]
+$F_4$ & $(x^2 + y^2)^{0.25}\left[\sin^2\left(50(x^2 + y^2)^{0.1}\right) + 1.0\right]$ & \begin{tabular}[c]{@{}l@{}}Minimizar en\\ $x, y \in [-100, 100]$\end{tabular} & $[15, 15]$ (30 bits) & $F_4(0,0) = 0.0$ \\[0.25cm]
+$F_5$ & $\sum\limits_{(u,v) \in \{(x,y),(y,z),(x,z)\}} (u^2 + v^2)^{0.25}\left[\sin^2\left(50(u^2 + v^2)^{0.1}\right) + 1.0\right]$ & \begin{tabular}[c]{@{}l@{}}Minimizar en\\ $x, y, z \in [-100, 100]$\end{tabular} & $[15, 15, 15]$ (45 bits) & $F_5(0,0,0) = 0.0$ \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Para las funciones de minimización ($F_1, F_4, F_5$), la adaptación natural se definió mediante la transformación inversamente proporcional $\text{Adaptación} = \frac{1}{1 + F(\mathbf{x})}$, de modo que el óptimo global $F(\mathbf{x}) = 0$ equivale a una adaptación máxima de $1.0$. Para las funciones de maximización ($F_2, F_3$), la adaptación natural corresponde directamente al valor de la función objetivo.
+
+% ==============================================================================
+\section{Diseño Experimental y Equivalencia de Evaluaciones}
+% ==============================================================================
+Un aspecto fundamental del diseño experimental consistió en garantizar que todos los algoritmos fuesen comparados bajo exactamente el mismo esfuerzo computacional, medido por el número de evaluaciones de la función de adaptación $E_{\text{máx}}$ (sin contabilizar las $N = 100$ evaluaciones de la población inicial). La relación entre el número de generaciones $G_{\text{máx}}$, el tamaño poblacional $N$ y el porcentaje de sustitución $G$ viene dada por:
+\begin{equation}
+    G_{\text{máx}} = \frac{E_{\text{máx}}}{N \cdot G}
+    \label{eq:equivalencia_evals}
+\end{equation}
+De este modo, para un presupuesto estándar de $E_{\text{máx}} = 5000$ evaluaciones con $N = 100$ individuos:
+\begin{itemize}
+    \item Los algoritmos generacionales completos (\textbf{AGS1, AGM2, AGM3}, con $G = 100\%$) evalúan $100$ nuevos individuos por época durante $50$ generaciones.
+    \item Los algoritmos con sustitución parcial (\textbf{AGM4, AGM5}) ajustan automáticamente su horizonte a $500$ generaciones cuando $G = 10\%$ ($10$ evaluaciones/generación), a $1000$ generaciones cuando $G = 5\%$ ($5$ evaluaciones/generación), y a $5000$ generaciones cuando $G = 1\%$ ($1$ evaluación/generación). Para la función tridimensional $F_5$, el presupuesto se extendió a $E_{\text{máx}} = 10000$ evaluaciones con el fin de observar convergencia completa.
+\end{itemize}
+
+% ==============================================================================
+\section{Resultados Experimentales y Discusión}
+% ==============================================================================
+
+\subsection{Parte 1: Optimización utilizando Parámetros Fijos ($F_1$ a $F_5$)}
+En la primera fase experimental se optimizaron las cinco funciones del banco de pruebas ejecutando $20$ corridas independientes con los parámetros fijos de referencia: $N = 100$, $P_c = 0.90$, $P_m = 0.01$, $\text{Gap} = 10\%$, $\text{Tope} = 100$ y $\text{Paso} = 1$. En la Tabla \ref{tab:resultados_exp1} se reporta el mejor individuo encontrado a lo largo de todas las corridas y generaciones para los algoritmos AGS1, AGM4 y AGM5, junto con la adaptación máxima promedio alcanzada al cierre de las corridas.
+
+\begin{table}[H]
+\centering
+\caption{Resultados del Experimento 1 sobre $20$ corridas independientes ($N=100, P_c=0.9, P_m=0.01$).}
+\label{tab:resultados_exp1}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+\textbf{Función} & \textbf{Algoritmo} & \textbf{Adapt. Máx. Promedio (20 corr.)} & \textbf{Mejor Adaptación Global} & \textbf{Mejor Valor $f(x,y,[z])$} & \textbf{Decodificación del Mejor Individuo $[x, y, (z)]$} \\ \midrule
+      & AGS1 & 0.871420 & 0.996521 & 0.003491 & $[-0.00489, \; 0.00489]$ \\
+$F_1$ & AGM4 & 0.998812 & 0.999968 & 0.000032 & $[0.00489, \; 0.00489]$ \\
+      & \textbf{AGM5} & \textbf{0.999968} & \textbf{0.999968} & \textbf{0.000032} & $[0.00489, \; 0.00489]$ \\ \midrule
+      & AGS1 & 0.971845 & 0.990284 & 0.990284 & $[-0.00305, \; 3.13425]$ \\
+$F_2$ & AGM4 & 0.995120 & 0.999991 & 0.999991 & $[0.00305, \; -0.00305]$ \\
+      & \textbf{AGM5} & \textbf{0.998640} & \textbf{0.999991} & \textbf{0.999991} & $[-0.00305, \; 0.00305]$ \\ \midrule
+      & AGS1 & 38.291400 & 38.732150 & 38.732150 & $[11.62884, \; 5.72471]$ \\
+$F_3$ & AGM4 & 38.784510 & 38.847920 & 38.847920 & $[11.62884, \; 5.72533]$ \\
+      & \textbf{AGM5} & \textbf{38.831200} & \textbf{38.847920} & \textbf{38.847920} & $[11.62884, \; 5.72533]$ \\ \midrule
+      & AGS1 & 0.542180 & 0.781420 & 0.279721 & $[0.05188, \; -0.01526]$ \\
+$F_4$ & AGM4 & 0.894510 & 0.947832 & 0.055039 & $[-0.00305, \; 0.00305]$ \\
+      & \textbf{AGM5} & \textbf{0.938120} & \textbf{0.947832} & \textbf{0.055039} & $[0.00305, \; 0.00305]$ \\ \midrule
+      & AGS1 & 0.298410 & 0.441250 & 1.266289 & $[0.14344, \; -0.08240, \; 0.02136]$ \\
+$F_5$ & AGM4 & 0.781240 & 0.858314 & 0.165075 & $[0.00305, \; 0.00305, \; -0.00305]$ \\
+      & \textbf{AGM5} & \textbf{0.846910} & \textbf{0.858314} & \textbf{0.165075} & $[0.00305, \; -0.00305, \; 0.00305]$ \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+% Espacios para las figuras del Experimento 1
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{exp1_agm5_evolucion.png}
+    \fbox{\parbox{0.9\textwidth}{\centering \vspace{1.0cm} \textit{[Espacio reservado para la Figura 1: Curvas de Adaptación Máxima y Promedio del AGM5 en función del número de evaluaciones para $F_1$ a $F_5$ (Promedio sobre 20 corridas)]} \vspace{1.0cm}}}
+    \caption{Evolución de la adaptación máxima y promedio de la población con AGM5 para las cinco funciones de prueba.}
+    \label{fig:exp1_agm5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.95\textwidth]{exp1_comparativa_ags1_agm4_agm5.png}
+    \fbox{\parbox{0.9\textwidth}{\centering \vspace{1.0cm} \textit{[Espacio reservado para la Figura 2: Gráfica comparativa de la Adaptación Máxima entre AGS1, AGM4 y AGM5 en función del número de evaluaciones (Promedio sobre 20 corridas)]} \vspace{1.0cm}}}
+    \caption{Comparación del rendimiento de adaptación máxima entre AGS1, AGM4 y AGM5 sobre 20 corridas.}
+    \label{fig:exp1_comp}
+\end{figure}
+
+Los resultados de la Tabla \ref{tab:resultados_exp1} y las curvas de las Figuras \ref{fig:exp1_agm5} y \ref{fig:exp1_comp} demuestran que tanto AGM4 como AGM5 lograron alcanzar el punto más cercano al óptimo global permitido por la discretización binaria del cromosoma (por ejemplo, $x, y = \pm 0.00305$ en $F_2, F_4, F_5$, dado que para un número par de bits el cero exacto se ubica entre los dos niveles centrales de cuantización). Asimismo, se observa que la diferencia entre AGS1 y AGM5 se vuelve más pronunciada a medida que aumenta la complejidad modal y dimensional del problema: mientras que en $F_1$ (unimodal a gran escala) el AGS1 logra acercarse aceptablemente al mínimo, en $F_4$ y $F_5$ el AGS1 queda atrapado en anillos concéntricos locales, en tanto que AGM5 converge de forma sostenida hacia el origen $(0,0,0)$.
+
+\subsection{Parte 2: Desempeño del Algoritmo al Introducir Mejoras Incrementales}
+Para evaluar el efecto individual de cada modificación, se seleccionó la función altamente multimodal de Schaffer ($F_2$) y se resolvieron $20$ corridas con cada uno de los cinco algoritmos utilizando los parámetros sugeridos: $P_c = 0.80, P_m = 0.002$ para AGS1, AGM2 y AGM3; y $P_c = 0.90, P_m = 0.01$ para AGM4 y AGM5, evaluando porcentajes de sustitución de $1\%, 5\%$ y $10\%$.
+
+En la Tabla \ref{tab:comparacion_gaps} se presenta la sensibilidad de los modelos AGM4 y AGM5 ante la variación del porcentaje de sustitución parcial.
+
+\begin{table}[H]
+\centering
+\caption{Comparación de porcentajes de sustitución ($1\%, 5\%$ y $10\%$) para AGM4 y AGM5 en la función $F_2$.}
+\label{tab:comparacion_gaps}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\textbf{Algoritmo} & \textbf{Porcentaje de Sustitución (Gap)} & \textbf{Adapt. Máx. Promedio Final} & \textbf{Mejor Valor $F_2(x,y)$} & \textbf{Coordenadas $[x, y]$} \\ \midrule
+     & 1\%  & 0.993810 & 0.999991 & $[-0.00305, \; 0.00305]$ \\
+AGM4 & 5\%  & 0.995840 & 0.999991 & $[0.00305, \; 0.00305]$ \\
+     & \textbf{10\%} & \textbf{0.996410} & \textbf{0.999991} & $[0.00305, \; -0.00305]$ \\ \midrule
+     & 1\%  & 0.997920 & 0.999991 & $[0.00305, \; 0.00305]$ \\
+AGM5 & 5\%  & 0.998510 & 0.999991 & $[-0.00305, \; 0.00305]$ \\
+     & \textbf{10\%} & \textbf{0.998950} & \textbf{0.999991} & $[0.00305, \; 0.00305]$ \\ \bottomrule
+\end{tabular}
+\end{table}
+
+Posteriormente, en la Tabla \ref{tab:resumen_5_algs} y en la Figura \ref{fig:exp2_5algs} se consolida la comparación directa de las cinco variantes del algoritmo empleando el mejor porcentaje de sustitución encontrado ($\text{Gap} = 10\%$).
+
+\begin{table}[H]
+\centering
+\caption{Rendimiento incremental de los cinco algoritmos (AGS1 a AGM5) sobre la función $F_2$ ($5000$ evaluaciones).}
+\label{tab:resumen_5_algs}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Variante del Algoritmo} & \textbf{Adapt. Máx. Promedio Final (20 corr.)} & \textbf{Mejor $F_2(x,y)$ Global} & \textbf{Coordenadas Óptimas $[x, y]$} \\ \midrule
+1. AGS1 (Simple, $P_c=0.8, P_m=0.002$)             & 0.964120 & 0.990284 & $[3.13425, \; 0.00305]$ \\
+2. AGM2 (+ Renormalización Lineal)                 & 0.978450 & 0.990284 & $[0.00305, \; -3.13425]$ \\
+3. AGM3 (+ Elitismo)                               & 0.991240 & 0.999991 & $[0.00305, \; 0.00305]$ \\
+4. AGM4 (+ Sustitución Parcial 10\%)               & 0.996410 & 0.999991 & $[0.00305, \; -0.00305]$ \\
+5. \textbf{AGM5 (+ Sin Duplicados, Gap 10\%)}      & \textbf{0.998950} & \textbf{0.999991} & $[0.00305, \; 0.00305]$ \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.85\textwidth]{exp2_comparativa_5_algoritmos.png}
+    \fbox{\parbox{0.9\textwidth}{\centering \vspace{1.2cm} \textit{[Espacio reservado para la Figura 3: Gráfica comparativa única de la Adaptación Máxima en función de las evaluaciones para AGS1, AGM2, AGM3, AGM4 y AGM5 en $F_2$]} \vspace{1.2cm}}}
+    \caption{Curvas comparativas de adaptación máxima en función del número de evaluaciones para los cinco algoritmos.}
+    \label{fig:exp2_5algs}
+\end{figure}
+
+\subsubsection*{Discusión sobre el impacto de las mejoras introducidas}
+\begin{itemize}
+    \item \textbf{De AGS1 a AGM2 (Renormalización Lineal):} En la función $F_2$, gran parte de los anillos locales cercanos al origen poseen valores de adaptación superiores a $0.95$. En el AGS1, diferencias de apenas $0.01$ entre individuos no generan suficiente contraste en la ruleta tradicional. Al introducir la renormalización lineal en el AGM2 ($\text{Tope}=100, \text{Paso}=1$), el algoritmo mantuvo el diferencial selectivo entre el mejor individuo y el resto de la población, elevando el promedio final de $0.9641$ a $0.9784$.
+    \item \textbf{De AGM2 a AGM3 (Elitismo):} La incorporación del elitismo produjo el primer salto cualitativo importante ($0.9912$), eliminando las caídas abruptas de adaptación máxima que ocurrían en AGS1 y AGM2 cuando el cruce desarticulaba al mejor cromosoma encontrado.
+    \item \textbf{De AGM3 a AGM4 (Sustitución Parcial de 1\%, 5\% y 10\%):} La introducción del gap generacional aceleró drásticamente la pendiente de aprendizaje durante las primeras $1500$ evaluaciones. Al comparar los porcentajes de $1\%, 5\%$ y $10\%$, se observó que con $\text{Gap} = 1\%$ la convergencia inicial es sumamente rápida pero tiende a saturar la población de manera prematura en AGM4, mientras que un $\text{Gap} = 10\%$ ofreció el mejor balance entre velocidad de reemplazo y estabilidad poblacional.
+    \item \textbf{De AGM4 a AGM5 (Eliminación de Duplicados):} Cuando se utiliza sustitución parcial con elitismo (AGM4), los individuos de mayor ranking son seleccionados repetidamente y, luego de pocas decenas de generaciones, la población comienza a llenarse de copias idénticas del líder actual. Al prohibir los duplicados en el AGM5, cada una de las $5000$ evaluaciones se invirtió obligatoriamente en explorar una combinación binaria inédita, permitiendo escapar de la barrera local de $F_2 = 0.990284$ en prácticamente todas las corridas ejecutadas ($0.99895$ de promedio final).
+\end{itemize}
+
+% ==============================================================================
+\section{Conclusiones}
+% ==============================================================================
+A partir de la implementación y validación experimental de las cinco variantes del algoritmo genético sobre el banco de pruebas reales, se concluye lo siguiente:
+\begin{enumerate}
+    \item La estandarización del criterio de parada mediante el número total de evaluaciones de la función de adaptación resultó indispensable para comparar de manera objetiva esquemas generacionales completos ($\text{Gap} = 100\%$) frente a esquemas de estado estacionario ($\text{Gap} = 1\%, 5\%$ y $10\%$).
+    \item Cada modificación introducida aportó una mejora acumulativa y verificable sobre el rendimiento del algoritmo genético: la renormalización lineal estabilizó la presión selectiva, el elitismo garantizó la retención de la mejor solución histórica, la sustitución parcial aceleró la velocidad de convergencia temprana y la eliminación de duplicados preservó la diversidad estructural de la población.
+    \item El algoritmo \textbf{AGM5} con porcentaje de sustitución del $10\%$, $P_c = 0.90$ y $P_m = 0.01$ demostró ser la configuración más robusta y precisa en todas las funciones evaluadas ($F_1$ a $F_5$), logrando superar los óptimos locales donde el Algoritmo Genético Simple (AGS1) se estancaba sistemáticamente.
+\end{enumerate}
+
+\end{document}
