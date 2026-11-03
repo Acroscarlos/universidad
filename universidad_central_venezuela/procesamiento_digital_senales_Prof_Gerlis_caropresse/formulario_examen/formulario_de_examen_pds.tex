@@ -1,0 +1,273 @@
+\documentclass[10pt, a4paper, twocolumn]{article}
+
+% --- SOPORTE PARA ACENTOS Y FUENTE SANS-SERIF EN PDFLATEX ---
+\usepackage[utf8]{inputenc}    % Permite escribir eñes y acentos directamente
+\usepackage[T1]{fontenc}       % Mejora la calidad de las fuentes con acentos
+\usepackage[scaled=0.92]{helvet} % Carga Helvetica (fuente sans-serif similar a Noto Sans)
+\renewcommand{\familydefault}{\sfdefault} % Configura todo el documento en Sans-Serif
+
+\usepackage[a4paper, top=1.0cm, bottom=1.2cm, left=1.0cm, right=1.0cm, columnsep=0.5cm]{geometry}
+
+% Babel simplificado para pdflatex
+\usepackage[english, spanish]{babel} 
+
+\usepackage{enumitem}
+\setlist[itemize]{label=-, nosep, leftmargin=1.2em}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{booktabs}
+\usepackage{array}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5pt}
+\allowdisplaybreaks
+
+\begin{document}
+
+\twocolumn[{%
+\begin{center}
+    {\large \textbf{FORMULARIO DE PROCESAMIENTO DIGITAL DE SEÑALES (PDS)}}\\[2pt]
+    {\scriptsize Notación: $t \in \mathbb{R}$ [s], $n \in \mathbb{Z}$ [muestras], $f$ [Hz], $\omega = 2\pi f$ [rad/s], $F = f/f_s$ [ciclos/muestra], $\Omega = 2\pi F$ [rad/muestra]}
+    \vspace{2pt}
+    \hrule
+    \vspace{4pt}
+\end{center}
+}]
+
+\footnotesize
+\setlength{\abovedisplayskip}{2.5pt}
+\setlength{\belowdisplayskip}{2.5pt}
+\setlength{\abovedisplayshortskip}{1.5pt}
+\setlength{\belowdisplayshortskip}{1.5pt}
+
+% =========================================================================
+% 1. MUESTREO Y NYQUIST-SHANNON
+% =========================================================================
+\textbf{1. Muestreo, Frecuencias y Reconstrucción}
+\begin{align*}
+    x[n] &= x_a(n T_s) = x_a\left(\frac{n}{f_s}\right), \quad T_s = \frac{1}{f_s} \\
+    F &= \frac{f}{f_s} \in \left[-\frac{1}{2}, \frac{1}{2}\right], \quad \Omega = \omega T_s = 2\pi \frac{f}{f_s} = 2\pi F \in [-\pi, \pi] \\
+    f_{\text{Nyquist}} &= 2 f_{\max}, \quad f_s \ge 2 f_{\max}, \quad f_N = \frac{f_s}{2} \iff \Omega_N = \pi \\
+    f_{\text{guarda}} &= f_N - f_{\max} = \frac{f_s}{2} - f_{\max}
+\end{align*}
+\textbf{Interpolación Ideal (Sinc):}
+\[
+    x_a(t) = \sum_{n=-\infty}^{\infty} x[n] \frac{\sin\left(\pi f_s (t - n T_s)\right)}{\pi f_s (t - n T_s)}
+\]
+
+\vspace{2pt}
+% =========================================================================
+% 2. CUANTIFICACIÓN PCM Y SNR_Q
+% =========================================================================
+\textbf{2. Cuantificación Uniforme PCM ($B$ bits)}
+\begin{align*}
+    L &= 2^B, \quad \Delta = \frac{V_{\max} - V_{\min}}{2^B - 1} \approx \frac{V_{\text{pp}}}{2^B} = \frac{2 X_m}{2^B} \\
+    e_q[n] &= x_q[n] - x[n] \in \left[-\frac{\Delta}{2}, \frac{\Delta}{2}\right], \quad e_{q,\max} = \frac{\Delta}{2} \\
+    \mu_e &= 0, \quad \sigma_e^2 = \int_{-\Delta/2}^{\Delta/2} \frac{e^2}{\Delta} \, de = \frac{\Delta^2}{12}, \quad \sigma_e = \frac{\Delta}{\sqrt{12}}
+\end{align*}
+\textbf{Deducción de $\text{SNR}_Q$:}
+\begin{align*}
+    \sigma_e^2 &= \frac{(2 X_m / 2^B)^2}{12} = \frac{X_m^2 2^{-2B}}{3} \\
+    \text{SNR}_Q &= 10 \log_{10}\left(\frac{\sigma_x^2}{\sigma_e^2}\right) = 10 \log_{10}\left(3 \cdot 2^{2B} \frac{\sigma_x^2}{X_m^2}\right) \\
+    \text{SNR}_Q &= 6.02 B + 4.77 - 20 \log_{10}\left(\frac{X_m}{\sigma_x}\right) \text{ [dB]}
+\end{align*}
+\textbf{Caso Senoidal ($x[n] = X_m \sin(\Omega_0 n) \implies \sigma_x = X_m / \sqrt{2}$):}
+\[
+    \text{SNR}_{Q,\max} = 6.02 B + 4.77 - 3.01 = \mathbf{6.02 B + 1.76} \text{ [dB]}
+\]
+
+\vspace{2pt}
+% =========================================================================
+% 3. SEÑALES DISCRETAS ELEMENTALES Y MÉTRICAS
+% =========================================================================
+\textbf{3. Secuencias Elementales, Periodicidad y Energía}
+\[
+    \delta[n] = \begin{cases} 1, & n = 0 \\ 0, & n \neq 0 \end{cases} \quad u[n] = \begin{cases} 1, & n \ge 0 \\ 0, & n < 0 \end{cases} = \sum_{k=-\infty}^{n} \delta[k]
+\]
+\begin{align*}
+    \text{Periodicidad: } & \frac{\Omega_0}{2\pi} = F_0 = \frac{k}{N} \in \mathbb{Q} \implies N = \frac{2\pi k}{\Omega_0} \quad (k, N \in \mathbb{Z}^+) \\
+    x_e[n] &= \frac{1}{2}\left(x[n] + x^*[-n]\right), \quad x_o[n] = \frac{1}{2}\left(x[n] - x^*[-n]\right) \\
+    E_x &= \sum_{n=-\infty}^{\infty} |x[n]|^2, \quad P_x = \lim_{N \to \infty} \frac{1}{2N+1} \sum_{n=-N}^{N} |x[n]|^2
+\end{align*}
+
+\vspace{2pt}
+% =========================================================================
+% 4. SERIE TRIGONOMÉTRICA Y EXPONENCIAL DE FOURIER (STF)
+% =========================================================================
+\textbf{4. Serie de Fourier en Tiempo Continuo ($\omega_0 = 2\pi / T$)}
+\begin{align*}
+    x_a(t) &= \frac{a_0}{2} + \sum_{k=1}^{\infty} \left[ a_k \cos(k \omega_0 t) + b_k \sin(k \omega_0 t) \right] \\
+    a_0 &= \frac{2}{T} \int_{-T/2}^{T/2} x_a(t) \, dt, \quad a_k = \frac{2}{T} \int_{-T/2}^{T/2} x_a(t) \cos(k \omega_0 t) \, dt \\
+    b_k &= \frac{2}{T} \int_{-T/2}^{T/2} x_a(t) \sin(k \omega_0 t) \, dt \\
+    \text{Par: } & b_k = 0, \; a_k = \frac{4}{T} \int_{0}^{T/2} x_a(t) \cos(k \omega_0 t) \, dt \\
+    \text{Impar: } & a_0 = a_k = 0, \; b_k = \frac{4}{T} \int_{0}^{T/2} x_a(t) \sin(k \omega_0 t) \, dt \\
+    x_a(t) &= \sum_{k=-\infty}^{\infty} C_k e^{j k \omega_0 t}, \quad C_k = \frac{1}{T} \int_{-T/2}^{T/2} x_a(t) e^{-j k \omega_0 t} \, dt \\
+    a_0 &= 2 C_0, \quad a_k = C_k + C_{-k}, \quad b_k = j(C_k - C_{-k}), \quad C_{\pm k} = \frac{a_k \mp j b_k}{2}
+\end{align*}
+
+\vspace{2pt}
+% =========================================================================
+% 5. TRANSFORMADA Z Y TABLA DE PARES
+% =========================================================================
+\textbf{5. Transformada Z Bilateral y Pares Fundamentales}
+\[
+    X(z) = \mathcal{Z}\{x[n]\} = \sum_{n=-\infty}^{\infty} x[n] z^{-n}
+\]
+{\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Secuencia $x[n]$} & \textbf{Transformada $X(z)$} & \textbf{ROC} \\
+\midrule
+$\delta[n]$ & $1$ & Todo $z$ \\
+$\delta[n - n_0]$ & $z^{-n_0}$ & $z \neq 0$ ($n_0>0$); $z \neq \infty$ ($n_0<0$) \\
+$u[n]$ & $\dfrac{1}{1 - z^{-1}} = \dfrac{z}{z - 1}$ & $|z| > 1$ \\
+$a^n u[n]$ & $\dfrac{1}{1 - a z^{-1}} = \dfrac{z}{z - a}$ & $|z| > |a|$ \\
+$-a^n u[-n-1]$ & $\dfrac{1}{1 - a z^{-1}} = \dfrac{z}{z - a}$ & $|z| < |a|$ \\
+$n a^n u[n]$ & $\dfrac{a z^{-1}}{(1 - a z^{-1})^2} = \dfrac{a z}{(z - a)^2}$ & $|z| > |a|$ \\
+$-n a^n u[-n-1]$ & $\dfrac{a z^{-1}}{(1 - a z^{-1})^2} = \dfrac{a z}{(z - a)^2}$ & $|z| < |a|$ \\
+$\cos(\Omega_0 n) u[n]$ & $\dfrac{1 - \cos(\Omega_0)z^{-1}}{1 - 2\cos(\Omega_0)z^{-1} + z^{-2}}$ & $|z| > 1$ \\
+$\sin(\Omega_0 n) u[n]$ & $\dfrac{\sin(\Omega_0)z^{-1}}{1 - 2\cos(\Omega_0)z^{-1} + z^{-2}}$ & $|z| > 1$ \\
+$r^n \cos(\Omega_0 n) u[n]$ & $\dfrac{1 - r\cos(\Omega_0)z^{-1}}{1 - 2r\cos(\Omega_0)z^{-1} + r^2 z^{-2}}$ & $|z| > r$ \\
+$r^n \sin(\Omega_0 n) u[n]$ & $\dfrac{r\sin(\Omega_0)z^{-1}}{1 - 2r\cos(\Omega_0)z^{-1} + r^2 z^{-2}}$ & $|z| > r$ \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{3pt}
+% =========================================================================
+% 6. PROPIEDADES DE LA TRANSFORMADA Z
+% =========================================================================
+\textbf{6. Propiedades de la Transformada Z}
+
+{\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Propiedad} & \textbf{Tiempo} & \textbf{Dominio $z$} & \textbf{ROC} \\
+\midrule
+Linealidad & $a x_1[n] + b x_2[n]$ & $a X_1(z) + b X_2(z)$ & $\supseteq \text{ROC}_1 \cap \text{ROC}_2$ \\
+Desplazamiento & $x[n - n_0]$ & $z^{-n_0} X(z)$ & $\text{ROC}_x$ ($\pm 0, \infty$) \\
+Escalamiento & $z_0^n x[n]$ & $X(z / z_0)$ & $|z_0| \cdot \text{ROC}_x$ \\
+Inversión & $x[-n]$ & $X(z^{-1})$ & $1 / \text{ROC}_x$ \\
+Conjugación & $x^*[n]$ & $X^*(z^*)$ & $\text{ROC}_x$ \\
+Derivación & $n x[n]$ & $-z \dfrac{dX(z)}{dz}$ & $\text{ROC}_x$ \\
+Convolución & $x_1[n] * x_2[n]$ & $X_1(z) X_2(z)$ & $\supseteq \text{ROC}_1 \cap \text{ROC}_2$ \\
+\bottomrule
+\end{tabular}
+}
+\begin{align*}
+    \text{T. Valor Inicial ($x[n]$ causal): } & x[0] = \lim_{z \to \infty} X(z) \\
+    \text{T. Valor Final: } & \lim_{n \to \infty} x[n] = \lim_{z \to 1} (1 - z^{-1}) X(z)
+\end{align*}
+
+\vspace{2pt}
+% =========================================================================
+% 7. SISTEMAS LIT, ECUACIONES EN DIFERENCIAS Y BIBO
+% =========================================================================
+\textbf{7. Sistemas LIT, Función de Transferencia y Estabilidad}
+\begin{align*}
+    y[n] &= x[n] * h[n] = \sum_{k=-\infty}^{\infty} x[k] h[n - k] \\
+    y[n] &+ \sum_{k=1}^{N} a_k y[n-k] = \sum_{k=0}^{M} b_k x[n-k] \\
+    H(z) &= \frac{Y(z)}{X(z)} = \frac{\sum_{k=0}^{M} b_k z^{-k}}{1 + \sum_{k=1}^{N} a_k z^{-k}} = z^{N-M} \frac{\sum_{k=0}^{M} b_k z^{M-k}}{z^N + \sum_{k=1}^{N} a_k z^{N-k}}
+\end{align*}
+\begin{itemize}
+    \item \textbf{Causalidad:} $h[n] = 0 \; (\forall n < 0) \iff \text{ROC: } |z| > |p_{\max}|$.
+    \item \textbf{Estabilidad BIBO:} $\sum_{n=-\infty}^{\infty} |h[n]| < \infty \iff \{|z| = 1\} \subset \text{ROC}$.
+    \item \textbf{Causal y BIBO Estable:} $|p_k| < 1 \quad (\forall k = 1, \dots, N)$.
+\end{itemize}
+
+\vspace{2pt}
+% =========================================================================
+% 8. ESTRUCTURAS FORMA DIRECTA I Y II
+% =========================================================================
+\textbf{8. Estructuras de Realización: Forma Directa I y II}
+
+{\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Parámetro} & \textbf{Forma Directa I} & \textbf{Forma Directa II (Canónica)} \\
+\midrule
+Retardos $z^{-1}$ & $M + N$ & $\max(M, N)$ \\
+Nodo interno & $v[n] = \sum_{k=0}^{M} b_k x[n-k]$ & $w[n] = x[n] - \sum_{k=1}^{N} a_k w[n-k]$ \\
+Salida $y[n]$ & $y[n] = v[n] - \sum_{k=1}^{N} a_k y[n-k]$ & $y[n] = \sum_{k=0}^{M} b_k w[n-k]$ \\
+\bottomrule
+\end{tabular}
+}
+\textbf{Relación con ganancias de lazos de realimentación ($g_k = -a_k$):}
+\begin{align*}
+    w[n] &= x[n] + g_1 w[n-1] + g_2 w[n-2] + \dots + g_N w[n-N] \\
+    H(z) &= \frac{Y(z)}{X(z)} = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 - g_1 z^{-1} - g_2 z^{-2} - \dots - g_N z^{-N}}
+\end{align*}
+
+\vspace{2pt}
+% =========================================================================
+% 9. TRANSFORMADAS FRECUENCIALES: DTFT, DFT Y FFT
+% =========================================================================
+\textbf{9. Transformadas Frecuenciales: DTFT, DFT y FFT}
+\begin{align*}
+    \text{DTFT: } X(e^{j\Omega}) &= \sum_{n=-\infty}^{\infty} x[n] e^{-j\Omega n} = X(z)\Big|_{z = e^{j\Omega}} \\
+    \text{IDTFT: } x[n] &= \frac{1}{2\pi} \int_{-\pi}^{\pi} X(e^{j\Omega}) e^{j\Omega n} \, d\Omega \\
+    \text{DFT ($W_N = e^{-j 2\pi / N}$): } X[k] &= \sum_{n=0}^{N-1} x[n] W_N^{k n}, \quad 0 \le k \le N-1 \\
+    \text{IDFT: } x[n] &= \frac{1}{N} \sum_{k=0}^{N-1} X[k] W_N^{-k n}, \quad 0 \le n \le N-1
+\end{align*}
+\textbf{Mariposa FFT Radix-2 (Cooley-Tukey):}
+\[
+    X[k] = E[k] + W_N^k O[k], \quad X\left[k + \frac{N}{2}\right] = E[k] - W_N^k O[k]
+\]
+\[
+    \text{Costo DFT: } \mathcal{O}(N^2) \quad \big| \quad \text{Costo FFT: } \mathcal{O}(N \log_2 N)
+\]
+
+\vspace{2pt}
+% =========================================================================
+% 10. FILTROS DIGITALES: FIR VS. IIR Y FAMILIAS CLÁSICAS
+% =========================================================================
+\textbf{10. Filtros Digitales: FIR vs. IIR y Familias Clásicas}
+
+{\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Atributo} & \textbf{FIR (No Recursivo / MA)} & \textbf{IIR (Recursivo / ARMA)} \\
+\midrule
+Duración $h[n]$ & Finita ($M$ muestras) & Infinita ($n \to \infty$) \\
+Polos en $z$ & Origen ($z = 0$) & En cualquier $p_k \neq 0$ \\
+Estabilidad & Siempre estable & Estable si $|p_k| < 1$ (causal) \\
+Fase & Lineal si $h[n] = \pm h[M-1-n]$ & No lineal ($\tau_g(\Omega) \neq \text{cte}$) \\
+Orden req. & Alto ($M$ grande) & Bajo ($N$ reducido) \\
+\bottomrule
+\end{tabular}
+
+\vspace{3pt}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Familia IIR} & \textbf{Banda de Paso} & \textbf{Banda de Rechazo} & \textbf{Transición / Orden} \\
+\midrule
+Butterworth & Máx. plana & Monótona & Suave (mayor $N$) \\
+Chebyshev I & Equirrizado & Monótona & Abrupta ($N$ medio) \\
+Chebyshev II & Monótona & Equirrizado & Abrupta ($N$ medio) \\
+Elíptico (Cauer) & Equirrizado & Equirrizado & Más abrupta ($N$ mín.) \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{3pt}
+% =========================================================================
+% 11. HERRAMIENTAS AVANZADAS DE DISEÑO Y ANÁLISIS
+% =========================================================================
+\textbf{11. Transformada Bilineal, Fase Cero y Hilbert}
+\begin{align*}
+    \text{T. Bilineal: } s &= \frac{2}{T_s} \left(\frac{1 - z^{-1}}{1 + z^{-1}}\right), \quad \omega_a = \frac{2}{T_s} \tan\left(\frac{\Omega_d}{2}\right) = \frac{2}{T_s} \tan\left(\frac{\omega_d T_s}{2}\right) \\
+    \text{Retardo Grupo: } \tau_g(\Omega) &= -\frac{d\phi(\Omega)}{d\Omega} \\
+    \text{Fase Cero (\texttt{filtfilt}): } v[n] &= x[n]*h[n], \; g[n]=v[-n], \; r[n]=g[n]*h[n], \; y[n]=r[-n] \\
+    Y(e^{j\Omega}) &= X(e^{j\Omega}) H(e^{j\Omega}) H^*(e^{j\Omega}) = X(e^{j\Omega}) |H(e^{j\Omega})|^2 \implies \phi_{\text{total}}(\Omega) = 0 \\
+    \text{Señal Analítica: } z_a[n] &= x[n] + j\hat{x}[n], \quad \hat{x}[n] = \mathcal{H}\{x[n]\}, \quad A[n] = \sqrt{x^2[n] + \hat{x}^2[n]}
+\end{align*}
+
+\end{document}
