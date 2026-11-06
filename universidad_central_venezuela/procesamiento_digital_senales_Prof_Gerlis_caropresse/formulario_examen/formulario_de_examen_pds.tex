@@ -270,4 +270,32 @@ Elíptico (Cauer) & Equirrizado & Equirrizado & Más abrupta ($N$ mín.) \\
     \text{Señal Analítica: } z_a[n] &= x[n] + j\hat{x}[n], \quad \hat{x}[n] = \mathcal{H}\{x[n]\}, \quad A[n] = \sqrt{x^2[n] + \hat{x}^2[n]}
 \end{align*}
 
+
+
+\vspace{2pt}
+% =========================================================================
+% 12. RELACIÓN LAPLACE (PLANO S) <-> TRANSFORMADA Z Y CÍRCULO UNITARIO
+% =========================================================================
+\textbf{12. Mapeo Plano $s$ (Laplace) $\leftrightarrow$ Plano $z$ y Eje Imaginario ($\operatorname{Re}(s)=0$)}
+\begin{align*}
+    s &= \sigma + j\omega \quad (\sigma = \operatorname{Re}\{s\}, \; \omega = \operatorname{Im}\{s\} \text{ [rad/s]}), \quad t = n T_s \\
+    z &= e^{s T_s} = e^{(\sigma + j\omega) T_s} = e^{\sigma T_s} \cdot e^{j\omega T_s} = r e^{j\Omega} \\
+    r &= |z| = e^{\sigma T_s}, \quad \Omega = \omega T_s = 2\pi \frac{f}{f_s} \text{ [rad/muestra]}, \quad \omega_s = \frac{2\pi}{T_s} \\
+    \sigma = 0 &\implies s = j\omega \implies r = |z| = e^{0 \cdot T_s} = 1 \implies z = e^{j\Omega} \quad (\text{Círculo Unitario}) \\
+    \sigma < 0 &\implies |z| = e^{\sigma T_s} < 1 \quad (\text{Semiplano Izq. } \mapsto \text{Interior de } |z|=1) \\
+    \sigma > 0 &\implies |z| = e^{\sigma T_s} > 1 \quad (\text{Semiplano Der. } \mapsto \text{Exterior de } |z|=1) \\
+    \text{CTFT: } & X_a(j\omega) = X_a(s)\Big|_{s = j\omega} \quad \Longleftrightarrow \quad \text{DTFT: } X(e^{j\Omega}) = X(z)\Big|_{z = e^{j\Omega}}
+\end{align*}
+
+\vspace{2pt}
+% =========================================================================
+% 13. IDENTIDADES DE EULER
+% =========================================================================
+\textbf{13. Identidades de Euler}
+\begin{align*}
+    e^{j\theta} &= \cos(\theta) + j\sin(\theta), \quad e^{-j\theta} = \cos(\theta) - j\sin(\theta) \\
+    \cos(\theta) &= \frac{e^{j\theta} + e^{-j\theta}}{2}, \quad \sin(\theta) = \frac{e^{j\theta} - e^{-j\theta}}{2j}, \quad \left|e^{j\theta}\right| = \sqrt{\cos^2(\theta) + \sin^2(\theta)} = 1
+\end{align*}
+
+
 \end{document}
