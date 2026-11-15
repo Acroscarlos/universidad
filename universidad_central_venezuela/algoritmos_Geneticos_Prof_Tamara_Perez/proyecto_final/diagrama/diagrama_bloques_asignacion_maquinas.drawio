@@ -1,0 +1,514 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Página-1" id="cd9juZBBh_wcITMOofxp">
+    <mxGraphModel dx="3273" dy="1757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;flowchart TD\n    %% Estilos visuales por componente del sistema electrico\n    classDef genA fill:#e3f2fd,stroke:#1565c0,stroke-width:1.5px,color:#000\n    classDef genB fill:#fff3e0,stroke:#ef6c00,stroke-width:1.5px,color:#000\n    classDef genC fill:#e8f5e9,stroke:#2e7d32,stroke-width:1.5px,color:#000\n    classDef barra fill:#263238,stroke:#000000,stroke-width:3px,color:#fff\n    classDef linea fill:#ffebee,stroke:#c62828,stroke-width:2.5px,color:#000\n    classDef red fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2.5px,color:#000\n    classDef demanda fill:#fff9c4,stroke:#f9a825,stroke-width:2px,color:#000\n\n    %% ==========================================\n    %% NODO A (NODO 1): GENERACION BASE\n    %% ==========================================\n    subgraph Zona_A [\&quot;NODO A (Nodo 1): Área de Generación Base — Cap. Instalada: 2200 MW\&quot;]\n        direction TB\n        G1[\&quot;&lt;b&gt;G1&lt;/b&gt; (Vapor Carbón)&lt;br/&gt;Pmin: 100 MW | Pmax: 450 MW&lt;br/&gt;α=450, β=15.2, γ=0.0035 | Estado Ini: ON\&quot;]:::genA\n        G2[\&quot;&lt;b&gt;G2&lt;/b&gt; (Vapor Carbón)&lt;br/&gt;Pmin: 100 MW | Pmax: 450 MW&lt;br/&gt;α=420, β=15.5, γ=0.0038 | Estado Ini: ON\&quot;]:::genA\n        G3[\&quot;&lt;b&gt;G3&lt;/b&gt; (Vapor Carbón)&lt;br/&gt;Pmin: 80 MW | Pmax: 350 MW&lt;br/&gt;α=380, β=16.0, γ=0.0042 | Estado Ini: ON\&quot;]:::genA\n        G4[\&quot;&lt;b&gt;G4&lt;/b&gt; (Vapor Fuel Oil)&lt;br/&gt;Pmin: 80 MW | Pmax: 300 MW&lt;br/&gt;α=350, β=16.8, γ=0.0045 | Estado Ini: ON\&quot;]:::genA\n        G5[\&quot;&lt;b&gt;G5&lt;/b&gt; (Vapor Fuel Oil)&lt;br/&gt;Pmin: 60 MW | Pmax: 250 MW&lt;br/&gt;α=300, β=17.5, γ=0.0050 | Estado Ini: OFF\&quot;]:::genA\n        G6[\&quot;&lt;b&gt;G6&lt;/b&gt; (Ciclo Combinado)&lt;br/&gt;Pmin: 50 MW | Pmax: 200 MW&lt;br/&gt;α=250, β=18.2, γ=0.0060 | Estado Ini: OFF\&quot;]:::genA\n        G7[\&quot;&lt;b&gt;G7&lt;/b&gt; (Ciclo Combinado)&lt;br/&gt;Pmin: 50 MW | Pmax: 200 MW&lt;br/&gt;α=240, β=18.5, γ=0.0062 | Estado Ini: OFF\&quot;]:::genA\n\n        BarraA[\&quot;BARRA NODO A (1)&lt;br/&gt;Σ P_instalada = 2200 MW\&quot;]:::barra\n        DemA[\&quot;Demanda Local Nodo A:&lt;br/&gt;• Valle: 300 MW&lt;br/&gt;• Medio: 500 MW&lt;br/&gt;• Pico: 600 MW\&quot;]:::demanda\n\n        G1 &amp; G2 &amp; G3 &amp; G4 &amp; G5 &amp; G6 &amp; G7 --&gt; BarraA\n        BarraA --&gt; DemA\n    end\n\n    %% ==========================================\n    %% NODO B (NODO 2): GENERACION INTERMEDIA\n    %% ==========================================\n    subgraph Zona_B [\&quot;NODO B (Nodo 2): Área Mixta / Intermedia — Cap. Instalada: 1550 MW\&quot;]\n        direction TB\n        G8[\&quot;&lt;b&gt;G8&lt;/b&gt; (Ciclo Combinado)&lt;br/&gt;Pmin: 80 MW | Pmax: 350 MW&lt;br/&gt;α=360, β=19.0, γ=0.0055 | Estado Ini: OFF\&quot;]:::genB\n        G9[\&quot;&lt;b&gt;G9&lt;/b&gt; (Ciclo Combinado)&lt;br/&gt;Pmin: 80 MW | Pmax: 300 MW&lt;br/&gt;α=340, β=19.5, γ=0.0058 | Estado Ini: OFF\&quot;]:::genB\n        G10[\&quot;&lt;b&gt;G10&lt;/b&gt; (Ciclo Combinado)&lt;br/&gt;Pmin: 60 MW | Pmax: 250 MW&lt;br/&gt;α=280, β=20.0, γ=0.0065 | Estado Ini: OFF\&quot;]:::genB\n        G11[\&quot;&lt;b&gt;G11&lt;/b&gt; (Vapor Gas)&lt;br/&gt;Pmin: 50 MW | Pmax: 200 MW&lt;br/&gt;α=220, β=21.0, γ=0.0070 | Estado Ini: OFF\&quot;]:::genB\n        G12[\&quot;&lt;b&gt;G12&lt;/b&gt; (Vapor Gas)&lt;br/&gt;Pmin: 40 MW | Pmax: 180 MW&lt;br/&gt;α=200, β=21.8, γ=0.0075 | Estado Ini: OFF\&quot;]:::genB\n        G13[\&quot;&lt;b&gt;G13&lt;/b&gt; (Vapor Gas)&lt;br/&gt;Pmin: 30 MW | Pmax: 150 MW&lt;br/&gt;α=180, β=22.5, γ=0.0080 | Estado Ini: OFF\&quot;]:::genB\n        G14[\&quot;&lt;b&gt;G14&lt;/b&gt; (Vapor Gas)&lt;br/&gt;Pmin: 30 MW | Pmax: 120 MW&lt;br/&gt;α=150, β=23.2, γ=0.0085 | Estado Ini: OFF\&quot;]:::genB\n\n        BarraB[\&quot;BARRA NODO B (2)&lt;br/&gt;Σ P_instalada = 1550 MW\&quot;]:::barra\n        DemB[\&quot;Demanda Local Nodo B:&lt;br/&gt;• Valle: 500 MW&lt;br/&gt;• Medio: 850 MW&lt;br/&gt;• Pico: 1050 MW\&quot;]:::demanda\n\n        G8 &amp; G9 &amp; G10 &amp; G11 &amp; G12 &amp; G13 &amp; G14 --&gt; BarraB\n        BarraB --&gt; DemB\n    end\n\n    %% ==========================================\n    %% NODO C (NODO 3): GENERACION DE PICO\n    %% ==========================================\n    subgraph Zona_C [\&quot;NODO C (Nodo 3): Área de Carga y Pico Rápido — Cap. Instalada: 660 MW\&quot;]\n        direction TB\n        G15[\&quot;&lt;b&gt;G15&lt;/b&gt; (Turbina Gas Simple)&lt;br/&gt;Pmin: 40 MW | Pmax: 160 MW&lt;br/&gt;α=160, β=24.0, γ=0.0090 | Estado Ini: OFF\&quot;]:::genC\n        G16[\&quot;&lt;b&gt;G16&lt;/b&gt; (Turbina Gas Simple)&lt;br/&gt;Pmin: 30 MW | Pmax: 140 MW&lt;br/&gt;α=140, β=25.5, γ=0.0095 | Estado Ini: OFF\&quot;]:::genC\n        G17[\&quot;&lt;b&gt;G17&lt;/b&gt; (Turbina Gas Simple)&lt;br/&gt;Pmin: 25 MW | Pmax: 120 MW&lt;br/&gt;α=120, β=26.8, γ=0.0105 | Estado Ini: OFF\&quot;]:::genC\n        G18[\&quot;&lt;b&gt;G18&lt;/b&gt; (Turbina Gas Rápida)&lt;br/&gt;Pmin: 20 MW | Pmax: 100 MW&lt;br/&gt;α=100, β=28.0, γ=0.0115 | Estado Ini: OFF\&quot;]:::genC\n        G19[\&quot;&lt;b&gt;G19&lt;/b&gt; (Turbina Gas Rápida)&lt;br/&gt;Pmin: 20 MW | Pmax: 80 MW&lt;br/&gt;α=90, β=29.5, γ=0.0125 | Estado Ini: OFF\&quot;]:::genC\n        G20[\&quot;&lt;b&gt;G20&lt;/b&gt; (Turbina Gas Rápida)&lt;br/&gt;Pmin: 15 MW | Pmax: 60 MW&lt;br/&gt;α=80, β=31.0, γ=0.0135 | Estado Ini: OFF\&quot;]:::genC\n\n        BarraC[\&quot;BARRA NODO C (3)&lt;br/&gt;Σ P_instalada = 660 MW\&quot;]:::barra\n        DemC[\&quot;Demanda Local Nodo C:&lt;br/&gt;• Valle: 800 MW&lt;br/&gt;• Medio: 1250 MW&lt;br/&gt;• Pico: 1550 MW\&quot;]:::demanda\n\n        G15 &amp; G16 &amp; G17 &amp; G18 &amp; G19 &amp; G20 --&gt; BarraC\n        BarraC --&gt; DemC\n    end\n\n    %% ==========================================\n    %% LINEAS DE TRANSMISION Y LIMITES DE POTENCIA\n    %% ==========================================\n    LimA[\&quot;&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO A&lt;/b&gt;&lt;br/&gt;P_nodo_A &lt;= &lt;b&gt;1500 MW&lt;/b&gt;&lt;br/&gt;(Retiene hasta 700 MW de máquinas baratas en congestión)\&quot;]:::linea\n    LimB[\&quot;&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO B&lt;/b&gt;&lt;br/&gt;P_nodo_B &lt;= &lt;b&gt;1200 MW&lt;/b&gt;&lt;br/&gt;(Retiene hasta 350 MW cuando se satura)\&quot;]:::linea\n    LimC[\&quot;&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO C&lt;/b&gt;&lt;br/&gt;P_nodo_C &lt;= &lt;b&gt;700 MW&lt;/b&gt;&lt;br/&gt;(Capacidad instalada = 660 MW, sin congestión interna)\&quot;]:::linea\n\n    BarraA ==&gt;|\&quot;Flujo P_A (λ_A)\&quot;| LimA\n    BarraB ==&gt;|\&quot;Flujo P_B (λ_B)\&quot;| LimB\n    BarraC ==&gt;|\&quot;Flujo P_C (λ_C)\&quot;| LimC\n\n    %% ==========================================\n    %% BALANCE DEL SISTEMA INTERCONECTADO\n    %% ==========================================\n    SIN[\&quot;&lt;b&gt;SISTEMA INTERCONECTADO NACIONAL (TRONCAL DE TRANSMISIÓN)&lt;/b&gt;&lt;br/&gt;Balance Horario: P_Nodo_A + P_Nodo_B + P_Nodo_C = P_Demanda_Total&lt;br/&gt;Capacidad Máxima Efectiva Evacuable = 1500 + 1200 + 660 = &lt;b&gt;3360 MW&lt;/b&gt;\&quot;]:::red\n\n    LimA &amp; LimB &amp; LimC ==&gt; SIN\n\n    subgraph Curva_Demanda [\&quot;Demanda Total del Sistema por Bloques (24 Horas)\&quot;]\n        direction LR\n        B1[\&quot;&lt;b&gt;BLOQUE 1: VALLE (00:00 - 08:00)&lt;/b&gt;&lt;br/&gt;Demanda Total = &lt;b&gt;1600 MW&lt;/b&gt;&lt;br/&gt;(300 + 500 + 800 MW)\&quot;]:::demanda\n        B2[\&quot;&lt;b&gt;BLOQUE 2: MEDIO (08:00 - 16:00)&lt;/b&gt;&lt;br/&gt;Demanda Total = &lt;b&gt;2600 MW&lt;/b&gt;&lt;br/&gt;(500 + 850 + 1250 MW)\&quot;]:::demanda\n        B3[\&quot;&lt;b&gt;BLOQUE 3: PICO (16:00 - 24:00)&lt;/b&gt;&lt;br/&gt;Demanda Total = &lt;b&gt;3200 MW&lt;/b&gt;&lt;br/&gt;(600 + 1050 + 1550 MW)\&quot;]:::demanda\n    end\n\n    SIN ==&gt; B1 &amp; B2 &amp; B3&quot;,&#xa;  &quot;config&quot;: null,&#xa;  &quot;version&quot;: &quot;12&quot;&#xa;}" id="nVdm3WjJimfE6lhPiPdT-1">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demanda Total del Sistema por Bloques (24 Horas)" mermaidId="n:Curva_Demanda" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#ECFEFF;strokeColor=#22D3EE;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="Demanda Total del Sistema por Bloques (24 Horas)" id="nVdm3WjJimfE6lhPiPdT-2">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#ECFEFF;strokeColor=#22D3EE;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="264" width="604" x="1927" y="1695" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;BLOQUE 1: VALLE (00:00 - 08:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;1600 MW&lt;/b&gt;&#xa;(300 + 500 + 800 MW)" mermaidId="n:B1" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;BLOQUE 1: VALLE (00:00 - 08:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;1600 MW&lt;/b&gt;&#xa;(300 + 500 + 800 MW)" id="nVdm3WjJimfE6lhPiPdT-3">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-2" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="24" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;BLOQUE 2: MEDIO (08:00 - 16:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;2600 MW&lt;/b&gt;&#xa;(500 + 850 + 1250 MW)" mermaidId="n:B2" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;BLOQUE 2: MEDIO (08:00 - 16:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;2600 MW&lt;/b&gt;&#xa;(500 + 850 + 1250 MW)" id="nVdm3WjJimfE6lhPiPdT-4">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-2" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="226" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;BLOQUE 3: PICO (16:00 - 24:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;3200 MW&lt;/b&gt;&#xa;(600 + 1050 + 1550 MW)" mermaidId="n:B3" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;BLOQUE 3: PICO (16:00 - 24:00)&lt;/b&gt;&#xa;Demanda Total = &lt;b&gt;3200 MW&lt;/b&gt;&#xa;(600 + 1050 + 1550 MW)" id="nVdm3WjJimfE6lhPiPdT-5">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-2" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="428" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="NODO C (Nodo 3): Área de Carga y Pico Rápido — Cap. Instalada: 660 MW" mermaidId="n:Zona_C" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FFF7ED;strokeColor=#FB923C;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="NODO C (Nodo 3): Área de Carga y Pico Rápido — Cap. Instalada: 660 MW" id="nVdm3WjJimfE6lhPiPdT-6">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FFF7ED;strokeColor=#FB923C;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="666" width="1210" x="60" y="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G15&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 40 MW | Pmax: 160 MW&#xa;α=160, β=24.0, γ=0.0090 | Estado Ini: OFF" mermaidId="n:G15" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G15&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 40 MW | Pmax: 160 MW&#xa;α=160, β=24.0, γ=0.0090 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-7">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="226" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G16&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 30 MW | Pmax: 140 MW&#xa;α=140, β=25.5, γ=0.0095 | Estado Ini: OFF" mermaidId="n:G16" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G16&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 30 MW | Pmax: 140 MW&#xa;α=140, β=25.5, γ=0.0095 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-8">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="428" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G17&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 25 MW | Pmax: 120 MW&#xa;α=120, β=26.8, γ=0.0105 | Estado Ini: OFF" mermaidId="n:G17" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G17&lt;/b&gt; (Turbina Gas Simple)&#xa;Pmin: 25 MW | Pmax: 120 MW&#xa;α=120, β=26.8, γ=0.0105 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-9">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="630" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G18&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 20 MW | Pmax: 100 MW&#xa;α=100, β=28.0, γ=0.0115 | Estado Ini: OFF" mermaidId="n:G18" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G18&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 20 MW | Pmax: 100 MW&#xa;α=100, β=28.0, γ=0.0115 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-10">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="832" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G19&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 20 MW | Pmax: 80 MW&#xa;α=90, β=29.5, γ=0.0125 | Estado Ini: OFF" mermaidId="n:G19" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G19&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 20 MW | Pmax: 80 MW&#xa;α=90, β=29.5, γ=0.0125 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-11">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="1034" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G20&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 15 MW | Pmax: 60 MW&#xa;α=80, β=31.0, γ=0.0135 | Estado Ini: OFF" mermaidId="n:G20" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G20&lt;/b&gt; (Turbina Gas Rápida)&#xa;Pmin: 15 MW | Pmax: 60 MW&#xa;α=80, β=31.0, γ=0.0135 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-12">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e8f5e9;strokeColor=#2e7d32;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="24" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BARRA NODO C (3)&#xa;Σ P_instalada = 660 MW" mermaidId="n:BarraC" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="BARRA NODO C (3)&#xa;Σ P_instalada = 660 MW" id="nVdm3WjJimfE6lhPiPdT-13">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="108" width="152" x="529" y="324" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demanda Local Nodo C:&#xa;• Valle: 800 MW&#xa;• Medio: 1250 MW&#xa;• Pico: 1550 MW" mermaidId="n:DemC" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="Demanda Local Nodo C:&#xa;• Valle: 800 MW&#xa;• Medio: 1250 MW&#xa;• Pico: 1550 MW" id="nVdm3WjJimfE6lhPiPdT-14">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-6" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="150" width="152" x="485" y="491" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G15-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.32;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-15">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.32;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="302" y="282" />
+                <mxPoint x="577" y="282" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G16-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.44;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-16">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.44;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="504" y="270" />
+                <mxPoint x="596" y="270" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G17-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.56;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-17">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.56;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="706" y="270" />
+                <mxPoint x="614" y="270" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G18-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.68;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-18">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.68;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="908" y="282" />
+                <mxPoint x="633" y="282" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G19-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.81;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-19">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.81;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1110" y="294" />
+                <mxPoint x="652" y="294" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G20-&gt;BarraC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.19;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-20">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.19;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="100" y="294" />
+                <mxPoint x="558" y="294" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:BarraC-&gt;DemC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-21">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-6" source="nVdm3WjJimfE6lhPiPdT-13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-14">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="583" y="461" />
+                <mxPoint x="561" y="461" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="NODO B (Nodo 2): Área Mixta / Intermedia — Cap. Instalada: 1550 MW" mermaidId="n:Zona_B" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#F0FDFA;strokeColor=#2DD4BF;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="NODO B (Nodo 2): Área Mixta / Intermedia — Cap. Instalada: 1550 MW" id="nVdm3WjJimfE6lhPiPdT-22">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#F0FDFA;strokeColor=#2DD4BF;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="644" width="1412" x="1310" y="171" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G8&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 80 MW | Pmax: 350 MW&#xa;α=360, β=19.0, γ=0.0055 | Estado Ini: OFF" mermaidId="n:G8" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G8&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 80 MW | Pmax: 350 MW&#xa;α=360, β=19.0, γ=0.0055 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-23">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="226" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G9&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 80 MW | Pmax: 300 MW&#xa;α=340, β=19.5, γ=0.0058 | Estado Ini: OFF" mermaidId="n:G9" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G9&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 80 MW | Pmax: 300 MW&#xa;α=340, β=19.5, γ=0.0058 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-24">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="428" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G10&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 60 MW | Pmax: 250 MW&#xa;α=280, β=20.0, γ=0.0065 | Estado Ini: OFF" mermaidId="n:G10" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G10&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 60 MW | Pmax: 250 MW&#xa;α=280, β=20.0, γ=0.0065 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-25">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="192" width="152" x="630" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G11&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=220, β=21.0, γ=0.0070 | Estado Ini: OFF" mermaidId="n:G11" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G11&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=220, β=21.0, γ=0.0070 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-26">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="832" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G12&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 40 MW | Pmax: 180 MW&#xa;α=200, β=21.8, γ=0.0075 | Estado Ini: OFF" mermaidId="n:G12" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G12&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 40 MW | Pmax: 180 MW&#xa;α=200, β=21.8, γ=0.0075 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-27">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="1034" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G13&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 30 MW | Pmax: 150 MW&#xa;α=180, β=22.5, γ=0.0080 | Estado Ini: OFF" mermaidId="n:G13" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G13&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 30 MW | Pmax: 150 MW&#xa;α=180, β=22.5, γ=0.0080 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-28">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="1236" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G14&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 30 MW | Pmax: 120 MW&#xa;α=150, β=23.2, γ=0.0085 | Estado Ini: OFF" mermaidId="n:G14" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G14&lt;/b&gt; (Vapor Gas)&#xa;Pmin: 30 MW | Pmax: 120 MW&#xa;α=150, β=23.2, γ=0.0085 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-29">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#fff3e0;strokeColor=#ef6c00;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="24" y="68" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BARRA NODO B (2)&#xa;Σ P_instalada = 1550 MW" mermaidId="n:BarraB" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="BARRA NODO B (2)&#xa;Σ P_instalada = 1550 MW" id="nVdm3WjJimfE6lhPiPdT-30">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="108" width="152" x="630" y="324" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demanda Local Nodo B:&#xa;• Valle: 500 MW&#xa;• Medio: 850 MW&#xa;• Pico: 1050 MW" mermaidId="n:DemB" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="Demanda Local Nodo B:&#xa;• Valle: 500 MW&#xa;• Medio: 850 MW&#xa;• Pico: 1050 MW" id="nVdm3WjJimfE6lhPiPdT-31">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-22" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="129" width="152" x="586" y="491" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G8-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.29;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-32">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-23" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.29;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="302" y="282" />
+                <mxPoint x="673" y="282" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G9-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.39;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-33">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.39;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="504" y="270" />
+                <mxPoint x="690" y="270" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G10-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-34">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-25" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G11-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.61;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-35">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.61;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="908" y="270" />
+                <mxPoint x="722" y="270" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G12-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.71;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-36">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-27" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.71;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1110" y="282" />
+                <mxPoint x="739" y="282" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G13-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.82;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-37">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-28" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.82;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1312" y="294" />
+                <mxPoint x="755" y="294" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G14-&gt;BarraB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.18;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-38">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-29" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.18;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="100" y="294" />
+                <mxPoint x="657" y="294" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:BarraB-&gt;DemB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-39">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-22" source="nVdm3WjJimfE6lhPiPdT-30" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-31">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="684" y="461" />
+                <mxPoint x="662" y="461" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="NODO A (Nodo 1): Área de Generación Base — Cap. Instalada: 2200 MW" mermaidId="n:Zona_A" mermaidBaseStyle="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FDF4FF;strokeColor=#E879F9;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="NODO A (Nodo 1): Área de Generación Base — Cap. Instalada: 2200 MW" id="nVdm3WjJimfE6lhPiPdT-40">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=nowrap;strokeWidth=1;verticalAlign=top;fillColor=#FDF4FF;strokeColor=#E879F9;fontColor=#000000;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="624" width="1412" x="2762" y="191" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G1&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 100 MW | Pmax: 450 MW&#xa;α=450, β=15.2, γ=0.0035 | Estado Ini: ON" mermaidId="n:G1" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G1&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 100 MW | Pmax: 450 MW&#xa;α=450, β=15.2, γ=0.0035 | Estado Ini: ON" id="nVdm3WjJimfE6lhPiPdT-41">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="226" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G2&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 100 MW | Pmax: 450 MW&#xa;α=420, β=15.5, γ=0.0038 | Estado Ini: ON" mermaidId="n:G2" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G2&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 100 MW | Pmax: 450 MW&#xa;α=420, β=15.5, γ=0.0038 | Estado Ini: ON" id="nVdm3WjJimfE6lhPiPdT-42">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="428" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G3&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 80 MW | Pmax: 350 MW&#xa;α=380, β=16.0, γ=0.0042 | Estado Ini: ON" mermaidId="n:G3" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G3&lt;/b&gt; (Vapor Carbón)&#xa;Pmin: 80 MW | Pmax: 350 MW&#xa;α=380, β=16.0, γ=0.0042 | Estado Ini: ON" id="nVdm3WjJimfE6lhPiPdT-43">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="630" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G4&lt;/b&gt; (Vapor Fuel Oil)&#xa;Pmin: 80 MW | Pmax: 300 MW&#xa;α=350, β=16.8, γ=0.0045 | Estado Ini: ON" mermaidId="n:G4" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G4&lt;/b&gt; (Vapor Fuel Oil)&#xa;Pmin: 80 MW | Pmax: 300 MW&#xa;α=350, β=16.8, γ=0.0045 | Estado Ini: ON" id="nVdm3WjJimfE6lhPiPdT-44">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="832" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G5&lt;/b&gt; (Vapor Fuel Oil)&#xa;Pmin: 60 MW | Pmax: 250 MW&#xa;α=300, β=17.5, γ=0.0050 | Estado Ini: OFF" mermaidId="n:G5" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G5&lt;/b&gt; (Vapor Fuel Oil)&#xa;Pmin: 60 MW | Pmax: 250 MW&#xa;α=300, β=17.5, γ=0.0050 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-45">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="1034" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G6&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=250, β=18.2, γ=0.0060 | Estado Ini: OFF" mermaidId="n:G6" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G6&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=250, β=18.2, γ=0.0060 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-46">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="1236" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;G7&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=240, β=18.5, γ=0.0062 | Estado Ini: OFF" mermaidId="n:G7" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;G7&lt;/b&gt; (Ciclo Combinado)&#xa;Pmin: 50 MW | Pmax: 200 MW&#xa;α=240, β=18.5, γ=0.0062 | Estado Ini: OFF" id="nVdm3WjJimfE6lhPiPdT-47">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#e3f2fd;strokeColor=#1565c0;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="172" width="152" x="24" y="48" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="BARRA NODO A (1)&#xa;Σ P_instalada = 2200 MW" mermaidId="n:BarraA" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="BARRA NODO A (1)&#xa;Σ P_instalada = 2200 MW" id="nVdm3WjJimfE6lhPiPdT-48">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#263238;strokeColor=default;fontColor=#fff;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="108" width="152" x="630" y="304" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demanda Local Nodo A:&#xa;• Valle: 300 MW&#xa;• Medio: 500 MW&#xa;• Pico: 600 MW" mermaidId="n:DemA" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="Demanda Local Nodo A:&#xa;• Valle: 300 MW&#xa;• Medio: 500 MW&#xa;• Pico: 600 MW" id="nVdm3WjJimfE6lhPiPdT-49">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-40" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#fff9c4;strokeColor=#f9a825;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="129" width="152" x="586" y="471" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G1-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.29;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-50">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-41" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.29;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="302" y="262" />
+                <mxPoint x="673" y="262" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G2-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.39;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-51">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-42" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.39;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="504" y="250" />
+                <mxPoint x="690" y="250" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G3-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-52">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-43" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G4-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.61;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-53">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-44" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.61;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="908" y="250" />
+                <mxPoint x="722" y="250" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G5-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.71;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-54">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-45" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.71;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1110" y="262" />
+                <mxPoint x="739" y="262" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G6-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.82;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-55">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-46" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.82;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1312" y="274" />
+                <mxPoint x="755" y="274" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:G7-&gt;BarraA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.18;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-56">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-47" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.18;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-48">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="100" y="274" />
+                <mxPoint x="657" y="274" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:BarraA-&gt;DemA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-57">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-40" source="nVdm3WjJimfE6lhPiPdT-48" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=8;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.36;exitY=0.99;entryX=0.5;entryY=0;strokeWidth=2;targetPerimeterSpacing=4;" target="nVdm3WjJimfE6lhPiPdT-49">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="684" y="441" />
+                <mxPoint x="662" y="441" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO A&lt;/b&gt;&#xa;P_nodo_A &lt;= &lt;b&gt;1500 MW&lt;/b&gt;&#xa;(Retiene hasta 700 MW de máquinas baratas en congestión)" mermaidId="n:LimA" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO A&lt;/b&gt;&#xa;P_nodo_A &lt;= &lt;b&gt;1500 MW&lt;/b&gt;&#xa;(Retiene hasta 700 MW de máquinas baratas en congestión)" id="nVdm3WjJimfE6lhPiPdT-58">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="277" width="152" x="3722" y="870" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO B&lt;/b&gt;&#xa;P_nodo_B &lt;= &lt;b&gt;1200 MW&lt;/b&gt;&#xa;(Retiene hasta 350 MW cuando se satura)" mermaidId="n:LimB" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO B&lt;/b&gt;&#xa;P_nodo_B &lt;= &lt;b&gt;1200 MW&lt;/b&gt;&#xa;(Retiene hasta 350 MW cuando se satura)" id="nVdm3WjJimfE6lhPiPdT-59">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="234" width="152" x="1990" y="870" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO C&lt;/b&gt;&#xa;P_nodo_C &lt;= &lt;b&gt;700 MW&lt;/b&gt;&#xa;(Capacidad instalada = 660 MW, sin congestión interna)" mermaidId="n:LimC" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;LÍMITE DE TRANSMISIÓN / EVACUACIÓN NODO C&lt;/b&gt;&#xa;P_nodo_C &lt;= &lt;b&gt;700 MW&lt;/b&gt;&#xa;(Capacidad instalada = 660 MW, sin congestión interna)" id="nVdm3WjJimfE6lhPiPdT-60">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#ffebee;strokeColor=#c62828;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="255" width="152" x="633" y="937" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;SISTEMA INTERCONECTADO NACIONAL (TRONCAL DE TRANSMISIÓN)&lt;/b&gt;&#xa;Balance Horario: P_Nodo_A + P_Nodo_B + P_Nodo_C = P_Demanda_Total&#xa;Capacidad Máxima Efectiva Evacuable = 1500 + 1200 + 660 = &lt;b&gt;3360 MW&lt;/b&gt;" mermaidId="n:SIN" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;" mermaidBaseValue="&lt;b&gt;SISTEMA INTERCONECTADO NACIONAL (TRONCAL DE TRANSMISIÓN)&lt;/b&gt;&#xa;Balance Horario: P_Nodo_A + P_Nodo_B + P_Nodo_C = P_Demanda_Total&#xa;Capacidad Máxima Efectiva Evacuable = 1500 + 1200 + 660 = &lt;b&gt;3360 MW&lt;/b&gt;" id="nVdm3WjJimfE6lhPiPdT-61">
+          <mxCell parent="nVdm3WjJimfE6lhPiPdT-1" style="html=1;whiteSpace=wrap;strokeWidth=2.5;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontColor=default;fontFamily=Recursive;fontSize=14;shadow=1;shadowColor=#000000;shadowOffsetX=4;shadowOffsetY=4;shadowBlur=0;shadowOpacity=6;labelWidth=120;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" vertex="1">
+            <mxGeometry height="382" width="152" x="1984" y="1243" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Flujo P_A (λ_A)" mermaidId="e:BarraA-&gt;LimA#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Flujo P_A (λ_A)" id="nVdm3WjJimfE6lhPiPdT-62">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-48" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=14;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=1;entryX=0.5;entryY=0;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" target="nVdm3WjJimfE6lhPiPdT-58">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="3489.3" y="633" />
+                <mxPoint x="3630" y="633" />
+                <mxPoint x="3630" y="826" />
+                <mxPoint x="3798" y="826" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Flujo P_B (λ_B)" mermaidId="e:BarraB-&gt;LimB#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Flujo P_B (λ_B)" id="nVdm3WjJimfE6lhPiPdT-63">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-30" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=14;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=1;entryX=0.5;entryY=0;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" target="nVdm3WjJimfE6lhPiPdT-59">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="2038" y="633" />
+                <mxPoint x="2060" y="633" />
+                <mxPoint x="2060" y="826" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Flujo P_C (λ_C)" mermaidId="e:BarraC-&gt;LimC#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=16;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=0.99;entryX=0.5;entryY=0;" mermaidBaseValue="Flujo P_C (λ_C)" id="nVdm3WjJimfE6lhPiPdT-64">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;html=1;fontSize=14;labelBackgroundColor=#cccccc;fontFamily=Recursive;fontColor=#28253D;exitX=0.64;exitY=0.99;entryX=0.5;entryY=0;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DRecursive;" target="nVdm3WjJimfE6lhPiPdT-60">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="687" y="611" />
+                <mxPoint x="709" y="611" />
+                <mxPoint x="709" y="826" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:LimA-&gt;SIN#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.72;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-65">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-58" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.72;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-61">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="3512" y="1223" />
+                <mxPoint x="2093" y="1223" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:LimB-&gt;SIN#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-66">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-59" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-61">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:LimC-&gt;SIN#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.28;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-67">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-60" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.28;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-61">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="709" y="1223" />
+                <mxPoint x="2027" y="1223" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:SIN-&gt;B1#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.28;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-68">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-61" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.28;exitY=1;entryX=0.5;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-3">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:SIN-&gt;B2#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-69">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-61" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-4">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="2060" y="1665" />
+                <mxPoint x="2229" y="1665" />
+                <mxPoint x="2229" y="1685" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:SIN-&gt;B3#0" mermaidBaseStyle="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.72;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="nVdm3WjJimfE6lhPiPdT-70">
+          <mxCell edge="1" parent="nVdm3WjJimfE6lhPiPdT-1" source="nVdm3WjJimfE6lhPiPdT-61" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;startArrow=none;endArrow=block;endSize=3;strokeWidth=3.5;startSize=3;jumpStyle=arc;jumpSize=12;strokeColor=#000000;exitX=0.72;exitY=1;entryX=0.5;entryY=0;" target="nVdm3WjJimfE6lhPiPdT-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="2093" y="1645" />
+                <mxPoint x="2431" y="1645" />
+                <mxPoint x="2431" y="1685" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

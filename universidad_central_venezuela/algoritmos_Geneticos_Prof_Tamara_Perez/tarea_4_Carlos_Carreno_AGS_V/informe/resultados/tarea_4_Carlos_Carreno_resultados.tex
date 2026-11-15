@@ -43,7 +43,7 @@
 
 Para la primera parte se evaluaron las cinco funciones de prueba ($F_1$ a $F_5$) realizando $20$ corridas independientes con una población inicial de $N = 100$ individuos y una precisión de $10^{-2}$ ($2$ dígitos decimales) para cada variable. En el algoritmo AGM5 y AGM4 se utilizaron los parámetros fijos $P_c = 0.90$, $P_m = 0.01$, porcentaje de sustitución (Gap) de $10\%$, $\text{Tope} = 100$ y $\text{Paso} = 1$, comparando su desempeño contra el algoritmo simple AGS1 ($P_c = 0.90$, $P_m = 0.01$ y reemplazo del $100\%$).
 
-Con el fin de garantizar el mismo número de evaluaciones de la función de adaptación en todas las pruebas, para $F_1, F_2, F_3$ y $F_4$ se fijó un límite de $5000$ evaluaciones por corrida ($50$ generaciones en AGS1 y $500$ generaciones en AGM4 y AGM5 con $\text{Gap} = 10\%$). Para la función $F_5$, debido a que posee tres variables, se aumentó el límite a $10\,000$ evaluaciones ($100$ generaciones en AGS1 y $1000$ generaciones en AGM4 y AGM5). En la Tabla \ref{tab:bits_funciones} se muestra la cantidad de bits asignada a cada variable según su rango.
+Para $F_1, F_2, F_3$ y $F_4$ se fijó un límite de $5000$ evaluaciones por corrida ($50$ generaciones en AGS1 y $500$ generaciones en AGM4 y AGM5 con $\text{Gap} = 10\%$). Para la función $F_5$, debido a que posee tres variables, se aumentó el límite a $10\,000$ evaluaciones ($100$ generaciones en AGS1 y $1000$ generaciones en AGM4 y AGM5). En la Tabla \ref{tab:bits_funciones} se muestra la cantidad de bits asignada a cada variable según su rango.
 
 \begin{table}[H]
 \centering
@@ -60,7 +60,7 @@ $F_5(x,y,z)$ & Minimizar & $x, y, z \in [-100, 100]$     & $[15, 15, 15]$ & 45 b
 \end{tabular}
 \end{table}
 
-En la Tabla \ref{tab:resultados_exp1} se reporta el mejor individuo encontrado en todas las corridas y generaciones para cada función, indicando su valor de adaptación, el valor real en la función $f(x,y,z)$ y las coordenadas decodificadas.
+La Tabla \ref{tab:resultados_exp1} se muestra al mejor individuo encontrado en todas las corridas y generaciones para cada función, indicando su valor de adaptación, el valor real en la función $f(x,y,z)$ y las coordenadas decodificadas.
 
 \begin{table}[H]
 \centering
