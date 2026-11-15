@@ -1,0 +1,585 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PAQUETES BÁSICOS Y DE DISEÑO INSTITUCIONAL ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla, es-nodecimaldot, es-noshorthands]{babel}
+\usepackage{helvet} % Fuente Sans-Serif limpia estilo IMMUNE
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, top=4.8cm, bottom=3.2cm, left=2.5cm, right=2.5cm, headheight=2.8cm, headsep=0.4cm, footskip=45pt]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage[hidelinks, hypertexnames=false]{hyperref}
+\usepackage{bookmark}
+\usepackage{float}
+
+% --- COLORES CORPORATIVOS ---
+\definecolor{immuneDark}{HTML}{1A1A1A}
+\definecolor{immuneGray}{HTML}{555555}
+\definecolor{immuneAccent}{HTML}{00B495}
+\definecolor{alertaRevision}{HTML}{FFF3CD}
+\definecolor{bordeRevision}{HTML}{D35400}
+
+% Macro mantenido por compatibilidad (renderiza el texto limpio en la versión final)
+\newcommand{\bloqueNuevo}[1]{#1}
+
+% --- CONFIGURACIÓN DE ENCABEZADO Y PIE DE PÁGINA (PLANTILLA IMMUNE) ---
+\newcommand{\immuneHeaderLogo}{%
+  \IfFileExists{img_immune/image1_con_logo.png}{%
+    \includegraphics[width=\textwidth]{img_immune/image1_con_logo.png}%
+  }{%
+    \IfFileExists{./img_immune/image1_con_logo.png}{%
+      \includegraphics[width=\textwidth]{./img_immune/image1_con_logo.png}%
+    }{%
+      \textbf{\large IMMUNE}\ \textcolor{immuneGray}{\small TECHNOLOGY INSTITUTE}%
+    }%
+  }%
+}
+
+\newcommand{\immuneFooterTexto}{%
+    \footnotesize\textcolor{immuneGray}{%
+        \parbox{\textwidth}{\centering
+            \textbf{IMMUNE Technology Institute}\\
+            Paseo de la Castellana 89,\\
+            28046 Madrid%
+        }%
+    }%
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[L]{\immuneHeaderLogo}
+\fancyfoot[L]{\immuneFooterTexto}
+\fancyfoot[R]{\footnotesize\textcolor{immuneGray}{\textbf{\thepage}}}
+
+% Aplicar el mismo encabezado y pie en páginas de inicio de capítulo
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0.4pt}%
+    \fancyhead[L]{\immuneHeaderLogo}%
+    \fancyfoot[L]{\immuneFooterTexto}%
+    \fancyfoot[R]{\footnotesize\textcolor{immuneGray}{\textbf{\thepage}}}%
+}
+
+% --- FORMATO DE TÍTULOS DE SECCIÓN SEGÚN PLANTILLA ---
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{immuneDark}}
+  {\thesection.}{0.5em}{\MakeUppercase}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{immuneDark}}
+  {\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{immuneGray}}
+  {\thesubsubsection}{0.5em}{}
+
+\begin{document}
+
+% =========================================================================
+% PORTADA OFICIAL (MODELO DE MEMORIA CAPSTONE IMMUNE)
+% =========================================================================
+\begin{titlepage}
+    \thispagestyle{fancy}
+    \vspace*{0.8cm}
+    
+    {\Large\textcolor{immuneGray}{Memoria de Capstone Project}}\\[0.6cm]
+    
+    {\huge\bfseries\textcolor{immuneDark}{Detección Acústica de Sobrevivientes en Estructuras Colapsadas:}}\\[0.3cm]
+
+    {\Large\bfseries\textcolor{immuneGray}{Un Enfoque no Invasivo Basado en PDS y Modelos Recurrentes Convolucionales}}\\[0.8cm]
+    
+    {\large\bfseries\textcolor{immuneAccent}{IA \& Data Science for Business 2606PDSS / 2510MIAP}}\\[1.0cm]
+    
+    % Bloque de Autor con el ícono de avatar de la plantilla
+    \noindent
+    \begin{tabular}{@{}m{1.3cm}m{10cm}@{}}
+        \IfFileExists{avatar_autor.png}{%
+            \includegraphics[width=1.1cm]{avatar_autor.png}%
+        }{%
+            \IfFileExists{img_immune/image5.png}{%
+                \includegraphics[width=1.1cm]{img_immune/image5.png}%
+            }{%
+                \fcolorbox{immuneAccent}{immuneAccent}{\parbox[c][0.8cm][c]{0.8cm}{\centering\textcolor{white}{\textbf{CC}}}}%
+            }%
+        } &
+        {\large\textbf{Carlos Carreño Castaños}}\\[0.1cm]
+        & {\small Correo electrónico: \href{mailto:carlosaccantonio@gmail.com}{carlosaccantonio@gmail.com}}
+    \end{tabular}
+
+    \begin{figure}[htbp]
+    \centering
+    \IfFileExists{img_immune/image2.png}{%
+        \includegraphics[width=0.45\textwidth]{img_immune/image2.png}%
+    }{%
+        \vspace{2cm}%
+    }
+    \end{figure}
+    
+    \vspace*{0.5cm}
+\end{titlepage}
+
+% =========================================================================
+% PÁGINA DE ÍNDICE VISUAL Y DETALLADO (SEGÚN PÁGINA 2 DE LA PLANTILLA)
+% =========================================================================
+\newpage
+\section*{ÍNDICE}
+
+\noindent
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{@{}p{0.8cm}p{5.2cm}p{8.8cm}@{}}
+    \toprule
+    \textbf{1.} & \textbf{INTRODUCCIÓN} & \textit{Contexto Operacional en Zona Cero, Motivación y Objetivos del Sistema USAR V2.1} \\
+    \textbf{2.} & \textbf{ESTADO DEL ARTE} & \textit{Limitaciones de Escucha Aérea, Transducción Piezoeléctrica Pasiva y Modelos CRNN} \\
+    \textbf{3.} & \textbf{DESARROLLO} & \textit{Fundamentos de PDS, Preprocesamiento Físico, Generación Estocástica y Red Wide \& Deep} \\
+    \textbf{4.} & \textbf{PRUEBAS Y RESULTADOS} & \textit{Validación de Verdad Base, Análisis Gráfico, Desempeño y Evolución por Épocas} \\
+    \textbf{5.} & \textbf{CONCLUSIONES} & \textit{Síntesis de Logros Técnicos, Impacto Operativo y Líneas de Trabajo Futuro} \\
+    \bottomrule
+\end{tabular}
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{0.6cm}
+\tableofcontents
+\newpage
+
+% =========================================================================
+% RESUMEN EJECUTIVO (ABSTRACT)
+% =========================================================================
+\section*{Resumen Ejecutivo (Abstract)}
+Este trabajo abordó la detección acústica no invasiva de sobrevivientes en estructuras colapsadas durante operaciones de Búsqueda y Rescate Urbano (USAR), escenario donde el estado de las víctimas impide la emisión de gritos y la opacidad del entorno inutiliza los sensores ópticos. Para ello, se empleó el sensor piezoeléctrico de contacto HIKMICRO AD21P para captar de forma pasiva las vibraciones elásticas de baja frecuencia ($150\text{--}7500\text{ Hz}$) en la mampostería, lo que permitió discriminar patrones rítmicos de impacto y emisiones biológicas frente al ruido de la Zona Cero. Una vez captada la respuesta analógica, se acondicionó la señal mediante las etapas de muestreo (\textit{Sampler}), cuantificación (\textit{Quantizer}) y codificación (\textit{Coder}) a una tasa de $f_s = 16\text{ kHz}$ ($t = nT_s$), cumpliendo con el criterio de Nyquist y utilizando codificación PCM de 16 bits junto con un piso de estática a $-80\text{ dBFS}$ como ruido aditivo de \textit{dither} natural para prevenir la distorsión de micro-señales. Luego se aplicó un filtrado IIR Butterworth de 4.º orden de fase cero ($H(e^{j\Omega})$) para suprimir la deriva de línea base y el ruido estructural sin introducir retardo de grupo, asegurando así la preservación temporal de los impactos. Finalmente, mediante un pipeline de ingeniería de datos libre de fuga de información (\textit{Disjoint Pools} y \texttt{StratifiedGroupKFold}), se generó un dataset consolidado de $65\,576$ tensores acústicos de $4.0\text{ s}$ para entrenar en GPU una red híbrida Convolucional Recurrente (CRNN \textit{Wide \& Deep}) capaz de clasificar cuatro categorías tácticas (\texttt{Noise\_General}, \texttt{Target\_Animal}, \texttt{Target\_Rhythmic} y \texttt{Target\_Voice}). Todo esto permitió obtener en validación un F1-Score Macro de $0.8631$ y un ROC-AUC de $0.9927$, garantizando la confiabilidad requerida en la toma de decisiones críticas y el análisis táctico de señales de vida.
+
+\textbf{Palabras clave:} Procesamiento Digital de Señales, Detección Acústica, Criterio de Nyquist-Shannon, Cuantificación PCM, Filtrado de Fase Cero, Redes Convolucionales Recurrentes (CRNN), Búsqueda y Rescate Urbano (USAR).
+
+\vspace{0.4cm}
+
+% =========================================================================
+% 1. INTRODUCCIÓN
+% =========================================================================
+\section{INTRODUCCIÓN: Contexto Operacional, Motivación y Objetivos del Sistema USAR V2.1}
+
+\subsection{Motivación y Problemática en la Zona Cero}
+En las operaciones de Búsqueda y Rescate Urbano (USAR) dentro de la ``Zona Cero'' de un colapso estructural, la localización oportuna de sobrevivientes es una tarea crítica que se ve limitada por la severa atenuación acústica que sufren las ondas sonoras al atravesar escombros heterogéneos. Adicionalmente, la operación continua de maquinaria pesada y generadores eléctricos en la superficie genera un elevado piso de ruido ambiental que enmascara las tenues emisiones de auxilio. Por esta razón, la escucha aérea tradicional resulta ineficaz, debido a que el desacople de impedancia en la interfaz aire-concreto refleja casi la totalidad de la energía acústica, impidiendo que los micrófonos convencionales capten señales biológicas bajo la estructura.
+
+En vista de esta situación, el sistema USAR V2.1 incorpora el transductor piezoeléctrico de contacto HIKMICRO AD21P, encargado de captar las vibraciones directamente sobre la mampostería o el concreto armado. Al acoplarse físicamente al medio sólido, el sensor prescinde de la vía aérea para registrar de forma pasiva las ondas elásticas mecánicas que se propagan por la estructura, lo que permite adquirir con alta sensibilidad golpes rítmicos y señales acústicas de baja frecuencia en la banda de $150$ a $7500\text{ Hz}$, aislando la firma de vida frente a la interferencia superficial.
+
+Sin embargo, las señales crudas provenientes del transductor presentan un comportamiento altamente estocástico, ya que se encuentran contaminadas por ruido térmico, interferencia mecánica y pérdidas por absorción elástica del concreto. Una falla en el acondicionamiento de estas señales provocaría que la información útil de auxilio, como micro-vibraciones o impactos de baja amplitud, quede sepultada bajo el piso de ruido o deformada por distorsiones de fase, perdiendo la capacidad de detección en campo. Para evitar este problema, el Procesamiento Digital de Señales (PDS) se utiliza como parte fundamental para transformar la señal continua en una secuencia digital apta para la clasificación automática mediante modelos de Inteligencia Artificial.
+
+\subsection{Objetivos del Proyecto}
+Para llevar a cabo esta propuesta y articular la teoría de PDS con la inteligencia operativa de rescate en la plataforma USAR V2.1, se plantearon los siguientes objetivos:
+\begin{enumerate}
+    \item \textbf{Caracterizar las señales sísmico-acústicas:} Analizar las ondas captadas en estructuras colapsadas según sus propiedades físicas, estadísticas y energéticas en ventanas de observación finitas de $4.0\text{ s}$.
+    \item \textbf{Diseñar y validar la cadena de conversión analógico-digital (A/D):} Establecer los parámetros de los bloques de muestreo (\textit{Sampler}), cuantificación (\textit{Quantizer}) y codificación (\textit{Coder}), validando el cumplimiento del Criterio de Nyquist-Shannon ($f_s = 16\text{ kHz}$) y el acotamiento del error de cuantificación a $16\text{ bits}$ PCM con ruido aditivo de \textit{dither}.
+    \item \textbf{Implementar el acondicionamiento digital y la síntesis estocástica (Fase 1):} Desarrollar las ecuaciones en diferencias y operaciones discretas para el filtrado IIR Butterworth de fase cero (\texttt{filtfilt}), la simulación de oclusión estructural y la generación procedimental de impactos rítmicos en código Morse bajo esquemas de piscinas disjuntas (\textit{Disjoint Pools}).
+    \item \textbf{Desarrollar el motor de extracción en GPU y el clasificador neuronal (Fase 2):} Entrenar y validar una arquitectura híbrida Convolucional Recurrente (CRNN \textit{Wide \& Deep}) que fusione descriptores físicos globales con espectrogramas Mel para discriminar cuatro clases operativas (\texttt{Noise\_General}, \texttt{Target\_Animal}, \texttt{Target\_Rhythmic} y \texttt{Target\_Voice}).
+    \item \textbf{Verificar gráficamente y gobernar el despliegue en producción:} Demostrar visualmente la preservación de la alineación temporal de los impactos e implementar un sistema automatizado de control de calidad (\textit{Checkpointing}) que prevenga regresiones del modelo en las estaciones de rescate de campo.
+\end{enumerate}
+
+\subsection{Alcance, Metodología e Impacto en la Toma de Decisiones (Business Intelligence)}
+El alcance de esta memoria abarca el flujo completo de ingeniería de datos acústicos, procesamiento de señales y modelado predictivo del sistema USAR V2.1. Desde la perspectiva de \textit{IA \& Data Science for Business}, el proyecto transforma flujos de datos acústicos no estructurados y altamente ruidosos en indicadores accionables en tiempo real para los comandantes de incidentes y brigadas de rescate. En un colapso estructural, el tiempo y los recursos humanos y mecánicos son estrictamente limitados; una falsa alarma implica detener excavaciones críticas o arriesgar personal en estructuras inestables, mientras que un falso negativo compromete la vida de una víctima atrapada.
+
+Para responder a esta exigencia operativa, se adoptó una metodología experimental dividida en dos fases secuenciales:
+\begin{itemize}
+    \item \textbf{Fase 1 (Ingesta, Preprocesamiento Físico y Síntesis Estocástica):} Se auditaron las grabaciones reales de la Zona Cero mediante la Transformada de Hilbert, el estimador de frecuencia fundamental YIN y el método de Welch para extraer la verdad base (\textit{ground truth}). A la par, se procesaron múltiples repositorios externos (\texttt{voces\_espanol}, \texttt{gritos}, \texttt{sonidos\_perros\_gatos}, \texttt{urban\_sound} y \texttt{esr\_50}) aplicando filtros de oclusión de mampostería ($1000\text{ Hz}$), respuesta de hardware AD21P ($150\text{--}7500\text{ Hz}$) y estandarización temporal a $4.0\text{ s}$. Para corregir el desbalance de la clase prioritaria \texttt{Target\_Rhythmic}, se implementó un generador estocástico de impactos en código Morse libre de fuga de datos (\textit{Disjoint Pools}) y una compuerta de auditoría visual supervisada (\textit{Human-in-the-Loop}).
+    \item \textbf{Fase 2 (Extracción Vectorizada en GPU, Aprendizaje Profundo y Gobernanza):} Se implementó un particionador híbrido que combina el enrutamiento estricto de piscinas disjuntas con \texttt{StratifiedGroupKFold} para evitar que fragmentos de una misma grabación compartan conjuntos de entrenamiento y validación. Posteriormente, se diseñó un cargador ligero en CPU (\texttt{USARDatasetLight}) acoplado a un extractor de características vectorizado en GPU (\texttt{USARFeatureExtractorGPU}) que alimenta simultáneamente descriptores físicos globales (rama \textit{Wide}) y espectrogramas log-Mel con normalización física fija (rama \textit{Deep}) hacia el modelo \texttt{USARWideDeepModel}, cerrando el ciclo con un módulo automatizado de promoción a producción.
+\end{itemize}
+
+% =========================================================================
+% 2. ESTADO DEL ARTE
+% =========================================================================
+\section{ESTADO DEL ARTE: Exploración Acústica Pasiva y Redes Híbridas en Rescate Urbano}
+
+\subsection{Tecnologías de Detección de Vida Bajo Escombros y Limitaciones Actuales}
+En el ámbito de la Búsqueda y Rescate Urbano (USAR), las tecnologías empleadas para localizar víctimas atrapadas se dividen tradicionalmente en sistemas ópticos (cámaras endoscópicas y termográficas), radares de penetración terrestre de banda ultraancha (UWB) y sistemas electroacústicos de escucha aérea. Sin embargo, en colapsos de mampostería densa y concreto armado, el polvo en suspensión, la opacidad del material y los múltiples planos de fractura anulan la visibilidad óptica y degradan severamente la penetración de las ondas electromagnéticas. Asimismo, aunque las cámaras acústicas de arreglo de micrófonos (como la HIKMICRO AI56) resultan útiles para mapear fuentes sonoras en la superficie, los micrófonos aéreos convencionales sufren pérdidas por reflexión superiores al $99\%$ al intentar captar sonidos subterráneos debido al severo desacople de impedancia acústica en la interfaz aire-hormigón.
+
+Por otra parte, en la literatura reciente de clasificación automática de audio ambiental mediante Aprendizaje Profundo, las Redes Neuronales Convolucionales bidimensionales (CNN2D) aplicadas sobre espectrogramas Mel han demostrado un alto rendimiento en entornos urbanos abiertos (evaluadas sobre conjuntos de datos como \textit{UrbanSound8K} o \textit{ESC-50}). No obstante, cuando estos enfoques estándar se trasladan a la detección de vida en la Zona Cero, presentan tres limitaciones críticas:
+\begin{enumerate}
+    \item \textbf{Amplificación de ruido por normalización relativa:} Los pipelines convencionales suelen aplicar normalizaciones estadísticas por muestra (\textit{Min-Max} o estandarización \textit{Z-score}) a cada espectrograma individual. En ventanas donde solo existe silencio o siseo electrónico del preamplificador, el escalado relativo eleva dicho ruido térmico hasta el máximo de la escala, induciendo falsos positivos frente al clasificador.
+    \item \textbf{Pérdida de coherencia temporal en patrones rítmicos:} Las arquitecturas puramente convolucionales sumadas a capas de agrupación global (\textit{Global Average Pooling}) diluyen la secuencia temporal de largo alcance necesaria para distinguir una cadencia intencional de golpes humanos (p. ej., código Morse) frente a derrumbes o impactos fortuitos de maquinaria.
+    \item \textbf{Fuga de datos (\textit{Data Leakage}) por ruido de fondo y segmentación:} Al aumentar datos mezclando señales limpias con pistas de ruido ambiental o al dividir audios largos en ventanas de corta duración, las particiones aleatorias simples suelen enviar fragmentos con la misma pista de ruido de fondo o del mismo evento vocal tanto a entrenamiento como a validación, inflando artificialmente las métricas de laboratorio.
+\end{enumerate}
+
+El sistema USAR V2.1 supera estas barreras integrando transducción piezoeléctrica de contacto, filtrado digital de fase cero, normalización física absoluta anclada al piso de \textit{dither} del convertidor A/D ($-80\text{ dBFS}$), aislamiento estricto de datos mediante \textit{Disjoint Pools} y una arquitectura neuronal híbrida \textit{Wide \& Deep} (CNN2D + GRU + MLP).
+
+\subsection{Paradigma Estrictamente Pasivo: Ausencia de la Etapa de Conversión D/A}
+En los sistemas de exploración activa, tales como el sonar o la ecografía ultrasónica, es necesario incorporar conversores Digital-Analógicos (D/A) y filtros de reconstrucción para emitir pulsos de excitación periódicos hacia el medio físico. Por el contrario, el sistema USAR V2.1 fue desarrollado bajo una filosofía de operación estrictamente pasiva (de solo escucha) para evitar la inyección de vibraciones mecánicas artificiales que comprometan la estabilidad de estructuras con riesgo de derrumbe inminente.
+
+Bajo esta configuración, el transductor piezoeléctrico HIKMICRO AD21P actúa de forma exclusiva como un sensor mecano-acústico de entrada, lo que elimina por completo la necesidad de un módulo de conversión D/A o de circuitos de emisión activa en el diagrama de bloques del hardware. Además de proteger la integridad física de la estructura colapsada, la omisión de la etapa de emisión optimiza la autonomía energética de la estación portátil de la brigada y preserva el sigilo acústico necesario para aislar las micro-emisiones de las víctimas sin contaminar el canal elástico de la mampostería.
+
+% =========================================================================
+% 3. DESARROLLO
+% =========================================================================
+\section{DESARROLLO: Pipeline de PDS, Generación Estocástica y Arquitectura CRNN}
+
+\subsection{Funciones Discretas, Continuas y Propiedades en la Conversión A/D}
+
+\subsubsection{Clasificación Física y Parámetros Operativos}
+La señal analógica $x_a(t)$ captada en el escenario de rescate proviene de las ondas elásticas de presión y aceleración mecánica que se propagan a través de la mampostería y el concreto armado colapsado. Estas oscilaciones son generadas por emisiones vocales o por impactos percusivos intencionales de las víctimas atrapadas, sufriendo una fuerte atenuación al cruzar el medio poroso. Debido a la densidad y viscosidad de los escombros, la estructura se comporta físicamente como un filtro pasa-bajo natural que absorbe las componentes de alta frecuencia, restringiendo el ancho de banda efectivo de las señales útiles de vida a una frecuencia de corte superior aproximada de $1000\text{ Hz}$ antes de llegar al punto de contacto con el sensor.
+
+Para modelar matemáticamente estos eventos sísmico-acústicos en el dominio discreto, el sistema utiliza tres secuencias elementales de PDS \cite{Oppenheim}: el impulso unitario $\delta[n]$ (definido como $\delta[n]=1$ para $n=0$ y $0$ para $n \neq 0$), el escalón unitario $u[n] = \sum_{k=-\infty}^{n} \delta[k]$ (necesario para establecer la causalidad temporal de la señal en $n \ge 0$), y la secuencia exponencial decreciente $a^n u[n]$, la cual permitió describir la tasa de disipación de energía elástica dentro de la estructura.
+
+En cuanto a las características eléctricas de adquisición, la transducción mecano-acústica está controlada por el sensor piezoeléctrico HIKMICRO AD21P, cuya respuesta en frecuencia delimita la banda de operación entre $150\text{ Hz}$ y $7500\text{ Hz}$. Cuando las vibraciones mecánicas inciden sobre el elemento piezoeléctrico, se generan tensiones eléctricas en el orden de los microvoltios ($\mu\text{V}$) a milivoltios ($\text{mV}$), las cuales son amplificadas y acondicionadas por el hardware para ofrecer un rango dinámico efectivo de $80$ a $96\text{ dB}$, acotado inferiormente por el piso de ruido térmico ($\approx -80\text{ dBFS}$) y superiormente por el nivel de saturación analógica.
+
+\subsubsection{Clasificación Estadística y Modelo Energético}
+Una vez definida la naturaleza física del canal, se analizó el comportamiento estadístico de la señal $x_a(t)$, la cual está conformada por la superposición de dos regímenes distintos. El fondo estructural constituye un proceso estocástico no estacionario producto del siseo térmico del preamplificador y de los crujidos mecánicos por alivio de carga en los escombros, cuya media y autocorrelación varían en el tiempo. En contraste, las emisiones de auxilio generadas por las víctimas se comportan como transitorios percusivos pseudo-deterministas de corta duración, correspondientes a secuencias rítmicas de impacto (patrones en código Morse de 2, 3 o más golpes) cuya envolvente de decaimiento exponencial sobresale temporal y espectralmente respecto al ruido de fondo.
+
+Para el procesamiento computacional, el sistema divide el flujo continuo en ventanas de observación de duración fija $T_w = 4.0\text{ s}$ (equivalentes a $N = 64\,000$ muestras a una tasa de $f_s = 16\text{ kHz}$). Por esta razón, cada segmento se modela formalmente como una \textit{Señal de Energía} de duración finita, cuya energía total $E_w$ cumple con la condición de integrabilidad en tiempo continuo:
+\begin{equation}
+    E_w = \int_0^{T_w} |x_a(t)|^2 \, dt < \infty
+\end{equation}
+
+Al pasar al dominio discreto, esta propiedad se expresa mediante la suma finita de los cuadrados de las muestras; este paso es fundamental para asegurar la convergencia uniforme de la Transformada de Fourier en Tiempo Discreto (DTFT) y conseguir estabilidad numérica durante las etapas posteriores de filtrado:
+\begin{equation}
+    E_w = \sum_{n=0}^{N-1} |x[n]|^2
+\end{equation}
+
+\subsubsection{Muestreo y Criterio de Nyquist (Conversor A/D)}
+El proceso de conversión analógico-digital (A/D) del sistema se estructura secuencialmente a través de tres bloques funcionales: el Muestreador (\textit{Sampler}), encargado de discretizar la variable temporal para obtener $x[n]$; el Cuantificador (\textit{Quantizer}), que discretiza la amplitud generando $x_q[n]$; y el Codificador (\textit{Coder}), responsable de representar cada nivel cuantificado en una palabra binaria PCM.
+
+En la primera etapa (\textit{Sampler}), la señal continua $x_a(t)$ se transforma en la secuencia en tiempo discreto $x[n]$ evaluando la función en instantes equidistantes definidos por el mapeo temporal $t = n T_s = \frac{n}{f_s}$, lo que arroja $x[n] = x_a(n T_s)$ a una frecuencia de muestreo constante de $f_s = 16\,000 \text{ Hz}$ y un periodo de muestreo de $T_s = \frac{1}{f_s} = 62.5\ \mu\text{s}$. Considerando que el transductor HIKMICRO AD21P restringe el espectro acústico a una frecuencia máxima de $f_{\max} = 7500 \text{ Hz}$, la tasa mínima teórica exigida por la condición de Nyquist es $f_{\text{Nyquist}} = 2 f_{\max} = 15\,000 \text{ Hz}$.
+
+Al seleccionar una frecuencia de operación de $16 \text{ kHz}$, el diseño cumple con el Teorema de Muestreo de Nyquist-Shannon ($f_s \ge 2 f_{\max}$), ubicando la frecuencia de plegamiento espectral en $f_N = \frac{f_s}{2} = 8000 \text{ Hz}$. Esto permitió disponer de una banda de guarda de $500 \text{ Hz}$ ($8000 \text{ Hz} - 7500 \text{ Hz}$), la cual absorbe la pendiente de transición de los filtros y evita el solapamiento espectral (\textit{aliasing}) dentro de la banda útil de detección.
+
+A partir de esta discretización temporal se establece la relación matemática entre las variables de frecuencia en tiempo continuo ($f$ en Hz) y frecuencia angular ($\omega = 2\pi f$ en rad/s) y las variables en tiempo discreto: la frecuencia digital normalizada $F = \frac{f}{f_s}$ (expresada en ciclos/muestra dentro del rango fundamental $-\frac{1}{2} \le F \le \frac{1}{2}$) y la frecuencia angular discreta $\Omega$ (en rad/muestra, acotada en $-\pi \le \Omega \le \pi$), relacionadas mediante la expresión \cite{Proakis}:
+\begin{equation}
+    \Omega = \omega T_s = 2\pi \frac{f}{f_s} = 2\pi F
+\end{equation}
+
+Aplicando esta relación lineal al límite superior del sensor ($f_{\max} = 7500\text{ Hz}$), se obtiene una frecuencia discreta normalizada de $F_{\max} = 0.46875\text{ ciclos/muestra}$ y una frecuencia angular digital de $\Omega_{\max} = 0.9375\pi\text{ rad/muestra}$, verificando así que la operación se mantiene dentro del margen seguro previo a la frontera de plegamiento situada en $\Omega_N = \pi\text{ rad/muestra}$.
+
+\subsubsection{Cuantificación, Error y Modelo de Ruido Aditivo de \textit{Dither}}
+Una vez obtenida la secuencia en tiempo discreto $x[n]$, esta ingresa a los bloques de Cuantificación (\textit{Quantizer}) y Codificación (\textit{Coder}), donde las muestras de amplitud continua se asignan a un conjunto finito de niveles mediante modulación por impulsos codificados (PCM) de $B = 16 \text{ bits}$ con signo, proporcionando $2^{16} = 65\,536$ estados posibles. Para un rango dinámico normalizado entre $V_{\min} = -1.0\text{ V}$ y $V_{\max} = +1.0\text{ V}$, la resolución o paso de cuantificación $\Delta$ se determinó mediante:
+\begin{equation}
+    \Delta = \frac{V_{\max} - V_{\min}}{2^B - 1} = \frac{2}{65535} \approx 3.0518 \times 10^{-5} \text{ V}
+\end{equation}
+
+El proceso de redondeo al nivel más cercano introduce un error de cuantificación definido como $e_q[n] = x_q[n] - x[n]$. Esta diferencia se modela estadísticamente como un proceso estocástico estacionario de ruido blanco con distribución uniforme dentro de los límites $-\frac{\Delta}{2} \le e_q[n] \le \frac{\Delta}{2}$, cuya desviación estándar o valor eficaz (RMS) teórico viene dado por:
+\begin{equation}
+    \sigma_e = \frac{\Delta}{\sqrt{12}} \approx 8.81 \times 10^{-6} \text{ V}
+\end{equation}
+
+Lo anterior equivale a una potencia de error o varianza de $\sigma_e^2 = \frac{\Delta^2}{12} \approx 7.76 \times 10^{-11} \text{ V}^2$ ($-98.09\text{ dBFS}$), proporcionando una Relación Señal a Ruido de Cuantificación máxima teórica ($\text{SNR}_Q = 6.02 B + 1.76$) de $98.08 \text{ dB}$ para una excursión sinusoidal a escala completa. Asimismo, se consideró el piso de estática propio del hardware en $-80 \text{ dBFS}$ ($\sigma = 1 \times 10^{-4}\text{ V}$) como una señal de ruido aditivo de \textit{dither} natural; aunque este nivel fija el piso de ruido instrumental por encima de $\sigma_e$, su presencia es importante para garantizar la descorrelación del error $e_q[n]$ respecto a la señal de entrada y linealizar los escalones inferiores del cuantificador, asegurando así que las micro-emisiones de auxilio no sufran distorsión armónica ni queden truncadas en el cero digital.
+
+\subsubsection{Desplazamiento Temporal: Encuadre y \textit{Crossfade}}
+Con la señal digitalizada, se aplicaron operaciones sobre la variable independiente $n$ para estructurar los bloques de análisis espectro-temporal. Específicamente, se utilizó la propiedad de desplazamiento temporal $x[n - n_0]$ durante la fase de encuadre (\textit{framing}) con el fin de dividir cada registro de $N = 64\,000$ muestras ($4.0\text{ s}$) en un conjunto de $M$ micro-ventanas solapadas mediante la expresión $x_m[n] = x[n + m H] \cdot w[n]$, donde $m \in \{0, 1, \dots, M-1\}$ identifica el índice de la trama y $n \in \{0, 1, \dots, N_w-1\}$ representa el índice temporal local. Cada segmento se configuró con una longitud de $N_w = 400$ muestras ($25\text{ ms}$) y un desplazamiento o salto de $H = 160$ muestras ($10\text{ ms}$), logrando un solapamiento del $60\%$ que evita la pérdida de energía en los bordes de los impactos.
+
+Adicionalmente, cuando se procesan grabaciones de duración inferior a $4.0\text{ s}$, el desplazamiento temporal permite centrar la señal útil dentro del lienzo estandarizado. Para unir los extremos del segmento con el ruido de relleno sin generar cambios bruscos de amplitud, se implementó una ventana de transición suave (\textit{crossfade}) de $50\text{ ms}$ ($N_{\text{fade}} = 800$ muestras) definida por $w_{\text{cross}}[n] = \frac{1}{2} \left[ 1 - \cos\left(\frac{\pi n}{N_{\text{fade}}}\right) \right]$, igualando previamente la potencia RMS de las colas de $50\text{ ms}$ para evitar la aparición de picos espurios de alta frecuencia al aplicar la Transformada de Fourier.
+
+\subsubsection{Inversión, Ecuaciones en Diferencias y Convolución: Filtrado de Fase Cero}
+Para atenuar las perturbaciones fuera de la banda del transductor, el acondicionamiento digital se modela mediante un sistema Lineal e Invariante en el Tiempo (LTI) cuya salida responde a la suma de convolución discreta entre la entrada $x[n]$ y la respuesta al impulso $h[n]$ de un filtro IIR Butterworth pasa-banda de 4.º orden ($150\text{--}7500\text{ Hz}$):
+\begin{equation}
+    y[n] = x[n] * h[n] = \sum_{k=-\infty}^{\infty} x[k] h[n - k]
+\end{equation}
+
+En el dominio de los sistemas recursivos, este filtro IIR se representa mediante una ecuación en diferencias lineal de coeficientes constantes de orden $N$, la cual relaciona la salida actual con las muestras pasadas de salida y entrada, dando lugar en el dominio de la Transformada $Z$ a la función de transferencia $H(z)$ \cite{Proakis}:
+\begin{equation}
+    y[n] = -\sum_{k=1}^{N} a_k y[n - k] + \sum_{k=0}^{M} b_k x[n - k] 
+\end{equation}
+\begin{equation}
+    H(z) = \frac{Y(z)}{X(z)} = \frac{\sum_{k=0}^{M} b_k z^{-k}}{1 + \sum_{k=1}^{N} a_k z^{-k}}
+\end{equation}
+
+Aunque esta estructura (implementable computacionalmente mediante topologías en Forma Directa I o Forma Directa II con variable de estado intermedia $w[n]$) ofrece una pendiente de corte selectiva con bajo orden computacional, todo filtro IIR causal presenta una respuesta de fase no lineal $\phi(\Omega)$ que introduce un retardo de grupo dependiente de la frecuencia, definido como $\tau_g(\Omega) = -\frac{d\phi(\Omega)}{d\Omega}$. Si se aplicara un filtrado unidireccional simple, dicho retardo dispersaría las componentes espectrales de cada golpe, deformando la envolvente de los patrones rítmicos.
+
+Para solucionar este problema, se implementó el algoritmo de filtrado bidireccional \textit{Forward-Backward} (\texttt{filtfilt}). En este procedimiento, primero se ejecuta el filtrado directo obteniendo $v[n] = x[n] * h[n]$; luego se aplica la operación de \textbf{inversión temporal} $g[n] = v[-n]$ (equivalente a conjugar el espectro en el círculo unitario, $z = e^{j\Omega}$); posteriormente se filtra la secuencia invertida $r[n] = g[n] * h[n]$ y, finalmente, se invierte el resultado para obtener $y[n] = r[-n]$. Al evaluar este proceso en el dominio de la frecuencia angular discreta $\Omega$, la función de transferencia efectiva del sistema resulta en:
+\begin{equation}
+    Y(e^{j\Omega}) = X(e^{j\Omega}) H(e^{j\Omega}) H^*(e^{j\Omega}) = X(e^{j\Omega}) |H(e^{j\Omega})|^2
+\end{equation}
+
+Dado que el término $|H(e^{j\Omega})|^2$ es estrictamente real y no negativo para todo $\Omega$, la fase total del sistema se anula ($\phi_{\text{total}}(\Omega) = 0$) y se duplica la pendiente de atenuación efectiva en las bandas de rechazo (con una caída de $-6.02\text{ dB}$ en las frecuencias de corte), logrando un retardo de grupo idénticamente cero ($\tau_g(\Omega) = 0$) que preserva intacto el instante de ocurrencia $n_0$ de cada impacto. Cabe destacar que esta operación no causal de inversión temporal es físicamente realizable dentro de la arquitectura propuesta debido a que el procesamiento se ejecuta sobre ventanas finitas almacenadas en memoria de $T_w = 4.0\text{ s}$ ($N = 64\,000$ muestras), garantizando así la estabilidad BIBO en ambas pasadas de filtrado.
+
+\subsection{Fase 1: Ingesta, Preprocesamiento Físico y Generación Estocástica de Impactos}
+
+\subsubsection{Lógica Delta, Enrutador de Hardware y Filtro de Oclusión}
+Con el propósito de unificar grabaciones reales de terreno (\texttt{zona\_cero}) con repositorios externos de voces humanas (\texttt{voces\_espanol}, \texttt{gritos}), fauna (\texttt{sonidos\_perros\_gatos}) y ruido urbano/ambiental (\texttt{urban\_sound}, \texttt{esr\_50}), el orquestador de la Fase 1 incorpora tres módulos de acondicionamiento físico y eficiencia computacional:
+\begin{enumerate}
+    \item \textbf{Lógica Delta de Caché (\texttt{es\_audio\_nuevo}):} Antes de procesar cualquier archivo, el sistema escanea el directorio de destino verificando si ya existen tensores segmentados derivados del mismo nombre raíz (\texttt{stem}). Esto evita recomputar horas de audio previamente acondicionadas ante interrupciones o ingestas incrementales en caliente.
+    \item \textbf{Enrutador Condicional de Hardware (\texttt{es\_dataset\_zona\_cero}):} Evalúa el metadato de origen de cada pista. Si el audio proviene directamente del sensor HIKMICRO AD21P en la Zona Cero, se omite la simulación física de canal para evitar un doble filtrado o sobre-atenuación. Si proviene de fuentes externas limpias, el flujo se desvía hacia la cadena de emulación estructural.
+    \item \textbf{Simulación de Oclusión y Respuesta AD21P (\texttt{aplicar\_filtro\_oclusion} y \texttt{aplicar\_filtro\_ad21p}):} Las pistas externas atraviesan primero un filtro IIR Butterworth pasa-bajo de 4.º orden de fase cero con frecuencia de corte en $f_c = 1000\text{ Hz}$ (en doble precisión \texttt{float64} con salvaguarda \textit{anti-clipping}) para emular la absorción de altas frecuencias por los escombros de concreto armado, seguido del filtro pasa-banda de 4.º orden ($150\text{--}7500\text{ Hz}$) que modela la respuesta mecano-acústica del transductor AD21P.
+    \item \textbf{Estandarización Temporal Vectorizada:} Los registros largos ($\ge 4.0\text{ s}$) se dividen en ventanas contiguas de $64\,000$ muestras mediante reestructuración matricial directa en memoria (\texttt{.reshape(n\_windows, window\_size)}), procesando únicamente las colas residuales $\ge 1.0\text{ s}$ mediante \texttt{padding\_por\_crossfade} y descartando fragmentos menores para evitar falsas detecciones por falta de soporte espectral.
+\end{enumerate}
+
+\subsubsection{Señal Analítica, Transformada de Hilbert y Morfología de Decaimiento}
+Con el propósito de medir el tiempo de amortiguamiento real de los impactos en la mampostería de la Zona Cero sin que los cruces por cero de la onda portadora afecten el cálculo, se procedió a construir la señal analítica compleja $z[n] = x[n] + j\hat{x}[n]$, donde $\hat{x}[n]$ corresponde a la Transformada Discreta de Hilbert de la señal acondicionada \cite{Oppenheim}. A partir de esta representación se obtuvo la envolvente de amplitud instantánea $A[n]$ calculando su módulo cuadrático:
+\begin{equation}
+    A[n] = |z[n]| = \sqrt{x^2[n] + \hat{x}^2[n]}
+\end{equation}
+
+Una vez extraída la envolvente, se localizó el pico máximo de ataque $A_{\max}$ de cada transitorio y se midió el tiempo de decaimiento estructural $t_{\text{thud}}$ requerido para que la energía descienda de forma estable por debajo del umbral de disipación ($10\%$ de $A_{\max}$ o $15\%$ del nivel RMS transitorio durante al menos $5\text{ ms}$). De manera complementaria, se utilizó el estimador de autocorrelación YIN acotado a la banda de $150$ a $7500\text{ Hz}$ para determinar la frecuencia fundamental de resonancia estructural $f_0$, y se aplicó el método de periodogramas promediados de Welch ($N_{\text{FFT}} = 1024$ con ventana de Hann y solapamiento del $50\%$) para estimar la Densidad Espectral de Potencia (PSD) con baja varianza \cite{Proakis}.
+
+\subsubsection{Modelado de Impactos, Constancia de Material y Piscinas Disjuntas}
+Debido a la limitada disponibilidad de grabaciones reales de víctimas atrapadas en comparación con los registros de ruido ambiental, se implementó un calculador dinámico de déficit (\texttt{calcular\_muestras\_objetivo\_balanceo}) junto con un motor de generación estocástica en tiempo discreto capaz de reproducir patrones de auxilio en código Morse (\texttt{SOS}, \texttt{HELP}, \texttt{OK}, \texttt{USAR}, \texttt{TEST}, \texttt{S}, \texttt{O}, \texttt{H}, \texttt{V}).
+
+Para asegurar que los audios generados respeten la física del medio sólido y no induzcan sesgos psicoacústicos en la red neuronal (evitando el ``efecto xilófono'' de cambiar de material entre golpes sucesivos), se fijaron constantes la frecuencia de resonancia $f_0$ y el coeficiente de amortiguamiento $\beta = \frac{\ln(100)}{t_{\text{thud}}}$ dentro de cada ventana de $4.0\text{ s}$. Asimismo, con un $25\%$ de probabilidad estocástica se modela un régimen de alta atenuación estructural (impactos secos con $t_{\text{thud}} \in [0.43, \, 15.0]\text{ ms}$ en concreto masivo compactado), mientras que el $75\%$ restante sigue la reverberación elástica normal de la mampostería. Bajo este esquema, cada golpe individual se modeló sumando una componente sinusoidal amortiguada de resonancia estructural (\textit{Thud}) y una ráfaga transitoria de ataque de banda ancha (\textit{Crack}):
+\begin{equation}
+    s_{\text{imp}}[n] = 0.7 \sin\left(2\pi \frac{f_0}{f_s} n\right) e^{-\beta n T_s} + 0.3 \, w_c[n] e^{-\gamma n T_s}
+\end{equation}
+donde $w_c[n] \sim \mathcal{N}(0, 1)$ representa una secuencia estocástica de ruido blanco gaussiano y $\gamma \gg \beta$ constituye la constante de extinción rápida del transitorio de contacto inicial, escalando la amplitud de cada golpe de forma independiente para reflejar la variabilidad biomecánica y el agotamiento físico del sobreviviente.
+
+Posteriormente, para simular el comportamiento motor de una persona agotada bajo los escombros, se introdujo una variación gaussiana (\textit{jitter} con $\sigma = 0.3$) en los intervalos de tiempo entre impactos (\textit{onsets}), restringiendo la cadencia máxima al límite fisiológico de $12.5\text{ golpes/s}$ ($\Delta t_{\min} = 80\text{ ms}$) y asegurando un mínimo de $3$ impactos por ventana con un margen libre de $150\text{ ms}$ antes del borde final para no truncar la cola de reverberación. Una vez generado el lienzo limpio $s[n]$ y filtrado por la respuesta del sensor AD21P y de oclusión, este se mezcló con pistas reales de ruido de la Zona Cero $r[n]$ previamente separadas en directorios aislados (\textit{Disjoint Pools} al $80\%$ para \texttt{/train} y $20\%$ para \texttt{/val}), paso indispensable para evitar la fuga de datos (\textit{data leakage}). La mezcla aditiva se realizó ajustando la ganancia del ruido mediante el factor $\alpha_{\text{noise}}$ para imponer una Relación Señal a Ruido ($\text{SNR}_{\text{dB}} \sim \mathcal{N}(4.60, 20^2)\text{ dB}$) altamente exigente:
+\begin{equation}
+    \alpha_{\text{noise}} = \frac{\text{RMS}(s[n])}{\text{RMS}(r[n]) \cdot 10^{\text{SNR}_{\text{dB}} / 20}}
+\end{equation}
+
+Finalmente, todos los fragmentos atraviesan la inyección de estática electrónica ADC (\texttt{inyectar\_ruido\_estatico} con $\sigma = 10^{-4}\text{ V}$) y se serializan en disco bajo formato \texttt{PCM\_16}.
+
+\subsection{Fase 2: Extracción Vectorizada en GPU y Arquitectura Híbrida CRNN (\textit{Wide \& Deep})}
+
+\subsubsection{Partición Estratificada Híbrida e Ingesta Ligera con Relleno Circular}
+Al iniciar la Fase 2, el módulo de indexación (\texttt{parsear\_y\_unificar\_datasets}) escanea recursivamente el corpus preprocesado asignando cada muestra al mapa taxonómico de cuatro clases: \texttt{Noise\_General} ($0$), \texttt{Target\_Animal} ($1$), \texttt{Target\_Rhythmic} ($2$) y \texttt{Target\_Voice} ($3$). A continuación, la función \texttt{dividir\_datos\_estratificados} ejecuta una partición híbrida en dos etapas para blindar el experimento contra cualquier contaminación entre entrenamiento y validación:
+\begin{itemize}
+    \item \textbf{Fase A (Enrutamiento Estricto de Piscinas Disjuntas):} Detecta mediante expresiones regulares las muestras provenientes de los subdirectorios aislados \texttt{/train} y \texttt{/val} (o \texttt{/test}) y respeta su asignación física de forma incondicional.
+    \item \textbf{Fase B (Agrupación Estratificada por Evento Raíz):} Para los registros restantes, extrae el identificador base del archivo original (removiendo sufijos de segmentación como \texttt{\_part0}, \texttt{\_part1}) y aplica \texttt{StratifiedGroupKFold}. Esto garantiza que todos los fragmentos derivados de un mismo evento acústico permanezcan exclusivamente en entrenamiento o en validación, manteniendo intacta la proporción de clases.
+\end{itemize}
+
+Durante el entrenamiento, la clase \texttt{USARDatasetLight} delega en la CPU únicamente la lectura de disco, el aseguramiento de longitud exacta ($N = 64\,000$) mediante relleno circular (\textit{wrap padding}, $x_{\text{pad}}[n] = x[n \bmod L]$, que mantiene la coherencia de fase y el piso de ruido continuo sin introducir ceros artificiales) y una aumentación estocástica de volumen ($\text{factor} \sim \mathcal{U}(0.8, 1.2)$ con normalización \textit{anti-clipping}), filtrando dinámicamente posibles lecturas fallidas de disco mediante \texttt{usardataset\_collate\_fn}.
+
+\subsubsection{Descriptores en Tiempo Discreto y Normalización Física en GPU}
+Para alimentar el modelo de aprendizaje profundo de forma eficiente, se utilizaron lotes de entrada de dimensión $[B, 64\,000]$; el módulo \texttt{USARFeatureExtractorGPU} ejecuta los cálculos de PDS directamente en la GPU bajo \texttt{@torch.no\_grad()} para generar dos ramas de características:
+
+\begin{enumerate}
+    \item[1)] \textbf{Rama \textit{Wide} (Heurísticas Físicas Globales):} Se encarga de resumir el comportamiento estadístico de toda la ventana de $4.0\text{ s}$ en un vector $\mathbf{x}_{\text{wide}} \in \mathbb{R}^3$ conformado por: 
+    
+    a) el valor eficaz global (RMS), que cuantifica la energía total del segmento:
+    \begin{equation}
+        \text{RMS} = \sqrt{\frac{1}{N}\sum_{n=0}^{N-1} x^2[n]} 
+    \end{equation}
+
+    b) la Tasa de Cruces por Cero (ZCR), calculada a través de los cambios de signo entre muestras sucesivas para diferenciar el ruido friccional de alta frecuencia frente a emisiones vocales:
+    \begin{equation}
+        \text{ZCR} = \frac{1}{2(N-1)} \sum_{n=1}^{N-1} |\operatorname{sgn}(x[n]) - \operatorname{sgn}(x[n-1])|
+    \end{equation}
+
+    c) el Centroide Espectral promedio, obtenido mediante la Transformada de Fourier de Tiempo Corto (STFT con ventana de Hann, $N_w = 400$ y $H = 160$) y normalizado respecto a la frecuencia de Nyquist ($f_N = f_s / 2 = 8000\text{ Hz}$, correspondiente a $\Omega_N = \pi\text{ rad/muestra}$):
+    \begin{equation}
+        \bar{C}_{\text{norm}} = \frac{1}{f_N \cdot M} \sum_{m=0}^{M-1} \frac{\sum_{k=0}^{K-1} f[k] \, |X[m, k]|}{\sum_{k=0}^{K-1} |X[m, k]| + \epsilon}
+    \end{equation}
+
+    \item[2)] \textbf{Rama \textit{Deep} (Representación Tiempo-Frecuencia):} Paralelamente, se transforma la señal al dominio tiempo-frecuencia empleando un banco de $128$ filtros triangulares en escala Mel dentro de la banda de $150$ a $7500\text{ Hz}$, expresando su potencia logarítmica para cada banda Mel $b \in \{0, \dots, 127\}$ y trama temporal $m \in \{0, \dots, M-1\}$ mediante $S_{\text{dB}}[b, m] = 10\log_{10}(S_{\text{Mel}}[b, m])$. En lugar de aplicar un escalado relativo por muestra (\textit{Min-Max}), el cual elevaría el ruido térmico durante los intervalos de silencio provocando falsas alarmas, se implementó una normalización física fija referenciada al rango dinámico útil $[-80.0, \, 0.0]\text{ dBFS}$ (tomando $-40.0\text{ dBFS}$ como centro y semiancho de escala):
+    \begin{equation}
+        \tilde{S}[b, m] = \operatorname{clip}\left( \frac{S_{\text{dB}}[b, m] + 40.0}{40.0}, \, -1.0, \, +1.0 \right)
+    \end{equation}
+\end{enumerate}
+
+\subsubsection{Topología Convolucional Recurrente, Balanceo y Gobernanza en Producción}
+Una vez extraídas ambas representaciones, estas se procesan mediante la red híbrida \textit{Wide \& Deep} (\texttt{USARWideDeepModel}), la cual combina capas convolucionales (CNN2D), unidades recurrentes con compuertas (GRU) y perceptrones multicapa (MLP) de acuerdo con la siguiente secuencia:
+
+\begin{enumerate}
+    \item[1)] \textbf{Codificador Espectro-Temporal (Rama \textit{Deep}):} Primero, el espectrograma normalizado $\tilde{S} \in \mathbb{R}^{B \times 1 \times 128 \times 401}$ pasa por una etapa de inyección de ruido gaussiano (\texttt{GaussianNoise} con $\sigma = 0.05$, activa solo en entrenamiento) para mejorar la generalización. Luego, se aplican dos bloques convolucionales (\texttt{Conv2d} con \textit{kernels} de $3\times 3$, paso $s=2$, relleno $p=1$, \texttt{BatchNorm2d} y activación \texttt{ReLU}) que reducen la dimensión espectral a $32$ bandas y la dimensión temporal a $101$ pasos. Posteriormente, los mapas resultantes se permutan y aplanan en secuencias de $1024$ características por instante ($32 \times 32$) para alimentar una red recurrente GRU unidireccional de $2$ capas ($h_t \in \mathbb{R}^{64}$, \texttt{dropout} de $0.3$), de la cual se toma el último estado oculto $h_{T_{\text{out}}} \in \mathbb{R}^{64}$ que condensa el patrón rítmico de la ventana.
+    \item[2)] \textbf{Proyección Física y Fusión (Rama \textit{Wide}):} Al mismo tiempo, el vector de descriptores globales $\mathbf{x}_{\text{wide}} \in \mathbb{R}^3$ se normaliza mediante \texttt{BatchNorm1d} y se proyecta a través de dos capas densas (\texttt{Linear(3, 16)} $\to$ \texttt{BatchNorm1d(16)} $\to$ \texttt{ReLU} $\to$ \texttt{Linear(16, 16)} $\to$ \texttt{ReLU}) hacia un espacio de dimensión $\mathbb{R}^{16}$. Finalmente, se concatenan las salidas de ambas ramas formando el vector unificado $\mathbf{z}_{\text{fus}} \in \mathbb{R}^{80}$, el cual atraviesa el cabezal clasificador (\texttt{Linear(80, 64)} $\to$ \texttt{BatchNorm1d(64)} $\to$ \texttt{ReLU} $\to$ \texttt{Dropout(0.3)} $\to$ \texttt{Linear(64, 4)}) entregando \textit{logits} puros para las 4 categorías operativas.
+\end{enumerate}
+
+Dado que el conjunto total de $65\,576$ tensores ($52\,417$ de entrenamiento y $13\,159$ de validación) presenta diferencias en la cantidad de muestras por categoría, la función \texttt{calcular\_pesos\_clase} determinó exclusivamente sobre el conjunto de entrenamiento los pesos de compensación inversamente proporcionales a la frecuencia de cada clase $N_c$ para ponderar la función de pérdida de Entropía Cruzada:
+\begin{equation}
+    w_c = \frac{N_{\text{total}}}{C \cdot N_c} \implies \mathbf{w} = [2.686, \, 12.055, \, 0.366, \, 1.233]^T
+\end{equation}
+
+Finalmente, el pipeline integra un filtro de calidad de producción (\texttt{guardar\_modelo\_produccion}) que evalúa al término del entrenamiento si el mejor F1-Score Macro alcanzado supera la marca histórica almacenada en \texttt{produccion/registro\_produccion.json}. Solo cuando existe una mejora neta verificable se sobrescribe el archivo binario \texttt{produccion/modelo\_usar\_v2.pth} y se actualiza la auditoría JSON, impidiendo regresiones de desempeño en las estaciones tácticas de campo.
+
+\subsection{Herramientas, Tecnologías e Infraestructura Computacional}
+El desarrollo, validación y despliegue del sistema USAR V2.1 se ejecutó sobre la siguiente infraestructura tecnológica:
+\begin{itemize}
+    \item \textbf{Instrumentación Acústica y Hardware de Cómputo:} Transductor piezoeléctrico de contacto HIKMICRO AD21P ($150\text{--}7500\text{ Hz}$) acoplado a mampostería, cámara acústica superficial HIKMICRO AI56 para pruebas de contraste ambiental, y estación de trabajo equipada con procesador multinúcleo y unidad de procesamiento gráfico NVIDIA GeForce RTX 4060 ($8\text{ GB}$ VRAM) sobre arquitectura CUDA.
+    \item \textbf{Ecosistema de PDS y Análisis Exploratorio (Fase 1):} Python 3.10, \texttt{NumPy} y \texttt{Pandas} para álgebra vectorial e indexación tabular; \texttt{SciPy} (\texttt{scipy.signal}) para el diseño de filtros IIR Butterworth, filtrado bidireccional \texttt{filtfilt}, Transformada Discreta de Hilbert y estimación espectral de Welch; \texttt{Librosa} y \texttt{SoundFile} para el detector de transitorios, el estimador de frecuencia fundamental YIN y la exportación en \texttt{PCM\_16}; y \texttt{Matplotlib}/\texttt{Seaborn} junto con \texttt{concurrent.futures} para la generación paralela de paneles EDA.
+    \item \textbf{Ecosistema de Deep Learning y MLOps (Fase 2):} \texttt{PyTorch} y \texttt{TorchAudio} para la carga ligera en CPU (\texttt{USARDatasetLight}), el motor DSP vectorizado en GPU (\texttt{USARFeatureExtractorGPU}) y la red híbrida (\texttt{USARWideDeepModel}), integrados con \texttt{Scikit-Learn} para la partición agrupada (\texttt{StratifiedGroupKFold}) y la evaluación estricta mediante \texttt{f1\_score} Macro y \texttt{roc\_auc\_score} multiclase (\textit{One-vs-Rest}).
+\end{itemize}
+
+% =========================================================================
+% 4. PRUEBAS Y RESULTADOS
+% =========================================================================
+\section{PRUEBAS Y RESULTADOS: Validación Física, Análisis Gráfico y Desempeño de la CRNN}
+
+\subsection{Validación Estadística: Verdad Base Real vs. Generación Estocástica PDS}
+Antes de proceder al entrenamiento neuronal, se ejecutó el protocolo de Análisis Exploratorio de Datos (EDA) comparando los estados antes (\texttt{antes\_fase\_1}) y después (\texttt{luego\_fase\_1}) del preprocesamiento físico, verificando en los paneles de Densidad Espectral de Potencia (Welch) la caída de energía a partir de la barrera de oclusión y la separabilidad en la Tasa de Cruces por Cero (ZCR) entre la fricción estructural y las señales biológicas, superando satisfactoriamente la compuerta de validación supervisada (\texttt{validar\_human\_in\_the\_loop}).
+
+En la Tabla~\ref{tab:verdad_base} se presentan los resultados obtenidos al comparar los parámetros físicos medidos en las grabaciones reales de impactos de la Zona Cero frente a los $29\,953$ tensores sintéticos producidos por el algoritmo de generación estocástica en código Morse, verificando la correspondencia estadística y física entre ambos conjuntos.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparativa de Parámetros Físicos: Verdad Base Real (Zona Cero) vs. Generación Estocástica PDS}
+\label{tab:verdad_base}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{\textbf{Datos Reales (Zona Cero)}} & \multicolumn{3}{c}{\textbf{Generación Estocástica (Morse)}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+\textbf{Descriptor Físico} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} \\
+\midrule
+Cadencia ($\text{golpes/s}$) & 0.15 & 12.50 & 4.43 & 0.30 & 12.50 & 3.26 \\
+Resonancia $f_0$ ($\text{Hz}$) & 754.19 & 7500.0 & 1883.24 & 162.04 & 7500.0 & 1643.02 \\
+Centroide Espectral ($\text{Hz}$) & 1659.00 & 6410.83 & 3167.21 & 644.77 & 5052.36 & 2598.65 \\
+Dinámica de Pico ($\text{dBFS}$) & $-76.33$ & $0.00$ & $-26.25$ & $-71.22$ & $0.00$ & $-36.85$ \\
+Energía RMS Lineal & $6.0\times 10^{-5}$ & 0.2104 & 0.0180 & $9.6\times 10^{-5}$ & 0.9668 & 0.0169 \\
+Relación Señal/Ruido ($\text{dB}$) & $-50.09$ & 64.16 & 4.60 & $-42.90$ & 63.31 & 6.99 \\
+Decaimiento $t_{\text{thud}}$ ($\text{ms}$) & 0.44 & 149.88 & 67.73 & 0.43 & 149.94 & 60.62 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Análisis Gráfico del Acondicionamiento en Tiempo Discreto}
+Con el fin de evaluar visualmente el funcionamiento de las etapas de acondicionamiento y digitalización sobre registros reales de la Zona Cero (\texttt{vida\_morse\_HM20260705073927\_10\_process.wav}), se generaron las gráficas correspondientes a partir de impactos en mampostería. En la Figura~\ref{fig:muestreo} se muestra el proceso del bloque Muestreador (\textit{Sampler}), superponiendo la señal continua $x_a(t)$ (en trazo gris) junto con la secuencia discreta resultante $x[n] = x_a(nT_s)$ (en gráfico de tallos azul) y su envolvente analítica de Hilbert $A[n]$. Para esta representación analítica, el transitorio percibido tras el filtrado pasa-bajo natural de los escombros ($<1000\text{ Hz}$) se describe como una oscilación sinusoidal amortiguada según la expresión:
+\begin{equation}
+    x[n] = A \cdot e^{-\beta n T_s} \cdot \sin(2\pi f_0 n T_s) \cdot u[n] + w[n]
+\end{equation}
+donde $A$ corresponde a la amplitud máxima de ataque, $\beta$ representa el coeficiente de amortiguamiento elástico del concreto, $f_0 = 450\text{ Hz}$ ejemplifica un modo de resonancia estructural bajo condición de oclusión y $w[n]$ incorpora el ruido electrónico de fondo, verificándose la captura de muestras equidistantes cada $T_s = 62.5\ \mu\text{s}$ ($f_s = 16\text{ kHz}$).
+
+\begin{figure}[htbp]
+    \centering
+    \IfFileExists{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig1_impacto_real0.png}{%
+        \includegraphics[width=0.78\textwidth]{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig1_impacto_real0.png}%
+    }{%
+        \IfFileExists{../LaTex_figuras/fig1_impacto_real0.png}{%
+            \includegraphics[width=0.78\textwidth]{../LaTex_figuras/fig1_impacto_real0.png}%
+        }{%
+            \fcolorbox{immuneGray}{white}{\parbox[c][5cm][c]{0.78\textwidth}{\centering\textbf{[Figura 1: fig1\_impacto\_real0.png]}}}%
+        }%
+    }
+    \caption{Señal analógica de impacto amortiguado $x_a(t)$ vs. secuencia muestreada discreta $x[n]$.}
+    \label{fig:muestreo}
+\end{figure}
+
+\clearpage
+
+Una vez discretizada la señal $x_a(t)$, se evaluó el comportamiento de los bloques Cuantificador (\textit{Quantizer}) y Codificador (\textit{Coder}) a 16 bits PCM, cuyos resultados se presentan en la Figura~\ref{fig:cuantificacion}. En la gráfica superior se observa que la secuencia cuantificada $x_q[n]$ se superpone sobre la señal en punto flotante $x[n]$ sin diferencias apreciables a simple vista, producto de los $65\,536$ niveles disponibles. Asimismo, en la gráfica inferior se inspeccionó la secuencia de error $e_q[n] = x_q[n] - x[n]$, comprobando que las variaciones permanecen descorrelacionadas gracias al efecto de \textit{dither} natural y se mantienen estrictamente acotadas dentro de los límites teóricos $[-\Delta/2, +\Delta/2]$ ($\pm 1.52 \times 10^{-5}\text{ V}$ para $\Delta \approx 3.05 \times 10^{-5}\text{ V}$, con desviación estándar $\sigma_e \approx 8.81 \times 10^{-6}\text{ V}$).
+
+\begin{figure}[htbp]
+    \centering
+    \IfFileExists{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig2_cuantificacion.png}{%
+        \includegraphics[width=0.78\textwidth]{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig2_cuantificacion.png}%
+    }{%
+        \IfFileExists{../LaTex_figuras/fig2_cuantificacion.png}{%
+            \includegraphics[width=0.78\textwidth]{../LaTex_figuras/fig2_cuantificacion.png}%
+        }{%
+            \fcolorbox{immuneGray}{white}{\parbox[c][5cm][c]{0.78\textwidth}{\centering\textbf{[Figura 2: fig2\_cuantificacion.png]}}}%
+        }%
+    }
+    \caption{Arriba: Superposición de la señal analógica y cuantificada. Abajo: Vector de error de cuantificación $e_q[n]$.}
+    \label{fig:cuantificacion}
+\end{figure}
+
+Finalmente, en la Figura~\ref{fig:filtrado} se validó el desempeño del filtrado IIR Butterworth de 4.º orden de fase cero comparando la señal cruda de terreno $x[n]$ frente a la señal acondicionada $y[n]$. En el panel superior se aprecia cómo la onda original se encuentra severamente distorsionada por una oscilación lenta de deriva de línea base ($<150\text{ Hz}$) y por ruido de alta frecuencia que ocultan los golpes de la víctima. Tras procesar el registro mediante el algoritmo bidireccional \texttt{filtfilt} en la banda de $150$ a $7500\text{ Hz}$ (panel inferior), se logró eliminar la deriva estructural y estabilizar la línea base en cero, rescatando con claridad los picos transitorios del patrón rítmico y confirmando que estos coinciden exactamente con los instantes de impacto sin sufrir retardo de grupo ($\tau_g(\Omega) = 0$).
+
+\begin{figure}[htbp]
+    \centering
+    \IfFileExists{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig3_filtrado_fase_cero_out.png}{%
+        \includegraphics[width=0.78\textwidth]{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig3_filtrado_fase_cero_out.png}%
+    }{%
+        \IfFileExists{../LaTex_figuras/fig3_filtrado_fase_cero_out.png}{%
+            \includegraphics[width=0.78\textwidth]{../LaTex_figuras/fig3_filtrado_fase_cero_out.png}%
+        }{%
+            \fcolorbox{immuneGray}{white}{\parbox[c][5cm][c]{0.78\textwidth}{\centering\textbf{[Figura 3: fig3\_filtrado\_fase\_cero\_out.png]}}}%
+        }%
+    }
+    \caption{Comparativa espectro-temporal de la señal cruda con ruido de baja/alta frecuencia y la señal procesada $y[n]$.}
+    \label{fig:filtrado}
+\end{figure}
+
+\clearpage
+
+\subsection{Desempeño Experimental del Pipeline Integrado y Evolución por Épocas}
+Para verificar y validar el comportamiento de la arquitectura propuesta, se entrenó el modelo \texttt{USARWideDeepModel} durante $20$ épocas en una GPU NVIDIA GeForce RTX 4060 empleando el optimizador Adam ($\text{lr} = 10^{-3}$, decaimiento de pesos de $10^{-4}$ y lotes de $B = 64$). Como se observa en la Tabla~\ref{tab:resultados_crnn}, el seguimiento de las métricas en cada época permitió identificar el mejor desempeño en la época 19, alcanzando un \textbf{F1-Score Macro de $0.8631$} y un \textbf{ROC-AUC (One-vs-Rest) de $0.9927$}, momento en el cual el módulo de gobernanza promovió automáticamente los pesos hacia \texttt{produccion/modelo\_usar\_v2.pth}.
+
+\begin{table}[htbp]
+\centering
+\caption{Evolución del Entrenamiento y Validación de la Arquitectura Híbrida CRNN (\textit{Wide \& Deep})}
+\label{tab:resultados_crnn}
+\begin{tabular}{ccccc}
+\toprule
+\textbf{Época} & \textbf{Train Loss} & \textbf{Val Loss} & \textbf{Val F1-Macro} & \textbf{ROC-AUC (OvR)} \\
+\midrule
+01 / 20 & 0.6294 & 0.4418 & 0.7452 & --- \\
+05 / 20 & 0.3755 & 0.3396 & 0.8241 & --- \\
+10 / 20 & 0.3313 & 0.3454 & 0.8044 & --- \\
+14 / 20 & 0.3133 & 0.3097 & 0.8512 & --- \\
+\textbf{19 / 20} & \textbf{0.2694} & \textbf{0.3184} & \textbf{0.8631} & \textbf{0.9927} \\
+20 / 20 & 0.2664 & 0.3089 & 0.8459 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+En la Figura~\ref{fig:evolucion_epocas} se dispone el espacio gráfico correspondiente a las curvas de convergencia del modelo a lo largo de las $20$ épocas de optimización, ilustrando la reducción sostenida de la pérdida ponderada (\textit{Cross-Entropy Loss}) y la progresión ascendente del F1-Score Macro hasta el punto de promoción óptima en la época 19.
+
+\subsection{Discusión de Contribuciones y Validación de Hipótesis}
+Los resultados experimentales obtenidos validan de manera integral las hipótesis técnicas y operativas formuladas en este Capstone Project:
+\begin{enumerate}
+    \item \textbf{Fidelidad Física del Motor de Generación Estocástica:} Como se verifica en la Tabla~\ref{tab:verdad_base}, el modelado de impactos mediante las componentes \textit{Thud} y \textit{Crack} bajo constancia de material y bifurcación de alta atenuación reprodujo un tiempo de decaimiento promedio de $60.62\text{ ms}$ (con mínimo en $0.43\text{ ms}$) frente a los $67.73\text{ ms}$ (mínimo en $0.44\text{ ms}$) medidos en los escombros reales de la Zona Cero, logrando balancear la clase \texttt{Target\_Rhythmic} con $29\,953$ muestras sin introducir artefactos sintéticos.
+    \item \textbf{Preservación de Fase en Patrones Secuenciales:} La inspección en la Figura~\ref{fig:filtrado} demuestra que el filtrado IIR Butterworth de 4.º orden con \texttt{filtfilt} erradica la deriva estructural ($<150\text{ Hz}$) manteniendo $\tau_g(\Omega) = 0$. Esta propiedad resultó indispensable para que las capas recurrentes GRU reconocieran sin distorsión los intervalos temporales del código Morse.
+    \item \textbf{Robustez de la Fusión Híbrida \textit{Wide \& Deep} sin Fuga de Datos:} La combinación de heurísticas físicas globales ($\mathbf{x}_{\text{wide}}$) con espectrogramas Mel escalados físicamente ($\tilde{S}$), evaluada bajo un esquema estricto de \textit{Disjoint Pools} y \texttt{StratifiedGroupKFold}, permitió alcanzar un $\text{ROC-AUC} = 0.9927$ sobre $13\,159$ tensores de validación en condiciones de relación señal a ruido altamente destructivas ($\mu = 4.60\text{ dB}$).
+\end{enumerate}
+
+% =========================================================================
+% 5. CONCLUSIONES
+% =========================================================================
+\section{CONCLUSIONES: Síntesis de Logros y Trabajos Futuros}
+
+\subsection{Conclusiones Generales}
+El desarrollo de todos los objetivos planteados en este trabajo permitió estructurar y validar el pipeline completo de Procesamiento Digital de Señales e Inteligencia Artificial para la detección pasiva de sobrevivientes en el sistema USAR V2.1. A partir de la caracterización de la señal sísmico-acústica y del diseño de la cadena de conversión A/D (\textit{Sampler}, \textit{Quantizer} y \textit{Coder}) operando a $f_s = 16\text{ kHz}$ y $16\text{ bits}$ PCM con ruido aditivo de \textit{dither}, se logró adquirir con fidelidad las micro-vibraciones en mampostería cumpliendo con el criterio de Nyquist-Shannon sin introducir solapamiento espectral (\textit{aliasing}) ni distorsión armónica \cite{Oppenheim, Proakis}. De igual manera, la implementación de ecuaciones en diferencias mediante el filtrado IIR Butterworth de 4.º orden con técnica bidireccional de fase cero (\texttt{filtfilt}) permitió suprimir la deriva de baja frecuencia y el ruido estructural manteniendo una respuesta de fase nula ($\phi_{\text{total}}(\Omega) = 0$), asegurando así la alineación temporal de los impactos de auxilio.
+
+Asimismo, la extracción de la envolvente analítica mediante la Transformada de Hilbert y el motor de generación estocástica ($29\,953$ muestras rítmicas) proporcionaron las bases físicas para conformar e integrar un dataset consolidado y libre de fuga de datos de $65\,576$ tensores, con el cual se entrenó y validó en GPU la arquitectura híbrida Convolucional Recurrente (CRNN \textit{Wide \& Deep}), alcanzando un F1-Score Macro de $0.8631$ y un ROC-AUC de $0.9927$. Todo esto se transformó en una herramienta computacional modular programada en Python con control de calidad automatizado para producción, cumpliendo así con los requerimientos de sensibilidad, precisión temporal y confiabilidad operativa que exige la localización de vida y la toma de decisiones en estructuras colapsadas.
+
+\subsection{Trabajos Futuros}
+Para extender el alcance operativo de la plataforma USAR V2.1 en despliegues tácticos de campo, se proponen tres líneas de evolución tecnológica:
+\begin{itemize}
+    \item \textbf{Cuantización del Modelo y Despliegue en Edge AI:} Exportar los pesos promovidos a producción (\texttt{modelo\_usar\_v2.pth}) al estándar ONNX / TensorRT aplicando cuantización a enteros de 8 bits (INT8) para su inferencia autónoma de baja latencia en sistemas embebidos de bajo consumo energético (tales como NVIDIA Jetson Orin Nano o Raspberry Pi 5) acoplados directamente al maletín de campo.
+    \item \textbf{Triangulación Espacial 3D mediante Arreglos de Sensores (TDOA):} Escalar la adquisición de un único transductor HIKMICRO AD21P a un arreglo sincronizado de múltiples sensores piezoeléctricos distribuidos sobre el escombro, estimando la Diferencia de Tiempo de Llegada (\textit{Time Difference of Arrival}, TDOA) mediante correlación cruzada generalizada con transformada de fase (GCC-PHAT) para estimar las coordenadas espaciales $(x, y, z)$ de la víctima atrapada.
+    \item \textbf{Incorporación de Arquitecturas \textit{Conformer} y Restauración Generativa:} Evaluar la integración de bloques de autoatención temporal (\textit{Conformer}) junto a la rama recurrente GRU y explorar Modelos de Difusión Latente (LDM) para reconstruir y mejorar la inteligibilidad de emisiones de voz humana severamente ocluidas por múltiples muros de concreto.
+\end{itemize}
+
+\subsection*{Agradecimientos}
+Se agradece el apoyo académico y técnico brindado por el profesor Gerlis Caropresse de la Universidad Central de Venezuela, al profesor Daniel Paredero del Instituto IMMUNE Technology, a las brigadas de rescate mexicanas Los Topos por la caracterización operativa del entorno y al equipo de HIKMICRO por la provisión de instrumentación acústica especializada (incluyendo el transductor piezoeléctrico de contacto AD21P y la cámara acústica AI56 para contraste superficial), cuyo aporte fue clave para la adquisición de datos de alta precisión y el desarrollo experimental de esta investigación.
+
+% =========================================================================
+% 6. REFERENCIAS BIBLIOGRÁFICAS
+% =========================================================================
+\newpage
+\section{REFERENCIAS BIBLIOGRÁFICAS}
+
+\begin{thebibliography}{9}
+    \bibitem{Proakis}
+    Proakis, J. G., \& Manolakis, D. G. (2006). \textit{Digital signal processing: Principles, algorithms, and applications} (4.ª ed.). Upper Saddle River, NJ, EE. UU.: Pearson.
+    
+    \bibitem{Oppenheim}
+    Oppenheim, A. V., \& Schafer, R. W. (2010). \textit{Discrete-time signal processing} (3.ª ed.). Upper Saddle River, NJ, EE. UU.: Prentice Hall.
+\end{thebibliography}
+
+\vspace{1.0cm}
+
+% =========================================================================
+% PLACEHOLDER FINAL DE IMAGEN: EVOLUCIÓN POR ÉPOCAS DEL MODELO CRNN
+% =========================================================================
+% INSTRUCCIÓN: Coloque su archivo de imagen con el nombre "evolucion_epocas_crnn.png"
+% en la carpeta del proyecto (o dentro de "img_immune/evolucion_epocas_crnn.png")
+% y LaTeX lo insertará automáticamente en lugar del recuadro de placeholder.
+\begin{figure}[htbp]
+    \centering
+    \IfFileExists{evolucion_epocas_crnn.png}{%
+        \includegraphics[width=0.88\textwidth]{evolucion_epocas_crnn.png}%
+    }{%
+        \IfFileExists{img_immune/evolucion_epocas_crnn.png}{%
+            \includegraphics[width=0.88\textwidth]{img_immune/evolucion_epocas_crnn.png}%
+        }{%
+            \fcolorbox{immuneAccent}{white}{%
+                \parbox[c][7.5cm][c]{0.92\textwidth}{%
+                    \centering
+                    \textcolor{immuneAccent}{\Large\textbf{[PLACEHOLDER DE IMAGEN: EVOLUCIÓN POR ÉPOCAS DEL MODELO]}}\\[0.4cm]
+                    \textcolor{immuneDark}{\normalsize\textbf{Curvas de Aprendizaje y Convergencia de la Red Híbrida CRNN (\textit{Wide \& Deep})}}\\[0.2cm]
+                    \textcolor{immuneGray}{\small Evolución de \texttt{Train Loss}, \texttt{Val Loss}, \texttt{Val F1-Macro} y \texttt{ROC-AUC (OvR)} durante las 20 épocas (Óptimo en Época 19: $\text{F1-Macro} = 0.8631$, $\text{ROC-AUC} = 0.9927$).}\\[0.5cm]
+                    \textcolor{immuneGray}{\footnotesize\textit{Para mostrar su gráfica, guarde la imagen como \texttt{evolucion\_epocas\_crnn.png} o reemplace la ruta en este bloque \texttt{figure}.}}
+                }%
+            }%
+        }%
+    }
+    \caption{Evolución del desempeño por épocas (Pérdida de Entrenamiento/Validación, F1-Score Macro y ROC-AUC) de la arquitectura híbrida CRNN (\textit{Wide \& Deep}) hasta su promoción a producción en la época 19.}
+    \label{fig:evolucion_epocas}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,20 @@
+---
+
+### ✂️ Corte 6: Limpieza en el Vector de Fusión y Pesos de Clase (Sección VI.B / Ec. 15)
+> **Motivo:** Corrige los subíndices de vectores \\(\mathbf{x}_{\text{wide}}\\), \\(\mathbf{z}_{\text{fus}}\\) y elimina las comas dobles sueltas en la asignación de pesos \\(\mathbf{w}\\).
+
+**ANTES (Buscar):**
+```latex
+\item \textbf{Proyección Física y Fusión:} El vector $\mathbf{x} *{\text{wide}} \in \mathbb{R}^3$ se normaliza y proyecta a $\mathbb{R}^{16}$. Ambas ramas se concatenan formando $\mathbf{z}* {\text{fus}} \in \mathbb{R}^{80}$, alimentando un clasificador final hacia 4 clases. \end{itemize}
+Para mitigar la asimetría residual en la distribución de clases sobre el conjunto consolidado de $65,576$ tensores ($52,417$ de entrenamiento y $13,159$ de validación, particionados sin fuga mediante \texttt{StratifiedGroupKFold}), la función de pérdida de Entropía Cruzada se pondera asignando a cada clase $c$ un peso inversamente proporcional a su frecuencia empírica $N_c$: \begin{equation} w_c = \frac{N_{\text{total}}}{C \cdot N_c} \implies \mathbf{w} = [2.686, , 12.055, , 0.366, , 1.233]^T \end{equation}
+```
+
+**DESPUÉS (Reemplazar):**
+```latex
+\item \textbf{Proyección Física y Fusión:} El vector $\mathbf{x}_{\text{wide}} \in \mathbb{R}^3$ se normaliza y proyecta a $\mathbb{R}^{16}$. Ambas ramas se concatenan formando $\mathbf{z}_{\text{fus}} \in \mathbb{R}^{80}$, alimentando un clasificador final hacia 4 clases. \end{itemize}
+Para mitigar la asimetría residual en la distribución de clases sobre el conjunto consolidado de $65,576$ tensores ($52,417$ de entrenamiento y $13,159$ de validación, particionados sin fuga mediante \texttt{StratifiedGroupKFold}), la función de pérdida de Entropía Cruzada se pondera asignando a cada clase $c$ un peso inversamente proporcional a su frecuencia empírica $N_c$: \begin{equation} w_c = \frac{N_{\text{total}}}{C \cdot N_c} \implies \mathbf{w} = [2.686, \, 12.055, \, 0.366, \, 1.233]^T \end{equation}
+```
+
+---
+
+Con estos 6 cortes quirúrgicos aplicados, tu documento quedará en **perfecta consonancia con las láminas de la asignatura y listo para publicación con el estándar IEEE/LaTeX**.
