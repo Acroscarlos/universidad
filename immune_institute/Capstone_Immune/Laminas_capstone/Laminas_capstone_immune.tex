@@ -1,11 +1,12 @@
-\documentclass[aspectratio=169, 10pt, xcolor={table}]{beamer}
+\documentclass[aspectratio=169, 10pt]{beamer}
 
 % =========================================================================
-% PAQUETES BÁSICOS Y CONFIGURACIÓN DE FUENTES (ESTILO IMMUNE)
+% PAQUETES BÁSICOS Y CONFIGURACIÓN DE FUENTES (100% NATIVOS Y ESTABLES)
 % =========================================================================
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish, es-tabla, es-nodecimaldot, es-noshorthands]{babel}
+\usepackage{lmodern} % Escalado continuo de fuentes matemáticas sin warnings
+\usepackage[spanish, es-tabla]{babel}
 \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -13,565 +14,542 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric, calc, positioning, backgrounds, shadows}
+\usepackage{xcolor}
 
-% Eliminar barra de navegación y configurar márgenes para diseño 16:9 (16cm x 9cm)
+% Eliminar barra de navegación de Beamer y fijar márgenes para formato 16:9
 \setbeamertemplate{navigation symbols}{}
 \setbeamersize{text margin left=1.4cm, text margin right=0.6cm}
+\usefonttheme{professionalfonts}
 
 % =========================================================================
-% PALETA DE COLORES OFICIAL DE LA PLANTILLA IMMUNE
+% PALETA DE COLORES OFICIAL DE LA PLANTILLA IMMUNE (ESTILO MODERNO)
 % =========================================================================
-\definecolor{immuneDarkTeal}{HTML}{004B57}   % Cajas de números, títulos oscuros y cabeceras de tarjetas
-\definecolor{immuneDeepBg}{HTML}{031B29}     % Fondo azul petróleo profundo (franja lateral y cierre)
-\definecolor{immuneCyan}{HTML}{00C4B3}       % Turquesa/menta corporativo (títulos de sección y líneas)
+\definecolor{immuneDarkTeal}{HTML}{004B57}   % Cajas de números, títulos oscuros y cabeceras
+\definecolor{immuneDeepBg}{HTML}{031B29}     % Fondo azul petróleo profundo (franja lateral y portada)
+\definecolor{immuneCyan}{HTML}{00C4B3}       % Turquesa/menta corporativo
 \definecolor{immuneLightGray}{HTML}{A6AEB5}  % Subtítulos y marca de agua superior
 \definecolor{immuneText}{HTML}{222831}       % Texto principal de párrafos
-\definecolor{immunePlaceholder}{HTML}{D0D5D9}% Gris de los placeholders de imagen de la plantilla
-\definecolor{immuneCardBg}{HTML}{F8FAFC}     % Fondo suave para bloques de ecuaciones/tablas
+\definecolor{immuneCardBg}{HTML}{F4F8FA}     % Fondo moderno suave para tarjetas y fórmulas
+\definecolor{immuneFormulaBg}{HTML}{EBF7F6}  % Fondo destacado para las 3 fórmulas clave
 
 \setbeamercolor{normal text}{fg=immuneText}
 \setbeamercolor{structure}{fg=immuneDarkTeal}
 
 % =========================================================================
-% MACROS DE DISEÑO Y PLACEHOLDERS INTELIGENTES (CON FALLBACK VECTORIAL)
+% MACROS DE DISEÑO EN LATEX PURO (SIN TIKZ PARA COMPILACIÓN PERFECTA)
 % =========================================================================
 
-% 1. Macro inteligente: Carga la imagen si existe en cualquiera de las 2 rutas;
-%    si no existe, dibuja el Placeholder oficial de la plantilla IMMUNE (página 3)
-\newcommand{\imagenOPlaceholder}[6]{%
-    % #1: Ancho (ej. 6.2cm)
-    % #2: Alto  (ej. 3.1cm)
-    % #3: Ruta prioritaria 1
-    % #4: Ruta prioritaria 2
-    % #5: Título descriptivo del Placeholder
-    % #6: Nombre de archivo sugerido
-    \IfFileExists{#3}{%
-        \begin{tikzpicture}
-            \node[inner sep=2pt, draw=immunePlaceholder, line width=1.5pt, rounded corners=2pt, fill=white] 
-                {\includegraphics[width=#1, height=#2, keepaspectratio]{#3}};
-        \end{tikzpicture}%
-    }{%
-        \IfFileExists{#4}{%
-            \begin{tikzpicture}
-                \node[inner sep=2pt, draw=immunePlaceholder, line width=1.5pt, rounded corners=2pt, fill=white] 
-                    {\includegraphics[width=#1, height=#2, keepaspectratio]{#4}};
-            \end{tikzpicture}%
-        }{%
-            % Placeholder idéntico al icono de imagen de la diapositiva 3 de la plantilla
-            \begin{tikzpicture}
-                \draw[fill=immunePlaceholder!40, draw=immunePlaceholder, line width=2.2pt, rounded corners=2pt] 
-                    (0,0) rectangle (#1, #2);
-                \draw[fill=white, draw=none] (0.14cm, 0.14cm) rectangle ({#1-0.14cm}, {#2-0.14cm});
-                % Icono de montañas y sol en el fondo del placeholder
-                \begin{scope}[shift={({0.5*#1}, {0.56*#2})}, scale=0.45]
-                    \fill[immunePlaceholder!80] (-2.2, -1.1) -- (-0.8, 0.9) -- (0.3, -0.3) -- (1.1, 0.4) -- (2.2, -1.1) -- cycle;
-                    \fill[immunePlaceholder!80] (1.3, 0.95) circle (0.45cm);
-                \end{scope}
-                % Texto indicador del placeholder
-                \node[anchor=south, align=center, text width={#1-0.4cm}] at ({0.5*#1}, 0.18cm) {
-                    {\scriptsize\bfseries\color{immuneDarkTeal}[PLACEHOLDER: #5]}\\[-1pt]
-                    {\tiny\color{immuneText!70}Archivo: \texttt{#6}}
-                };
-            \end{tikzpicture}%
+% 1. Fondo para las diapositivas de contenido (Franja lateral izquierda oscura)
+\newcommand{\activarFondoContenido}{%
+    \usebackgroundtemplate{%
+        \vbox to \paperheight{%
+            \hbox to \paperwidth{%
+                \IfFileExists{img_immune/image_7.jpg}{%
+                    \includegraphics[width=0.95cm, height=\paperheight]{img_immune/image_7.jpg}%
+                }{%
+                    \setlength{\fboxsep}{0pt}%
+                    \colorbox{immuneDeepBg}{\parbox[b][\paperheight][c]{0.88cm}{\hfill}}%
+                    \colorbox{immuneCyan}{\parbox[b][\paperheight][c]{0.07cm}{\hfill}}%
+                }%
+                \hfill
+            }%
         }%
     }%
 }
 
-% 2. Franja lateral izquierda y cabecera superior derecha (Diapositivas 2 a 14)
-\newcommand{\immuneChrome}{%
-    \begin{tikzpicture}[remember picture, overlay]
-        % Franja lateral izquierda de ondas oscuras (0.95 cm de ancho)
-        \fill[immuneDeepBg] (current page.south west) rectangle ([xshift=0.95cm]current page.north west);
-        \IfFileExists{image6.jpeg}{%
-            \node[anchor=south west, inner sep=0pt] at (current page.south west) 
-                {\includegraphics[width=0.95cm, height=9cm]{image6.jpeg}};
-        }{%
-            % Ondas estilizadas en TikZ si no está image6.jpeg
-            \begin{scope}
-                \clip (current page.south west) rectangle ([xshift=0.95cm]current page.north west);
-                \draw[immuneCyan!35, line width=1.2pt] ([xshift=0.1cm, yshift=9cm]current page.south west) 
-                    .. controls ([xshift=0.9cm, yshift=6cm]current page.south west) and ([xshift=-0.2cm, yshift=3cm]current page.south west) .. 
-                    ([xshift=0.7cm, yshift=0cm]current page.south west);
-                \draw[immuneDarkTeal!80, line width=2pt] ([xshift=0.5cm, yshift=9cm]current page.south west) 
-                    .. controls ([xshift=1.1cm, yshift=5.5cm]current page.south west) and ([xshift=0.1cm, yshift=2.5cm]current page.south west) .. 
-                    ([xshift=0.9cm, yshift=0cm]current page.south west);
-            \end{scope}
-        }
-        % Cabecera superior derecha: TÍTULO CAPSTONE + LOGO IMMUNE
-        \node[anchor=north east, inner sep=0pt] at ([xshift=-0.5cm, yshift=-0.38cm]current page.north east) {%
-            {\fontsize{8.5}{10}\selectfont\color{immuneLightGray!85}SISTEMA USAR V2.1 — PDS \& CRNN}\hspace{0.35cm}%
-            \IfFileExists{image4.png}{%
-                \raisebox{-0.12cm}{\includegraphics[height=0.52cm]{image4.png}}%
-            }{%
-                {\bfseries\fontsize{10.5}{11}\selectfont\color{immuneDarkTeal}IMMUNE}\ %
-                {\fontsize{5.5}{6}\selectfont\color{immuneDarkTeal}TECHNOLOGY INSTITUTE}%
-            }%
-        };
-    \end{tikzpicture}%
+% 2. Cabecera superior derecha compacta
+\newcommand{\cabeceraSuperiorImmune}{%
+    \vspace*{0.12cm}%
+    \noindent\hfill
+    {\fontsize{8.0}{9.5}\selectfont\color{immuneLightGray}SISTEMA AURA 5 --- DETECCIÓN ACÚSTICA CRNN}\hspace{0.35cm}%
+    \IfFileExists{img_immune/image4.png}{%
+        \raisebox{-0.10cm}{\includegraphics[height=0.45cm]{img_immune/image4.png}}%
+    }{%
+        {\bfseries\fontsize{10}{11}\selectfont\color{immuneDarkTeal}IMMUNE}\ %
+        {\fontsize{5.5}{6}\selectfont\color{immuneDarkTeal}TECHNOLOGY INSTITUTE}%
+    }%
+    \par\vspace{0.08cm}%
 }
 
-% 3. Encabezado de Sección Numerado (Estilo Diapositivas 4, 5, 6, 7 y 8 de la plantilla)
+% 3. Encabezado de Sección Numerado
 \newcommand{\immuneSectionHeader}[3]{%
-    % #1: Número (1., 2., 3., 4., 5.)
-    % #2: Título en Turquesa (ej. INTRODUCCIÓN)
-    % #3: Subtítulo en Gris (ej. Contexto Operacional)
-    \immuneChrome
-    \begin{tikzpicture}[remember picture, overlay]
-        % Línea conectora turquesa desde la franja izquierda con círculo
-        \draw[immuneCyan, line width=1.4pt] ([xshift=0.95cm, yshift=-1.65cm]current page.north west) -- ([xshift=2.05cm, yshift=-1.65cm]current page.north west);
-        \draw[immuneCyan, line width=1.6pt, fill=white] ([xshift=2.18cm, yshift=-1.65cm]current page.north west) circle (0.13cm);
-        % Caja oscura con el número
-        \node[fill=immuneDarkTeal, rounded corners=1.5pt, minimum width=0.75cm, minimum height=0.75cm, anchor=west] 
-            (numbox) at ([xshift=2.68cm, yshift=-1.65cm]current page.north west) 
-            {\color{white}\bfseries\fontsize{14}{16}\selectfont #1};
-        % Texto del título y subtítulo
-        \node[anchor=west, inner sep=0pt] at ([xshift=0.28cm]numbox.east) {%
-            {\bfseries\fontsize{16}{18}\selectfont\color{immuneCyan}#2}%
-            {\fontsize{13}{15}\selectfont\color{immuneLightGray}\_#3}%
-        };
-    \end{tikzpicture}%
-    \vspace{1.55cm}%
+    \cabeceraSuperiorImmune
+    \noindent
+    {\color{immuneCyan}\rule[0.09cm]{0.85cm}{1.4pt}\raisebox{-0.03cm}{\large$\circ$}}\hspace{0.15cm}%
+    \setlength{\fboxsep}{0pt}%
+    \colorbox{immuneDarkTeal}{%
+        \parbox[c][0.56cm][c]{0.56cm}{\centering\color{white}\bfseries\fontsize{11}{13}\selectfont #1}%
+    }\hspace{0.20cm}%
+    {\bfseries\fontsize{12.0}{14.0}\selectfont\color{immuneCyan}#2}%
+    {\fontsize{9.2}{11.0}\selectfont\color{immuneLightGray}\_#3}%
+    \par\vspace{0.12cm}%
 }
 
-% 4. Comando rápido para subtítulos de apartado estilo ">>TÍTULO DEL APARTADO"
+% 4. Fila individual para el Índice (Con \raggedright para evitar Underfull \hbox)
+\newcommand{\itemIndiceImmune}[3]{%
+    \noindent
+    {\color{immuneCyan}\rule[0.12cm]{0.55cm}{1.5pt}}%
+    \setlength{\fboxsep}{5pt}%
+    \setlength{\fboxrule}{1.2pt}%
+    \fcolorbox{immuneCyan}{white}{%
+        \parbox[c][0.76cm][c]{9.2cm}{%
+            \setlength{\fboxsep}{0pt}%
+            \colorbox{immuneDarkTeal}{%
+                \parbox[c][0.58cm][c]{0.58cm}{\centering\color{white}\bfseries\fontsize{11}{13}\selectfont #1}%
+            }\hspace{0.28cm}%
+            \parbox[c]{7.95cm}{%
+                \raggedright
+                {\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneText}#2}\\[0.5pt]
+                {\fontsize{6.6}{7.8}\selectfont\color{immuneText!75}#3}%
+            }%
+        }%
+    }\par\vspace{0.10cm}%
+}
+
+% 5. Macro de tarjeta moderna con pestaña superior centrada y auto-contenida
+\newcommand{\tarjetaConPestana}[4]{%
+    {\centering\setlength{\fboxsep}{0pt}%
+    \colorbox{immuneDarkTeal}{%
+        \parbox[c][0.44cm][c]{\dimexpr#1-0.5cm\relax}{\centering\color{white}\bfseries\fontsize{6.8}{8.0}\selectfont #3}%
+    }\par}\vspace{-1.2pt}%
+    \setlength{\fboxsep}{5.5pt}%
+    \setlength{\fboxrule}{1.1pt}%
+    \fcolorbox{immuneDarkTeal}{white}{%
+        \parbox[t]{\dimexpr#1-11pt-2.2pt\relax}{%
+            \raggedright\fontsize{7.0}{8.5}\selectfont #4%
+        }%
+    }%
+}
+
+% 6. Caja destacada para las 3 Fórmulas Matemáticas Clave
+\newcommand{\cajaFormulaClave}[3]{%
+    \vspace{0.03cm}%
+    \noindent
+    \setlength{\fboxsep}{4pt}%
+    \setlength{\fboxrule}{1.2pt}%
+    \fcolorbox{immuneCyan}{immuneFormulaBg}{%
+        \parbox{\dimexpr#1-8pt-2.4pt\relax}{%
+            \raggedright
+            {\bfseries\fontsize{7.0}{8.2}\selectfont\color{immuneDarkTeal}#2}\par\vspace{1pt}
+            {\centering\scriptsize #3\par}%
+        }%
+    }\par\vspace{0.03cm}%
+}
+
+% 7. Subtítulo de apartado estilo ">>TÍTULO DEL APARTADO"
 \newcommand{\apartadoImmune}[1]{%
-    \vspace{0.12cm}
-    {\bfseries\fontsize{9.5}{11}\selectfont\color{immuneCyan}$>>$ \MakeUppercase{#1}}\\[2pt]
+    \vspace{0.03cm}%
+    \noindent{\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneCyan}\textgreater\textgreater\ \MakeUppercase{#1}}\par\vspace{1pt}%
+}
+
+% 8. Macro de Imagen o Placeholder (Con \detokenize para soportar guiones bajos _)
+\newcommand{\imagenOPlaceholder}[6]{%
+    \IfFileExists{#3}{%
+        \setlength{\fboxsep}{2pt}%
+        \setlength{\fboxrule}{1.5pt}%
+        \fcolorbox{immuneLightGray}{white}{%
+            \includegraphics[width=#1, height=#2, keepaspectratio]{#3}%
+        }%
+    }{%
+        \IfFileExists{#4}{%
+            \setlength{\fboxsep}{2pt}%
+            \setlength{\fboxrule}{1.5pt}%
+            \fcolorbox{immuneLightGray}{white}{%
+                \includegraphics[width=#1, height=#2, keepaspectratio]{#4}%
+            }%
+        }{%
+            \setlength{\fboxsep}{5pt}%
+            \setlength{\fboxrule}{1.6pt}%
+            \fcolorbox{immuneLightGray}{immuneCardBg}{%
+                \parbox[c][#2][c]{#1}{%
+                    \centering
+                    {\color{immuneCyan!70!immuneDarkTeal}\rule{1.1cm}{0.55cm}}\\[4pt]
+                    {\scriptsize\bfseries\color{immuneDarkTeal}[PLACEHOLDER: #5]}\\[2pt]
+                    {\tiny\color{immuneText!75}Archivo: \texttt{\detokenize{#6}}}%
+                }%
+            }%
+        }%
+    }%
 }
 
 \begin{document}
 
 % =========================================================================
-% DIAPOSITIVA 1: PORTADA OFICIAL (PÁGINA 1 DE LA PLANTILLA)
+% LÁMINA 1: PORTADA OFICIAL
 % =========================================================================
+{
+\usebackgroundtemplate{%
+    \IfFileExists{img_immune/image_6.jpg}{%
+        \includegraphics[width=\paperwidth, height=\paperheight]{img_immune/image_6.jpg}%
+    }{%
+        \setlength{\fboxsep}{0pt}%
+        \colorbox{immuneDeepBg}{\parbox[b][\paperheight][c]{\paperwidth}{\hfill}}%
+    }%
+}
 \begin{frame}[plain]
-    \begin{tikzpicture}[remember picture, overlay]
-        % 1. Fondo degradado / Imagen de portada (image1.jpeg)
-        \IfFileExists{image1.jpeg}{%
-            \node[anchor=south west, inner sep=0pt] at (current page.south west) 
-                {\includegraphics[width=16cm, height=9cm]{image1.jpeg}};
-        }{%
-            \shade[left color=immuneDeepBg, right color=immuneDarkTeal!90!immuneCyan] 
-                (current page.south west) rectangle (current page.north east);
-            \fill[immuneCyan!25, opacity=0.35] ([xshift=3.5cm, yshift=4.5cm]current page.south west) circle (3.2cm);
-        }
-
-        % 2. Cubos 3D a la izquierda (image5.png o representación vectorial)
-        \IfFileExists{image5.png}{%
-            \node[anchor=center] at ([xshift=3.7cm, yshift=4.3cm]current page.south west) 
-                {\includegraphics[width=5.2cm]{image5.png}};
-        }{%
-            % Bloques isométricos vectoriales de respaldo
-            \begin{scope}[shift={([xshift=3.6cm, yshift=4.4cm]current page.south west)}, scale=0.85]
-                \foreach \x/\y/\col in {-1.2/0.8/immuneCyan, 0.2/1.2/immuneDarkTeal!60!immuneCyan, -0.8/-0.8/purple!70!immuneCyan, 0.8/-0.4/blue!60!immuneCyan} {
-                    \draw[fill=\col, draw=white, line width=0.6pt, rounded corners=2pt] (\x,\y) rectangle ++(1.1,1.1);
-                }
-            \end{scope}
-        }
-
-        % 3. Tarjeta blanca redondeada a la derecha
-        \fill[white, rounded corners=12pt] 
-            ([xshift=7.4cm, yshift=-0.4cm]current page.south west) rectangle ([xshift=14.3cm, yshift=6.3cm]current page.south west);
-
-        % 4. Logo IMMUNE dentro de la tarjeta blanca
-        \node[anchor=north east] at ([xshift=13.7cm, yshift=5.65cm]current page.south west) {%
-            \IfFileExists{image4.png}{%
-                \includegraphics[width=2.6cm]{image4.png}%
-            }{%
-                \begin{tabular}{r@{}}
-                    {\bfseries\fontsize{13}{14}\selectfont\color{immuneDarkTeal}I M M U N E}\\[-2pt]
-                    {\fontsize{5}{6}\selectfont\color{immuneDarkTeal}T E C H N O L O G Y \ \ I N S T I T U T E}
-                \end{tabular}%
-            }%
-        };
-
-        % 5. Título y Subtítulo del Capstone
-        \node[anchor=north west, text width=6.1cm, align=left] at ([xshift=8.0cm, yshift=4.55cm]current page.south west) {%
-            {\bfseries\fontsize{16.5}{18.5}\selectfont\color{immuneDarkTeal}Detección Acústica de Sobrevivientes en Estructuras Colapsadas}\\[0.25cm]
-            {\fontsize{9.5}{11.5}\selectfont\color{immuneDarkTeal!80!immuneCyan}UN ENFOQUE NO INVASIVO BASADO EN PDS Y MODELOS RECURRENTES CONVOLUCIONALES (SISTEMA USAR V2.1)}
-        };
-
-        % 6. Avatar del Autor y Datos del Programa
-        \node[anchor=south west] at ([xshift=8.0cm, yshift=0.45cm]current page.south west) {%
-            \begin{tabular}{@{}m{1.35cm}@{\hspace{0.3cm}}m{4.5cm}@{}}
-                \IfFileExists{image3.png}{%
-                    \includegraphics[width=1.3cm]{image3.png}%
-                }{%
-                    \IfFileExists{img_immune/image5.png}{%
-                        \includegraphics[width=1.3cm]{img_immune/image5.png}%
-                    }{%
-                        \tikz\node[fill=immuneCyan, minimum size=1.2cm, rounded corners=2pt]{\color{white}\bfseries\large CC};%
-                    }%
-                } &
-                {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}Carlos Carreño Castaños}\\[2pt]
-                & {\fontsize{7.5}{9}\selectfont\color{immuneLightGray!80!black}IA \& Data Science for Business\\2606PDSS / 2510MIAP}
-            \end{tabular}%
-        };
-    \end{tikzpicture}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 2: ÍNDICE GENERAL (PÁGINA 2 DE LA PLANTILLA)
-% =========================================================================
-\begin{frame}[plain]
-    \immuneChrome
-    \begin{tikzpicture}[remember picture, overlay]
-        % Título >ÍNDICE_ a la izquierda
-        \node[anchor=north west] at ([xshift=1.85cm, yshift=-1.15cm]current page.north west) {%
-            {\bfseries\fontsize{20}{22}\selectfont\color{immuneCyan}$>$}{\bfseries\fontsize{20}{22}\selectfont\color{immuneDarkTeal}ÍNDICE}{\bfseries\fontsize{20}{22}\selectfont\color{immuneCyan}\_}%
-        };
-
-        % Línea vertical de tiempo turquesa
-        \draw[immuneCyan, line width=1.5pt] ([xshift=5.12cm, yshift=-1.2cm]current page.north west) -- ([xshift=5.12cm, yshift=-7.9cm]current page.north west);
-        \draw[immuneCyan, line width=1.5pt] ([xshift=5.02cm, yshift=-1.2cm]current page.north west) -- ([xshift=5.22cm, yshift=-1.2cm]current page.north west);
-
-        % Iteración de las 5 cajas del índice
-        \foreach \num/\titulo/\subt/\ypos in {
-            1./INTRODUCCIÓN/Contexto Operacional en Zona Cero, Motivación, Objetivos y Valor en Business Intelligence/-1.95,
-            2./ESTADO DEL ARTE/Limitaciones de Escucha Aérea, Transducción Piezoeléctrica AD21P y Paradigma Pasivo/-3.45,
-            3./DESARROLLO/Cadena A/D, Filtrado de Fase Cero, Síntesis Estocástica Morse y Red Híbrida CRNN Wide \& Deep/-4.95,
-            4./PRUEBAS Y RESULTADOS/Validación de Verdad Base, Análisis Gráfico en Tiempo Discreto y Evolución por Épocas/-6.45,
-            5./CONCLUSIONES Y FUTURO TRABAJO/Logros Técnicos, Sinergias Operativas, Despliegue en Edge AI y Localización 3D TDOA/-7.95
-        } {
-            % Nodo circular sobre la línea vertical y brazo horizontal
-            \fill[immuneCyan] ([xshift=5.12cm, yshift=\ypos cm]current page.north west) circle (0.19cm);
-            \draw[immuneCyan, line width=1.4pt] ([xshift=5.12cm, yshift=\ypos cm]current page.north west) -- ([xshift=6.18cm, yshift=\ypos cm]current page.north west);
-            
-            % Caja redondeada de cada capítulo
-            \node[draw=immuneCyan, line width=1.3pt, fill=white, rounded corners=5pt, minimum width=9.25cm, minimum height=1.22cm, anchor=west] 
-                (box\num) at ([xshift=6.18cm, yshift=\ypos cm]current page.north west) {};
-            
-            % Cuadro oscuro con número
-            \node[fill=immuneDarkTeal, rounded corners=1.5pt, minimum width=0.72cm, minimum height=0.72cm, anchor=west] 
-                at ([xshift=0.65cm]box\num.west) {\color{white}\bfseries\fontsize{13}{15}\selectfont \num};
-            
-            % Texto del capítulo y subtítulo
-            \node[anchor=west, align=left, text width=7.2cm] at ([xshift=1.75cm]box\num.west) {%
-                {\bfseries\fontsize{9.5}{11}\selectfont\color{immuneText}\titulo}\\[1pt]
-                {\fontsize{7.8}{9.5}\selectfont\color{immuneText!75}\subt}
-            };
-        }
-    \end{tikzpicture}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 3: 1. INTRODUCCIÓN (PÁGINA 4 DE LA PLANTILLA - 3 TARJETAS)
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{1.}{INTRODUCCIÓN}{Contexto Operacional en Zona Cero}
-
-    \begin{tikzpicture}[remember picture, overlay]
-        % --- TARJETA 1: MOTIVACIÓN ---
-        \node[fill=immuneDarkTeal, rounded corners=3pt, minimum width=3.7cm, minimum height=0.65cm, anchor=north west] 
-            (tab1) at ([xshift=2.45cm, yshift=-3.05cm]current page.north west) 
-            {\color{white}\fontsize{9.5}{11}\selectfont $<$MOTIVACIÓN$>$};
-        \node[draw=immuneDarkTeal, line width=1.3pt, fill=white, rounded corners=6pt, minimum width=4.05cm, minimum height=4.75cm, anchor=north] 
-            (card1) at ([yshift=-0.52cm]tab1.north) {};
-        \node[anchor=north west, text width=3.55cm, align=left] at ([xshift=0.25cm, yshift=-0.28cm]card1.north west) {%
-            {\bfseries\fontsize{8.5}{10}\selectfont\color{immuneText}Problemática en Zona Cero}\\[4pt]
-            {\fontsize{7.4}{9.4}\selectfont\color{immuneText!90}
-            En un colapso estructural, los escombros atenúan severamente las ondas sonoras y la maquinaria superficial genera un alto piso de ruido.\par\vspace{4pt}
-            La escucha aérea pierde $>99\%$ de energía por el \textbf{desacople de impedancia aire-concreto}.\par\vspace{4pt}
-            El sistema \textbf{USAR V2.1} acopla el transductor piezoeléctrico \textbf{HIKMICRO AD21P} ($150\text{--}7500\text{ Hz}$) directamente a la mampostería, usando \textbf{PDS} e \textbf{IA} para rescatar firmas de vida sin distorsión de fase.}
-        };
-
-        % --- TARJETA 2: OBJETIVOS ---
-        \node[fill=immuneDarkTeal, rounded corners=3pt, minimum width=3.7cm, minimum height=0.65cm, anchor=north west] 
-            (tab2) at ([xshift=6.85cm, yshift=-3.05cm]current page.north west) 
-            {\color{white}\fontsize{9.5}{11}\selectfont $<$OBJETIVOS (4)$>$};
-        \node[draw=immuneDarkTeal, line width=1.3pt, fill=white, rounded corners=6pt, minimum width=4.05cm, minimum height=4.75cm, anchor=north] 
-            (card2) at ([yshift=-0.52cm]tab2.north) {};
-        \node[anchor=north west, text width=3.55cm, align=left] at ([xshift=0.25cm, yshift=-0.28cm]card2.north west) {%
-            {\bfseries\fontsize{7.5}{9}\selectfont\color{immuneDarkTeal}$>$ OBJETIVO 1: Caracterización y A/D}\\
-            {\fontsize{7.1}{8.7}\selectfont Validar el muestreo a $f_s=16\text{ kHz}$ (Nyquist) y cuantificación PCM de $16\text{ bits}$ con \textit{dither} natural a $-80\text{ dBFS}$.}\\[4pt]
-            {\bfseries\fontsize{7.5}{9}\selectfont\color{immuneDarkTeal}$>$ OBJETIVO 2: Filtrado de Fase Cero}\\
-            {\fontsize{7.1}{8.7}\selectfont Suprimir deriva ($<150\text{ Hz}$) y ruido estructural mediante IIR Butterworth de 4.º orden bidireccional (\texttt{filtfilt}, $\tau_g(\Omega)=0$).}\\[4pt]
-            {\bfseries\fontsize{7.5}{9}\selectfont\color{immuneDarkTeal}$>$ OBJETIVO 3: Síntesis sin Fuga}\\
-            {\fontsize{7.1}{8.7}\selectfont Modelar impactos rítmicos Morse ($29\,953$ muestras) usando la Transformada de Hilbert y \textit{Disjoint Pools}.}\\[4pt]
-            {\bfseries\fontsize{7.5}{9}\selectfont\color{immuneDarkTeal}$>$ OBJETIVO 4: Clasificador CRNN}\\
-            {\fontsize{7.1}{8.7}\selectfont Entrenar en GPU la red \textit{Wide \& Deep} sobre $65\,576$ tensores para 4 clases tácticas.}
-        };
-
-        % --- TARJETA 3: ORGANIZACIÓN Y VALOR BI ---
-        \node[fill=immuneDarkTeal, rounded corners=3pt, minimum width=3.7cm, minimum height=0.65cm, anchor=north west] 
-            (tab3) at ([xshift=11.25cm, yshift=-3.05cm]current page.north west) 
-            {\color{white}\fontsize{9.5}{11}\selectfont $<$ORGANIZACIÓN$>$};
-        \node[draw=immuneDarkTeal, line width=1.3pt, fill=white, rounded corners=6pt, minimum width=4.05cm, minimum height=4.75cm, anchor=north] 
-            (card3) at ([yshift=-0.52cm]tab3.north) {};
-        \node[anchor=north west, text width=3.55cm, align=left] at ([xshift=0.25cm, yshift=-0.28cm]card3.north west) {%
-            {\bfseries\fontsize{8.5}{10}\selectfont\color{immuneText}Arquitectura y Toma de Decisiones}\\[4pt]
-            {\fontsize{7.3}{9.2}\selectfont\color{immuneText!90}
-            \textbf{Fase 1 (Preprocesamiento Físico):} Auditoría de verdad base (Hilbert, YIN, Welch), filtro de oclusión ($1000\text{ Hz}$), síntesis Morse y validación \textit{Human-in-the-Loop}.\par\vspace{4pt}
-            \textbf{Fase 2 (DSP en GPU y Deep Learning):} Partición híbrida con \texttt{StratifiedGroupKFold}, extracción vectorizada y clasificación multiclase.\par\vspace{4pt}
-            \textbf{Impacto BI:} Gobernanza automatizada (\texttt{.pth}/\texttt{.json}) que evita falsas alarmas y optimiza el despliegue de brigadas.}
-        };
-    \end{tikzpicture}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 4: 2. ESTADO DEL ARTE (PÁGINAS 3 Y 5 DE LA PLANTILLA)
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{2.}{ESTADO DEL ARTE}{Exploración Acústica Pasiva y Redes Híbridas}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.58\textwidth}
-            {\bfseries\fontsize{12}{14}\selectfont\color{immuneDarkTeal}LIMITACIONES ACTUALES Y DIFERENCIACIÓN}
-            
-            \apartadoImmune{Tecnologías de Localización Bajo Escombros}
-            {\fontsize{8.1}{10.2}\selectfont
-            Las cámaras ópticas/térmicas y radares UWB son anulados por el polvo denso y los planos de fractura del concreto armado. Mientras las cámaras acústicas superficiales (\textbf{HIKMICRO AI56}) mapean ruido aéreo exterior, el transductor de contacto \textbf{HIKMICRO AD21P} capta directamente las ondas elásticas en la estructura ($150\text{--}7500\text{ Hz}$).}
-
-            \apartadoImmune{Limitaciones del Deep Learning Acústico Estándar}
-            {\fontsize{8.1}{10.2}\selectfont
-            Los modelos CNN convencionales entrenados en \textit{ESC-50} o \textit{UrbanSound8K} fallan en la Zona Cero por tres causas: 1) aplican normalización \textbf{Min-Max por muestra}, amplificando el siseo térmico en silencios e induciendo falsos positivos; 2) carecen de memoria secuencial para patrones rítmicos Morse; y 3) sufren \textbf{fuga de datos} al compartir pistas de ruido ambiental entre particiones.}
-
-            \apartadoImmune{Paradigma Estrictamente Pasivo (Sin Etapa D/A)}
-            {\fontsize{8.1}{10.2}\selectfont
-            A diferencia del sonar activo o ecografía, \textbf{USAR V2.1 omite el conversor D/A} y filtros de reconstrucción para no inducir vibraciones que provoquen derrumbes secundarios, optimizando la batería y el sigilo táctico.}
-        \end{column}
-        
-        \begin{column}{0.39\textwidth}
-            \centering
-            \imagenOPlaceholder{5.6cm}{2.95cm}{img_immune/sensor_ad21p.png}{sensor_ad21p.png}{Transductor Piezoeléctrico HIKMICRO AD21P}{sensor_ad21p.png}
-            
-            \vspace{0.22cm}
-            
-            \imagenOPlaceholder{5.6cm}{2.95cm}{img_immune/camara_ai56_zona_cero.png}{camara_ai56_zona_cero.png}{Contraste Superficial (AI56) vs. Contacto en Mampostería}{camara_ai56_zona_cero.png}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 5: 3. DESARROLLO (I) - CONVERSIÓN A/D, NYQUIST Y DITHER
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{3.}{DESARROLLO}{Modelo Energético y Cadena de Conversión A/D}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.52\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}1. CLASIFICACIÓN FÍSICA Y ENERGÉTICA}
-            
-            \apartadoImmune{Atenuación en Mampostería y Secuencias Base}
-            {\fontsize{8.0}{10.0}\selectfont
-            La densidad y viscosidad del concreto actúan como un \textbf{filtro pasa-bajo natural} ($f_c \approx 1000\text{ Hz}$). Los eventos se modelan en tiempo discreto mediante el impulso $\delta[n]$, el escalón causal $u[n] = \sum_{k=-\infty}^{n}\delta[k]$ y la exponencial amortiguada $a^n u[n]$ \cite{Oppenheim}.}
-
-            \apartadoImmune{Señal de Energía en Ventanas de $T_w = 4.0\text{ s}$}
-            {\fontsize{8.0}{10.0}\selectfont
-            El canal superpone ruido estructural no estacionario con transitorios percusivos pseudo-deterministas. Al segmentar en ventanas de $N = 64\,000$ muestras ($f_s = 16\text{ kHz}$), la energía es finita y garantiza la convergencia uniforme de la DTFT:}
-            \begin{block}{}
-                \vspace{-0.25cm}
-                {\footnotesize
-                $$E_w = \int_0^{T_w} |x_a(t)|^2 dt < \infty \quad \Longleftrightarrow \quad E_w = \sum_{n=0}^{N-1} |x[n]|^2$$}
-                \vspace{-0.25cm}
-            \end{block}
-        \end{column}
-
-        \begin{column}{0.45\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}2. CADENA A/D: SAMPLER, QUANTIZER Y CODER}
-            
-            \apartadoImmune{Muestreo Discreto y Criterio de Nyquist-Shannon}
-            {\fontsize{7.9}{9.8}\selectfont
-            Con $f_{\max} = 7500\text{ Hz}$ (sensor AD21P), la tasa mínima es $f_{\text{Nyquist}} = 2f_{\max} = 15\text{ kHz}$. Al operar a $f_s = 16\,000\text{ Hz}$ ($T_s = 62.5\ \mu\text{s}$), la frecuencia de plegamiento es $f_N = 8000\text{ Hz}$ (\textbf{banda de guarda de $500\text{ Hz}$}). El mapeo a frecuencia digital normalizada $F$ y angular $\Omega$ \cite{Proakis} es:}
-            {\footnotesize
-            $$\Omega = \omega T_s = 2\pi \frac{f}{f_s} = 2\pi F \implies \Omega_{\max} = 0.9375\pi < \pi$$}
-
-            \apartadoImmune{Cuantificación PCM 16 Bits y Efecto Dither}
-            {\fontsize{7.9}{9.8}\selectfont
-            Para $B=16\text{ bits}$ ($65\,536$ niveles en $[-1, +1]\text{ V}$):
-            $$\Delta = \frac{2}{65535} \approx 3.0518 \times 10^{-5}\text{ V}, \quad \sigma_e = \frac{\Delta}{\sqrt{12}} \approx 8.81 \times 10^{-6}\text{ V}$$
-            logrando $\text{SNR}_Q = 98.08\text{ dB}$ ($\sigma_e^2 = -98.09\text{ dBFS}$). El piso térmico en $-80\text{ dBFS}$ ($\sigma = 10^{-4}\text{ V}$) actúa como \textbf{\textit{dither} aditivo natural}, descorrelacionando $e_q[n]$ y evitando que micro-señales caigan en el cero digital.}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 6: 3. DESARROLLO (II) - FILTRADO DE FASE CERO Y ENCUADRE
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{3.}{DESARROLLO}{Ecuaciones en Diferencias y Filtrado de Fase Cero}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.53\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}SISTEMAS LTI RECURSIVOS E INVERSIÓN TEMPORAL}
-            
-            \apartadoImmune{Ecuación en Diferencias y Función de Transferencia $H(z)$}
-            {\fontsize{8.0}{10.0}\selectfont
-            El filtro IIR Butterworth pasa-banda de 4.º orden ($150\text{--}7500\text{ Hz}$) se expresa mediante la suma de convolución $y[n] = x[n]*h[n]$ y la ecuación recursiva de coeficientes constantes:}
-            {\footnotesize
-            $$y[n] = -\sum_{k=1}^{N} a_k y[n - k] + \sum_{k=0}^{M} b_k x[n - k] \implies H(z) = \frac{\sum_{k=0}^{M} b_k z^{-k}}{1 + \sum_{k=1}^{N} a_k z^{-k}}$$}
-
-            \apartadoImmune{Cancelación del Retardo de Grupo (\texttt{filtfilt})}
-            {\fontsize{8.0}{10.0}\selectfont
-            Un filtro IIR unidireccional introduce fase no lineal $\phi(\Omega)$ y retardo de grupo $\tau_g(\Omega) = -\frac{d\phi(\Omega)}{d\Omega}$ que dispersa los impactos. Al aplicar filtrado bidireccional con \textbf{inversión temporal} ($v[n]=x[n]*h[n] \to g[n]=v[-n] \to r[n]=g[n]*h[n] \to y[n]=r[-n]$):}
-            {\footnotesize
-            $$Y(e^{j\Omega}) = X(e^{j\Omega}) H(e^{j\Omega}) H^*(e^{j\Omega}) = X(e^{j\Omega}) |H(e^{j\Omega})|^2$$}
-            {\fontsize{7.9}{9.5}\selectfont
-            Como $|H(e^{j\Omega})|^2 \ge 0$ es real, \textbf{$\phi_{\text{total}}(\Omega) = 0$ y $\tau_g(\Omega) = 0$}, preservando el instante exacto $n_0$ con estabilidad BIBO en ventanas de $4.0\text{ s}$.}
-        \end{column}
-
-        \begin{column}{0.44\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}ACONDICIONAMIENTO EN FASE 1}
-
-            \apartadoImmune{Enrutador Condicional y Filtro de Oclusión}
-            {\fontsize{7.9}{9.8}\selectfont
-            \begin{itemize}[leftmargin=*, itemsep=2pt]
-                \item \textbf{Lógica Delta (\texttt{es\_audio\_nuevo}):} Caché en disco que omite reprocesar audios ya segmentados.
-                \item \textbf{Enrutador (\texttt{es\_dataset\_zona\_cero}):} Las grabaciones reales del sensor AD21P omiten la emulación artificial para evitar doble filtrado.
-                \item \textbf{Filtro de Oclusión ($f_c = 1000\text{ Hz}$):} Los datasets externos (\texttt{voces\_espanol}, \texttt{gritos}, \texttt{esr\_50}, \texttt{urban\_sound}) atraviesan un Butterworth pasa-bajo de 4.º orden (\texttt{filtfilt}) que simula el muro de concreto, seguido del filtro AD21P ($150\text{--}7500\text{ Hz}$).
-            \end{itemize}}
-
-            \apartadoImmune{Encuadre y Crossfade Dinámico de $50\text{ ms}$}
-            {\fontsize{7.9}{9.8}\selectfont
-            Para el análisis STFT se aplica desplazamiento $x_m[n] = x[n+mH]\cdot w[n]$ ($N_w=400$ muestras / $25\text{ ms}$, salto $H=160$ / $10\text{ ms}$, solapamiento del $60\%$). Los audios cortos ($<4.0\text{ s}$) se centran mediante \texttt{padding\_por\_crossfade} ($N_{\text{fade}}=800$) igualando el RMS de los bordes con ruido AWGN.}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 7: 3. DESARROLLO (III) - FASE 1: HILBERT Y SÍNTESIS MORSE
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{3.}{DESARROLLO}{Fase 1: Caracterización Física y Motor Estocástico Morse}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.56\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}ENVOLVENTE DE HILBERT Y SÍNTESIS DE IMPACTOS}
-            
-            \apartadoImmune{Señal Analítica y Morfología de Decaimiento ($t_{\text{thud}}$)}
-            {\fontsize{7.9}{9.8}\selectfont
-            Para medir la disipación elástica real sin interferencia de los cruces por cero de la portadora, se construye la señal analítica $z[n] = x[n] + j\hat{x}[n]$ vía \textbf{Transformada de Hilbert}:
-            $$A[n] = |z[n]| = \sqrt{x^2[n] + \hat{x}^2[n]}$$
-            Se mide $t_{\text{thud}}$ desde el ataque $A_{\max}$ hasta caer bajo el umbral del $10\%$, estimando la resonancia $f_0$ con \textbf{YIN} ($150\text{--}7500\text{ Hz}$) y la PSD con \textbf{Welch} ($N_{\text{FFT}}=1024$).}
-
-            \apartadoImmune{Generador Estocástico Morse y Constancia de Material}
-            {\fontsize{7.9}{9.8}\selectfont
-            Para cubrir el déficit de $29\,953$ muestras en \texttt{Target\_Rhythmic} (\texttt{SOS}, \texttt{HELP}, \texttt{OK}, \texttt{USAR}), se fijan $f_0$ y $\beta = \frac{\ln(100)}{t_{\text{thud}}}$ constantes por lienzo de $4.0\text{ s}$ (evitando el ``efecto xilófono''), con $25\%$ de probabilidad de \textbf{alta atenuación} ($t_{\text{thud}} \in [0.43, 15]\text{ ms}$) y \textit{jitter} biomecánico ($\sigma=0.3$, $\Delta t_{\min}=80\text{ ms}$):
-            $$s_{\text{imp}}[n] = 0.7 \sin\left(2\pi \frac{f_0}{f_s} n\right) e^{-\beta n T_s} + 0.3 \, w_c[n] e^{-\gamma n T_s}$$}
-
-            \apartadoImmune{Modulación SNR Destructiva y Piscinas Disjuntas}
-            {\fontsize{7.9}{9.8}\selectfont
-            Se contamina con ruido real de Zona Cero aislado en \textbf{Disjoint Pools} (\texttt{/train} $80\%$ y \texttt{/val} $20\%$) escalado por $\alpha_{\text{noise}} = \frac{\text{RMS}(s[n])}{\text{RMS}(r[n])\cdot 10^{\text{SNR}_{\text{dB}}/20}}$ con $\text{SNR}_{\text{dB}} \sim \mathcal{N}(4.60, 20^2)\text{ dB}$.}
-        \end{column}
-
+    \vspace*{0.75cm}
+    \begin{columns}[c, onlytextwidth]
+        % Columna izquierda: Identidad visual AURA 5 / Cubos 3D
         \begin{column}{0.41\textwidth}
             \centering
-            \imagenOPlaceholder{5.8cm}{6.1cm}{img_immune/diagrama_flujo_fase1.png}{diagrama_flujo_fase1.png}{Diagrama de Flujo de Arquitectura PDS - Fase 1}{diagrama_flujo_fase1.png}
+            \IfFileExists{img_immune/image2.png}{%
+                \includegraphics[width=4.6cm]{img_immune/image2.png}%
+            }{%
+                \setlength{\fboxsep}{10pt}%
+                \setlength{\fboxrule}{1.6pt}%
+                \fcolorbox{immuneCyan}{immuneDarkTeal}{%
+                    \parbox[c][3.3cm][c]{3.8cm}{%
+                        \centering\color{white}\bfseries
+                        {\normalsize SISTEMA INTELIGENTE}\\[2pt]
+                        {\Huge\color{immuneCyan}AURA 5}\\[4pt]
+                        {\tiny ACOUSTIC URBAN RESCUE ASSISTANT}\\[4pt]
+                        {\scriptsize SERIES TEMPORALES \& CRNN}%
+                    }%
+                }%
+            }
+        \end{column}
+
+        % Columna derecha: Tarjeta blanca principal de Portada
+        \begin{column}{0.56\textwidth}
+            \setlength{\fboxsep}{12pt}%
+            \colorbox{white}{%
+                \parbox[c][6.4cm][t]{6.5cm}{%
+                    % 1. Logo IMMUNE arriba a la derecha
+                    \noindent\hfill
+                    \IfFileExists{image3.png}{%
+                        \includegraphics[width=2.4cm]{image3.png}%
+                    }{%
+                        \parbox{3.2cm}{\raggedleft
+                            {\bfseries\fontsize{12.5}{13.5}\selectfont\color{immuneDarkTeal}I M M U N E}\\[1pt]
+                            {\fontsize{5}{6}\selectfont\color{immuneDarkTeal}T E C H N O L O G Y \ \ I N S T I T U T E}%
+                        }%
+                    }%
+                    \par\vspace{0.45cm}
+
+                    % 2. Título Oficial y Subtítulo AURA 5
+                    \raggedright
+                    {\bfseries\fontsize{14.5}{16.8}\selectfont\color{immuneDarkTeal}Detección Acústica de Sobrevivientes en Estructuras Colapsadas aplicando CRNN}\par\vspace{0.20cm}
+                    {\fontsize{8.5}{10.5}\selectfont\color{immuneDarkTeal!85!immuneCyan}\textbf{SISTEMA AURA 5:} PROCESAMIENTO DIGITAL DE SENALES, SERIES TEMPORALES Y REDES HÍBRIDAS WIDE \& DEEP}\par\vfill
+
+                    % 3. Avatar y Datos del Autor
+                    \noindent
+                    \begin{minipage}[c]{1.25cm}
+                        \IfFileExists{image3.png}{%
+                            \includegraphics[width=1.15cm]{image3.png}%
+                        }{%
+                            \IfFileExists{img_immune/image5.png}{%
+                                \includegraphics[width=1.15cm]{img_immune/image5.png}%
+                            }{%
+                                \setlength{\fboxsep}{0pt}%
+                                \colorbox{immuneCyan}{\parbox[c][1.05cm][c]{1.05cm}{\centering\color{white}\bfseries\large CC}}%
+                            }%
+                        }%
+                    \end{minipage}%
+                    \hspace{0.22cm}%
+                    \begin{minipage}[c]{4.8cm}
+                        {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}Carlos Carreño Castaños}\\[2pt]
+                        {\fontsize{7.5}{9.2}\selectfont\color{immuneLightGray!80!black}IA \& Data Science for Business\par 2606PDSS / 2510MIAP}%
+                    \end{minipage}%
+                }%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+}
+
+% Activar el fondo lateral para las diapositivas de contenido
+\activarFondoContenido
+
+% =========================================================================
+% LÁMINA 2: ÍNDICE — HOJA DE RUTA DE LA DEFENSA
+% =========================================================================
+\begin{frame}[plain]
+    \cabeceraSuperiorImmune
+    \vspace{0.12cm}
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.24\textwidth}
+            \vspace{0.3cm}
+            {\bfseries\fontsize{20}{22}\selectfont\color{immuneCyan}\textgreater}{\bfseries\fontsize{20}{22}\selectfont\color{immuneDarkTeal}ÍNDICE}{\bfseries\fontsize{20}{22}\selectfont\color{immuneCyan}\_}
+        \end{column}
+
+        \begin{column}{0.75\textwidth}
+            \itemIndiceImmune{1.}{INTRODUCCIÓN}{Inmersión audiovisual en la Zona Cero, problemática física, coste de decisión y objetivos de AURA 5}
+            \itemIndiceImmune{2.}{ESTADO DEL ARTE}{Limitaciones de la escucha aérea, fallos del Deep Learning estándar y paradigma pasivo}
+            \itemIndiceImmune{3.}{DESARROLLO (DATA \& AI PIPELINE)}{EDA acústico (Welch y Mel), síntesis física, Anti-Leakage y red Wide \& Deep}
+            \itemIndiceImmune{4.}{PRUEBAS Y RESULTADOS}{Fidelidad de captura digital, evolución del entrenamiento por épocas y métricas de clasificación}
+            \itemIndiceImmune{5.}{CONCLUSIONES Y FUTURO TRABAJO}{Despliegue hacia Edge AI}
         \end{column}
     \end{columns}
 \end{frame}
 
 % =========================================================================
-% DIAPOSITIVA 8: 3. DESARROLLO (IV) - FASE 2: EXTRACCIÓN VECTORIZADA EN GPU
+% LÁMINA 3: 1. INTRODUCCIÓN (I) — INMERSIÓN EN LA ZONA CERO (VÍDEO 30S)
 % =========================================================================
 \begin{frame}[plain]
-    \immuneSectionHeader{3.}{DESARROLLO}{Fase 2: Partición Anti-Leakage y Motor DSP en GPU}
+    \immuneSectionHeader{1.}{INTRODUCCIÓN}{Inmersión en la Zona Cero: Realidad Operativa (Vídeo 30s)}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.60\textwidth}
+            \centering
+            \href{run:Videos_terremoto/adquisicion_datos.mp4}{%
+                \IfFileExists{Videos_terremoto/preview_video.png}{%
+                    \setlength{\fboxsep}{2pt}\setlength{\fboxrule}{1.8pt}%
+                    \fcolorbox{immuneCyan}{immuneDeepBg}{%
+                        \includegraphics[width=7.8cm, height=4.4cm, keepaspectratio]{Videos_terremoto/preview_video.png}%
+                    }%
+                }{%
+                    \setlength{\fboxsep}{8pt}\setlength{\fboxrule}{1.8pt}%
+                    \fcolorbox{immuneCyan}{immuneDeepBg}{%
+                        \parbox[c][4.1cm][c]{7.5cm}{%
+                            \centering
+                            \setlength{\fboxsep}{6pt}%
+                            \colorbox{immuneCyan}{\parbox[c][0.8cm][c]{2.2cm}{\centering\color{white}\bfseries\large $\blacktriangleright$ PLAY}}\\[10pt]
+                            {\bfseries\fontsize{9.5}{11.5}\selectfont\color{white}VÍDEO OPERATIVO EN ZONA CERO (30s)}\\[4pt]
+                            {\scriptsize\color{immuneCyan}Haz clic aquí para reproducir: \texttt{adquisicion\_datos.mp4}}%
+                        }%
+                    }%
+                }%
+            }
+        \end{column}
+
+        \begin{column}{0.37\textwidth}
+            \tarjetaConPestana{5.0cm}{4.2cm}{\textless CONTEXTO DEL VÍDEO\textgreater}{%
+                {\bfseries\fontsize{8.5}{10}\selectfont\color{immuneDarkTeal}¿Qué enfrentamos en terreno?}\par\vspace{4pt}
+                {\fontsize{7.5}{9.3}\selectfont
+                \textbf{1. Caos Acústico Superficial:} Operación simultánea de excavadoras, plantas eléctricas, sirenas y personal que enmascara cualquier sonido débil.\par\vspace{4pt}
+                \textbf{2. Oclusión Extrema:} Toneladas de mampostería y concreto armado compactado donde las víctimas no pueden gritar por hipoxia o agotamiento.\par\vspace{4pt}
+                \textbf{3. Señal de Supervivencia:} La mayoría de las víctimas solo pueden golpear rítmicamente un muro o tubería durante la ventana dorada de 72 horas.}%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 4: 1. INTRODUCCIÓN (II) — EVIDENCIA FOTOGRÁFICA EN TERRENO
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{1.}{INTRODUCCIÓN}{Referencia Visual: El Escombro y la Captación por Contacto}
 
     \begin{columns}[T, onlytextwidth]
         \begin{column}{0.48\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}INGESTA Y PARTICIÓN SIN FUGA DE DATOS}
-            
-            \apartadoImmune{División Híbrida (\texttt{dividir\_datos\_estratificados})}
-            {\fontsize{8.0}{10.0}\selectfont
-            Sobre los $65\,576$ tensores unificados en 4 clases (\texttt{Noise\_General}: 0, \texttt{Target\_Animal}: 1, \texttt{Target\_Rhythmic}: 2, \texttt{Target\_Voice}: 3), el sistema ejecuta dos fases de blindaje:
-            \begin{itemize}[leftmargin=*, itemsep=2pt]
-                \item \textbf{Fase A (Enrutamiento Estricto):} Respeta incondicionalmente los directorios físicos \texttt{/train} y \texttt{/val} de los \textit{Disjoint Pools}.
-                \item \textbf{Fase B (\texttt{StratifiedGroupKFold}):} Agrupa por la raíz del archivo original (\texttt{grupo\_base}) para que todos los fragmentos (\texttt{\_part0}, \texttt{\_part1}) de una misma grabación permanezcan en el mismo subconjunto ($52\,417$ Train / $13\,159$ Val).
-            \end{itemize}}
-
-            \apartadoImmune{Cargador Ligero (\texttt{USARDatasetLight})}
-            {\fontsize{8.0}{10.0}\selectfont
-            Homogeneiza longitudes mediante \textbf{relleno circular (\textit{wrap padding})}, $x_{\text{pad}}[n] = x[n \bmod L]$, preservando la fase y el ruido estacionario, y aplica aumentación de volumen $\mathcal{U}(0.8, 1.2)$ con filtro \texttt{usardataset\_collate\_fn}.}
-        \end{column}
-
-        \begin{column}{0.49\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}MOTOR \texttt{USARFeatureExtractorGPU} ($[B, 64\,000]$)}
-            
-            \apartadoImmune{1) Rama Wide: Heurísticas Físicas Globales ($\mathbf{x}_{\text{wide}} \in \mathbb{R}^3$)}
-            {\fontsize{7.8}{9.5}\selectfont
-            Extrae en paralelo sobre toda la ventana de $4.0\text{ s}$:
-            \begin{itemize}[leftmargin=*, itemsep=1pt]
-                \item \textbf{Energía RMS Global:} $\text{RMS} = \sqrt{\frac{1}{N}\sum_{n=0}^{N-1} x^2[n]}$
-                \item \textbf{Tasa de Cruces por Cero (ZCR):} Discrimina fricción de concreto frente a formantes armónicos vocales:
-                $$\text{ZCR} = \frac{1}{2(N-1)} \sum_{n=1}^{N-1} |\operatorname{sgn}(x[n]) - \operatorname{sgn}(x[n-1])|$$
-                \item \textbf{Centroide Espectral Normalizado por Nyquist ($f_N = 8\text{ kHz}$):}
-                $$\bar{C}_{\text{norm}} = \frac{1}{f_N \cdot M} \sum_{m=0}^{M-1} \frac{\sum_{k=0}^{K-1} f[k] \, |X[m, k]|}{\sum_{k=0}^{K-1} |X[m, k]| + \epsilon}$$
-            \end{itemize}}
-
-            \apartadoImmune{2) Rama Deep: Espectrograma Mel y Escalado Físico Fijo}
-            {\fontsize{7.8}{9.5}\selectfont
-            Calcula $128$ bandas Mel ($150\text{--}7500\text{ Hz}$) en dB. En lugar de \textit{Min-Max} por muestra, ancla la escala al rango dinámico físico $[-80, 0]\text{ dBFS}$:
-            $$\tilde{S}[b, m] = \operatorname{clip}\left( \frac{S_{\text{dB}}[b, m] + 40.0}{40.0}, \, -1.0, \, +1.0 \right)$$}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 9: 3. DESARROLLO (V) - ARQUITECTURA CRNN WIDE & DEEP Y MLOPS
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{3.}{DESARROLLO}{Arquitectura Híbrida CRNN (\textit{Wide \& Deep}) y MLOps}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.56\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}TOPOLOGÍA \texttt{USARWideDeepModel} Y BALANCEO}
-            
-            \apartadoImmune{Codificador Espectro-Temporal (Rama Deep $\to \mathbb{R}^{64}$)}
-            {\fontsize{7.9}{9.8}\selectfont
-            \begin{enumerate}[leftmargin=*, itemsep=2pt]
-                \item \textbf{Regularización Espectral:} Inyección de \texttt{GaussianNoise} ($\sigma = 0.05$) al tensor $\tilde{S} \in \mathbb{R}^{B \times 1 \times 128 \times 401}$ durante el entrenamiento.
-                \item \textbf{Reducción Convolucional (CNN2D):} Dos bloques \texttt{Conv2d} ($3\times 3$, paso $s=2$, \texttt{BatchNorm2d}, \texttt{ReLU}) comprimen el mapa a $[B, 32, 32, 101]$.
-                \item \textbf{Modelado Secuencial (GRU):} Reordenamiento a secuencias de $101$ pasos con $1024$ características ($32\times 32$) hacia una red \textbf{GRU de 2 capas} ($h_t \in \mathbb{R}^{64}$, \texttt{dropout} $0.3$), extrayendo el último estado oculto $h_{T_{\text{out}}} \in \mathbb{R}^{64}$.
-            \end{enumerate}}
-
-            \apartadoImmune{Proyección Física (Rama Wide $\to \mathbb{R}^{16}$) y Fusión ($\mathbb{R}^{80}$)}
-            {\fontsize{7.9}{9.8}\selectfont
-            El vector $\mathbf{x}_{\text{wide}} \in \mathbb{R}^3$ atraviesa un MLP (\texttt{BatchNorm1d} $\to$ \texttt{Linear(3,16)} $\to$ \texttt{ReLU} $\to$ \texttt{Linear(16,16)}). Ambas ramas se concatenan ($\mathbf{z}_{\text{fus}} \in \mathbb{R}^{80}$) hacia el clasificador denso de 4 clases, ponderando la Entropía Cruzada:
-            $$w_c = \frac{N_{\text{total}}}{C \cdot N_c} \implies \mathbf{w} = [2.686, \, 12.055, \, 0.366, \, 1.233]^T$$}
-
-            \apartadoImmune{Gobernanza en Producción (\texttt{guardar\_modelo\_produccion})}
-            {\fontsize{7.9}{9.8}\selectfont
-            Promueve automáticamente los pesos a \texttt{modelo\_usar\_v2.pth} solo si superan la marca histórica en \texttt{registro\_produccion.json}, evitando regresiones tácticas.}
-        \end{column}
-
-        \begin{column}{0.41\textwidth}
             \centering
-            \imagenOPlaceholder{5.8cm}{3.8cm}{img_immune/arquitectura_wide_deep.png}{arquitectura_wide_deep.png}{Diagrama de Bloques: Red Híbrida CRNN Wide \& Deep}{arquitectura_wide_deep.png}
-            
-            \vspace{0.18cm}
-            \begin{tikzpicture}
-                \node[draw=immuneCyan, line width=1.1pt, fill=immuneCardBg, rounded corners=4pt, text width=5.4cm, inner sep=6pt] {%
-                    {\bfseries\fontsize{8.2}{10}\selectfont\color{immuneDarkTeal}STACK TECNOLÓGICO E INFRAESTRUCTURA}\\[3pt]
-                    {\fontsize{7.2}{9.0}\selectfont
-                    \textbf{Hardware:} Sensor HIKMICRO AD21P, Cámara AI56 y GPU NVIDIA GeForce RTX 4060 (8 GB VRAM, CUDA).\par
-                    \textbf{Motor PDS (Fase 1):} Python 3.10, \texttt{NumPy}, \texttt{SciPy} (\texttt{butter}, \texttt{filtfilt}, \texttt{hilbert}, \texttt{welch}), \texttt{Librosa} (\texttt{yin}), \texttt{SoundFile} (\texttt{PCM\_16}).\par
-                    \textbf{Deep Learning (Fase 2):} \texttt{PyTorch}, \texttt{TorchAudio} y \texttt{Scikit-Learn}.}
-                };
-            \end{tikzpicture}
+            \href{run:Videos_terremoto/muestra_estructura.mp4}{%
+                \IfFileExists{Videos_terremoto/preview_estructura.png}{%
+                    \setlength{\fboxsep}{2pt}\setlength{\fboxrule}{1.5pt}%
+                    \fcolorbox{immuneCyan}{immuneDeepBg}{%
+                        \includegraphics[width=6.2cm, height=3.4cm, keepaspectratio]{Videos_terremoto/preview_estructura.png}%
+                    }%
+                }{%
+                    \setlength{\fboxsep}{6pt}\setlength{\fboxrule}{1.6pt}%
+                    \fcolorbox{immuneCyan}{immuneDeepBg}{%
+                        \parbox[c][3.1cm][c]{5.9cm}{%
+                            \centering
+                            \setlength{\fboxsep}{5pt}%
+                            \colorbox{immuneCyan}{\parbox[c][0.65cm][c]{2.0cm}{\centering\color{white}\bfseries\normalsize $\blacktriangleright$ PLAY}}\\[8pt]
+                            {\bfseries\fontsize{8.5}{10.2}\selectfont\color{white}VÍDEO: COLAPSO ESTRUCTURAL EN ZONA CERO}\\[3pt]
+                            {\tiny\color{immuneCyan}Haz clic aquí para reproducir: \texttt{muestra\_estructura.mp4}}%
+                        }%
+                    }%
+                }%
+            }
+            \vspace{0.12cm}
+            \setlength{\fboxsep}{5pt}%
+            \setlength{\fboxrule}{1.0pt}%
+            \fcolorbox{immuneCyan}{immuneCardBg}{%
+                \parbox{6.1cm}{%
+                    \raggedright\fontsize{7.4}{9.0}\selectfont
+                    \textbf{El Muro de Escombros:} Más del \textbf{$99\%$ de la energía acústica} rebota en la interfaz concreto-aire por desacople de impedancia, dejando ciegos a los micrófonos aéreos.%
+                }%
+            }
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \centering
+            \imagenOPlaceholder{6.2cm}{3.4cm}{Videos_terremoto/foto_zona_cero_2.jpg}{foto_zona_cero_2.jpg}{Fotografía 2: Acoplamiento del Sensor de Contacto HIKMICRO AD21P}{foto_zona_cero_2.jpg}
+            \vspace{0.12cm}
+            \setlength{\fboxsep}{5pt}%
+            \setlength{\fboxrule}{1.0pt}%
+            \fcolorbox{immuneDarkTeal}{immuneCardBg}{%
+                \parbox{6.1cm}{%
+                    \raggedright\fontsize{7.4}{9.0}\selectfont
+                    \textbf{Captación Directa en Sólidos (AURA 5):} El transductor piezoeléctrico \textbf{HIKMICRO AD21P} ($150\text{--}7500\text{ Hz}$) se apoya sobre la estructura, convirtiendo el muro en un canal de escucha.%
+                }%
+            }
         \end{column}
     \end{columns}
 \end{frame}
 
 % =========================================================================
-% DIAPOSITIVA 10: 4. PRUEBAS Y RESULTADOS (I) - VERDAD BASE VS. SÍNTESIS Y EDA
+% LÁMINA 5: 1. INTRODUCCIÓN (III) — COSTE DE DECISIÓN Y OBJETIVOS DE AURA 5
 % =========================================================================
 \begin{frame}[plain]
-    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Validación de Verdad Base y Auditoría EDA}
+    \immuneSectionHeader{1.}{INTRODUCCIÓN}{Coste de Decisión (BI) y Objetivos del Sistema AURA 5}
+
+    % Banda ejecutiva superior: El dilema de negocio en rescate
+    \noindent
+    \setlength{\fboxsep}{5pt}%
+    \setlength{\fboxrule}{1.2pt}%
+    \fcolorbox{immuneCyan}{immuneCardBg}{%
+        \parbox{13.4cm}{%
+            \fontsize{7.6}{9.2}\selectfont
+            \textbf{\color{immuneDarkTeal}DILEMA DE TOMA DE DECISIONES EN CAMPO:} 
+            \textbf{Falso Positivo} $\to$ Detener excavadoras y arriesgar rescatistas durante horas en un punto vacío. \quad|\quad 
+            \textbf{Falso Negativo} $\to$ No detectar una señal tenue de auxilio y perder una vida humana.%
+        }%
+    }
+    \vspace{0.16cm}
+
+    % 4 Tarjetas de Objetivos (2x2)
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \tarjetaConPestana{6.4cm}{1.45cm}{\textless OBJETIVO 1: CALIDAD Y FIDELIDAD TEMPORAL\textgreater}{%
+                {\fontsize{7.5}{9.1}\selectfont
+                Acondicionar vibraciones crudas a $16\text{ kHz}$ y $16\text{ bits}$ eliminando el ruido estructural sin desplazar ni un milisegundo la posición temporal de los impactos rítmicos.}%
+            }
+            \vspace{0.12cm}
+
+            \tarjetaConPestana{6.4cm}{1.45cm}{\textless OBJETIVO 2: SÍNTESIS GUIADA POR EL EDA\textgreater}{%
+                {\fontsize{7.5}{9.1}\selectfont
+                Auditar las grabaciones reales de la Zona Cero para construir un generador de pistas sintéticas en código Morse ($29\,953$ muestras) que resuelva el desbalance de clases.}%
+            }
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \tarjetaConPestana{6.4cm}{1.45cm}{\textless OBJETIVO 3: VALIDACIÓN SIN FUGA DE DATOS\textgreater}{%
+                {\fontsize{7.5}{9.1}\selectfont
+                Consolidar un corpus de $65\,576$ tensores de $4.0\text{ s}$ bajo un esquema de repositorios aislados (\textit{Disjoint Pools}) y partición agrupada por archivo origen.}%
+            }
+            \vspace{0.12cm}
+
+            \tarjetaConPestana{6.4cm}{1.45cm}{\textless OBJETIVO 4: MODELADO\textgreater}{%
+                {\fontsize{7.5}{9.1}\selectfont
+                Entrenar una red híbrida CRNN \textit{Wide \& Deep} para clasificar 4 escenarios (\texttt{Noise}, \texttt{Animal}, \texttt{Rhythmic}, \texttt{Voice}).}%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 6: 2. ESTADO DEL ARTE — FALLOS DEL DL ESTÁNDAR Y PARADIGMA PASIVO
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{2.}{ESTADO DEL ARTE}{Fallos del Deep Learning Estándar y Paradigma Pasivo}
 
     \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.57\textwidth}
-            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}VERDAD BASE (ZONA CERO) VS. SÍNTESIS ESTOCÁSTICA}
-            \vspace{0.1cm}
+        \begin{column}{0.53\textwidth}
+            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}¿POR QUÉ FRACASAN LOS MODELOS DE AUDIO COMUNES?}
             
-            \renewcommand{\arraystretch}{1.18}
+            \apartadoImmune{1. Escalado Relativo (Min-Max por Muestra)}
+            {\fontsize{7.7}{9.4}\selectfont
+            Los modelos estándar normalizan cada audio entre su propio mínimo y máximo. En ventanas de silencio, esto amplifica el siseo electrónico del preamplificador al $100\%$ y dispara \textbf{falsas alarmas}. \textbf{AURA 5} fija la escala a los decibelios físicos reales del sensor ($[-80, 0]\text{ dBFS}$).}
+
+            \apartadoImmune{2. Ignorar que el Audio es una Serie Temporal}
+            {\fontsize{7.7}{9.4}\selectfont
+            Una CNN pura ve el espectrograma como una foto estática sin memoria del pasado. \textbf{AURA 5} integra capas recurrentes (\textbf{GRU}) que recuerdan los instantes previos para distinguir patrones de golpes intencionales.}
+
+            \apartadoImmune{3. Fuga de Datos (\textit{Data Leakage}) Ambiental}
+            {\fontsize{7.7}{9.4}\selectfont
+            Mezclar la misma grabación de ruido de fondo en \textit{Train} y \textit{Test} hace que la red memorice el ruido en lugar de aprender la señal de vida.}
+        \end{column}
+        
+        \begin{column}{0.44\textwidth}
+            \tarjetaConPestana{5.8cm}{2.5cm}{\textless DESARROLLO PASIVO (SIN ETAPA D/A)\textgreater}{%
+                {\fontsize{7.5}{9.2}\selectfont
+                A diferencia del sonar activo, \textbf{AURA 5 es estrictamente de solo escucha} (omite conversores D/A de emisión):
+                \begin{itemize}
+                    \setlength{\itemsep}{1.5pt}
+                    \item \textbf{Seguridad:} No inyecta vibraciones que provoquen derrumbes secundarios.
+                    \item \textbf{Autonomía y Sigilo:} Maximiza la batería en campo y mantiene limpio el canal elástico.
+                \end{itemize}}%
+            }
+            \vspace{0.14cm}
+            \centering
+            \imagenOPlaceholder{6.6cm}{2.05cm}{Videos_terremoto/sensor_ad21p.jpg}{sensor_ad21p.jpg}{Transductor AD21P y Cámara Superficial AI56}{sensor_ad21p.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 7: 3. DESARROLLO (I) — ARQUITECTURA GENERAL DEL PIPELINE AURA 5
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{3.}{DESARROLLO}{Arquitectura General del Pipeline AURA 5 (End-to-End)}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.53\textwidth}
+            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}FLUJO DESACOPLADO EN DOS FASES}
+            
+            \apartadoImmune{Fase 1: Ingeniería de Datos y Física Acústica (CPU)}
+            {\fontsize{7.7}{9.4}\selectfont
+            \begin{itemize}
+                \setlength{\itemsep}{2pt}
+                \item \textbf{Ingesta y Caché Delta (\texttt{es\_audio\_nuevo}):} Unifica audios reales (\texttt{zona\_cero}) y repositorios externos (\texttt{voces\_espanol}, \texttt{gritos}, \texttt{sonidos\_perros\_gatos}, \texttt{urban\_sound}, \texttt{esr\_50}) evitando reprocesar archivos existentes.
+                \item \textbf{Enrutador y Simulación de Hormigón:} Las pistas reales pasan directo a limpieza; las externas atraviesan un filtro de oclusión ($1000\text{ Hz}$) que simula un muro de concreto y la respuesta del sensor AD21P ($150\text{--}7500\text{ Hz}$).
+                \item \textbf{EDA, Síntesis Morse y \textit{Human-in-the-Loop}:} Balanceo con $29\,953$ muestras sintéticas y auditoría visual antes de entrenar.
+            \end{itemize}}
+
+            \apartadoImmune{Fase 2: Procesamiento en GPU, CRNN y MLOps}
+            {\fontsize{7.7}{9.4}\selectfont
+            Partición híbrida sin fuga ($65\,576$ tensores de $4.0\text{ s}$) $\to$ Extracción vectorizada en GPU $\to$ Red \textbf{CRNN \textit{Wide \& Deep}} $\to$ Guarda modelo solo si es mejor que el anterior (\texttt{.pth}/\texttt{.json}).}
+        \end{column}
+
+        \begin{column}{0.44\textwidth}
+            \centering
+            \vspace{0.08cm}
+            \imagenOPlaceholder{5.6cm}{4.6cm}{analisis_EDA/Pipeline_Deteccion_Vida.drawio.png}{Pipeline_Deteccion_Vida.drawio.png}{Diagrama de Arquitectura End-to-End de AURA 5}{diagrama_flujo_fase1.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 8: 3. DESARROLLO (II) — EDA: ENERGÍA (WELCH) Y ESPECTROGRAMAS MEL
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{3.}{DESARROLLO}{EDA Acústico: Concentración de Energía (Welch) y Mel}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}1. CONCENTRACIÓN DE ENERGÍA (WELCH) Y ZCR}
+            \vspace{0.06cm}
+            \centering
+            \imagenOPlaceholder{6.1cm}{3.1cm}{analisis_EDA/GLOBAL/antes_fase_1/CRUDO_dashboard_estadisticas_GLOBAL.png}{CRUDO_dashboard_estadisticas_GLOBAL.png}{Concentración de Energía PSD (Welch), ZCR y Balance}{dashboard_estadisticas_GLOBAL.png}
+            \vspace{0.06cm}
+            \raggedright
+            {\fontsize{7.3}{8.9}\selectfont
+            \textbf{Hallazgo EDA:} La densidad espectral de potencia (\textbf{Método de Welch}) demuestra cómo la energía de cada clase se concentra en bajas frecuencias y cae abruptamente tras el muro de oclusión del hormigón ($1000\text{--}2500\text{ Hz}$), mientras los cruces por cero (\textbf{ZCR}) separan la fricción mecánica frente a la voz humana.}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}2. REPRESENTACIÓN EN ESPECTROGRAMAS DE MEL}
+            \vspace{0.06cm}
+            \centering
+            \imagenOPlaceholder{6.1cm}{3.1cm}{analisis_EDA/GLOBAL/antes_fase_1/CRUDO_dashboard_malla_GLOBAL.png}{CRUDO_dashboard_malla_GLOBAL.png}{Malla de Espectrogramas de Mel por Clasificación (4.0s)}{dashboard_malla_GLOBAL.png}
+            \vspace{0.06cm}
+            \raggedright
+            {\fontsize{7.3}{8.9}\selectfont
+            \textbf{Mapa Tiempo-Frecuencia:} El \textbf{Espectrograma de Mel} ($128$ bandas entre $150\text{ y }7500\text{ Hz}$) traduce los $4.0\text{ s}$ de audio en una matriz visual donde los golpes rítmicos (\texttt{Target\_Rhythmic}) se observan como pulsos verticales periódicos y las voces (\texttt{Target\_Voice}) como bandas armónicas horizontales.}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 9: 3. DESARROLLO (III) — TABLA DE DATOS DEL EDA Y FÓRMULA CLAVE #1
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{3.}{DESARROLLO}{Tabla de Datos del EDA y Limpieza Temporal (Fórmula \#1)}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.54\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}TABLA DE DATOS OBTENIDA DEL ANÁLISIS EDA}
+            \vspace{0.06cm}
+            
+            \renewcommand{\arraystretch}{1.14}
             \resizebox{\textwidth}{!}{%
             \begin{tabular}{lcccccc}
                 \toprule
-                & \multicolumn{3}{c}{\textbf{Datos Reales (Zona Cero)}} & \multicolumn{3}{c}{\textbf{Generación Estocástica (Morse)}} \\
+                & \multicolumn{3}{c}{\textbf{Datos Reales (Zona Cero)}} & \multicolumn{3}{c}{\textbf{Síntesis AURA 5 (Morse)}} \\
                 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
-                \textbf{Descriptor Físico} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} \\
+                \textbf{Descriptor Físico (EDA)} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} & \textbf{Mín} & \textbf{Máx} & \textbf{Prom.} \\
                 \midrule
                 Cadencia ($\text{golpes/s}$) & 0.15 & 12.50 & \textbf{4.43} & 0.30 & 12.50 & \textbf{3.26} \\
                 Resonancia $f_0$ ($\text{Hz}$) & 754.19 & 7500.0 & \textbf{1883.24} & 162.04 & 7500.0 & \textbf{1643.02} \\
@@ -585,105 +563,186 @@
             }
             \renewcommand{\arraystretch}{1.0}
 
-            \vspace{0.18cm}
-            \apartadoImmune{Validación de Hipótesis Físicas y Human-in-the-Loop}
-            {\fontsize{7.8}{9.6}\selectfont
-            \begin{itemize}[leftmargin=*, itemsep=2pt]
-                \item \textbf{Convergencia Morfológica:} El decaimiento elástico sintético ($60.62\text{ ms}$, mín. $0.43\text{ ms}$) replica con alta fidelidad la disipación real en mampostería ($67.73\text{ ms}$, mín. $0.44\text{ ms}$).
-                \item \textbf{Consistencia Energética:} El valor RMS promedio sintético ($0.0169$) converge con el real ($0.0180$) bajo un régimen destructivo de SNR ($\mu = 4.60\text{ dB}$).
-                \item \textbf{Auditoría Supervisada:} Los paneles EDA (\texttt{antes\_fase\_1} vs. \texttt{luego\_fase\_1}) validaron el muro espectral Welch y la separabilidad ZCR antes de iniciar el entrenamiento.
-            \end{itemize}}
+            \vspace{0.10cm}
+            {\fontsize{7.4}{9.0}\selectfont
+            \textbf{Lectura Operativa:} El EDA reveló que un golpe real bajo escombros se extingue en \textbf{$67.73\text{ ms}$} (replicado en \textbf{$60.62\text{ ms}$} por nuestro motor sintético), con una energía RMS prácticamente idéntica ($0.0180$ vs. $0.0169$) bajo un entorno de ruido destructivo ($\text{SNR} = 4.60\text{ dB}$).}
         \end{column}
 
-        \begin{column}{0.40\textwidth}
-            \centering
-            \imagenOPlaceholder{5.6cm}{2.95cm}{analisis_EDA/GLOBAL/luego_fase_1/PROCESADO_dashboard_estadisticas_GLOBAL.png}{dashboard_estadisticas_GLOBAL.png}{Dashboard EDA: Balance, ZCR y Muro PSD Welch}{dashboard_estadisticas_GLOBAL.png}
-            
-            \vspace{0.22cm}
-            
-            \imagenOPlaceholder{5.6cm}{2.95cm}{analisis_EDA/GLOBAL/luego_fase_1/PROCESADO_dashboard_malla_GLOBAL.png}{dashboard_malla_GLOBAL.png}{Malla Espectral Mel (150--7500 Hz) por Categoría}{dashboard_malla_GLOBAL.png}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 11: 4. PRUEBAS Y RESULTADOS (II) - ANÁLISIS GRÁFICO: MUESTREO Y PCM
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Análisis Gráfico: Discretización y Cuantificación PCM}
-
-    \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.48\textwidth}
-            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}1. BLOQUE MUESTREADOR (\textit{SAMPLER})}
-            \vspace{0.08cm}
-            
-            \centering
-            \imagenOPlaceholder{6.6cm}{4.1cm}{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig1_impacto_real0.png}{../LaTex_figuras/fig1_impacto_real0.png}{Figura 1: Impacto Real y Secuencia Discreta}{fig1_impacto_real0.png}
-            
-            \vspace{0.08cm}
-            \raggedright
-            {\fontsize{7.5}{9.2}\selectfont
-            \textbf{Análisis:} Transitorio real en Zona Cero modelado por $x[n] = A e^{-\beta n T_s} \sin(2\pi f_0 n T_s) u[n] + w[n]$ junto a su envolvente de Hilbert $A[n]$ y su discretización cada $T_s = 62.5\ \mu\text{s}$ ($48$ muestras en la sub-ventana de $3.0\text{ ms}$).}
-        \end{column}
-
-        \begin{column}{0.48\textwidth}
-            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}2. CUANTIFICADOR Y CODIFICADOR ($16\text{ BITS}$)}
-            \vspace{0.08cm}
-            
-            \centering
-            \imagenOPlaceholder{6.6cm}{4.1cm}{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig2_cuantificacion.png}{../LaTex_figuras/fig2_cuantificacion.png}{Figura 2: Cuantificación PCM 16 Bits y Vector de Error}{fig2_cuantificacion.png}
-            
-            \vspace{0.08cm}
-            \raggedright
-            {\fontsize{7.5}{9.2}\selectfont
-            \textbf{Análisis:} Superposición exacta entre $x[n]$ y $x_q[n]$ ($65\,536$ niveles). Abajo se comprueba que el error $e_q[n] = x_q[n] - x[n]$ permanece descorrelacionado por el \textit{dither} y acotado en $[-\Delta/2, +\Delta/2] = \pm 1.52 \times 10^{-5}\text{ V}$ ($\sigma_e \approx 8.81\times 10^{-6}\text{ V}$).}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =========================================================================
-% DIAPOSITIVA 12: 4. PRUEBAS Y RESULTADOS (III) - FILTRADO DE FASE CERO
-% =========================================================================
-\begin{frame}[plain]
-    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Verificación del Filtrado Bidireccional de Fase Cero}
-
-    \begin{columns}[T, onlytextwidth]
         \begin{column}{0.43\textwidth}
-            {\bfseries\fontsize{11.5}{13}\selectfont\color{immuneDarkTeal}RESCATE DE PATRONES RÍTMICOS}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}PRESERVACIÓN DE LA SERIE TEMPORAL}
             
-            \apartadoImmune{Supresión de Deriva y Ruido Fuera de Banda}
-            {\fontsize{8.0}{10.0}\selectfont
-            En el registro crudo de terreno $x[n]$ (panel superior), la ráfaga de impactos en código Morse ($1.0\text{ s}$ a $2.35\text{ s}$) se encuentra severamente enmascarada por una oscilación lenta de \textbf{deriva de línea base ($<150\text{ Hz}$)} y por interferencia mecánica de alta frecuencia ($>7000\text{ Hz}$).}
+            \cajaFormulaClave{5.8cm}{FÓRMULA CLAVE \#1: FILTRADO DE FASE CERO (\texttt{filtfilt})}{%
+                $Y(e^{j\Omega}) = X(e^{j\Omega}) H(e^{j\Omega}) H^*(e^{j\Omega}) = X(e^{j\Omega}) |H(e^{j\Omega})|^2$%
+            }
 
-            \apartadoImmune{Alineación Temporal Exacta ($\tau_g(\Omega) = 0$)}
-            {\fontsize{8.0}{10.0}\selectfont
-            Al aplicar el filtro IIR Butterworth pasa-banda de 4.º orden ($150\text{--}7500\text{ Hz}$) mediante el algoritmo de inversión temporal \textbf{\texttt{filtfilt}} (panel inferior):
-            \begin{itemize}[leftmargin=*, itemsep=2pt]
-                \item Se estabiliza la línea base exactamente en $0\text{ V}$.
-                \item Se duplica la atenuación en las bandas de rechazo sin introducir desfase ($\phi_{\text{total}}(\Omega) = 0$).
-                \item Las líneas verticales rojas demuestran que los picos de la señal filtrada $y[n]$ coinciden con los instantes exactos de impacto $t_0$, entregando secuencias limpias a las capas recurrentes GRU.
+            {\fontsize{7.5}{9.2}\selectfont
+            \textbf{¿Por qué es vital para las Series Temporales?}
+            \begin{itemize}
+                \setlength{\itemsep}{2pt}
+                \item Un filtro digital común limpia el ruido pero retrasa distintas frecuencias en distintos tiempos, deformando el ritmo del código Morse.
+                \item Al filtrar hacia adelante ($H(e^{j\Omega})$) y luego invertido hacia atrás ($H^*(e^{j\Omega})$), las fases se cancelan ($\phi_{\text{total}}(\Omega) = 0$) y el \textbf{retraso temporal es exactamente cero ($\tau_g(\Omega) = 0$)}.
+                \item Así eliminamos la vibración del suelo ($<150\text{ Hz}$) dejando cada impacto en su milisegundo exacto.
             \end{itemize}}
-        \end{column}
-
-        \begin{column}{0.54\textwidth}
-            \centering
-            \imagenOPlaceholder{7.6cm}{5.5cm}{../PDS_tarea_1_paper_academico_USAR/LaTex_figuras/fig3_filtrado_fase_cero_out.png}{../LaTex_figuras/fig3_filtrado_fase_cero_out.png}{Figura 3: Señal Cruda vs. Señal Filtrada con Fase Cero (filtfilt)}{fig3_filtrado_fase_cero_out.png}
         \end{column}
     \end{columns}
 \end{frame}
 
 % =========================================================================
-% DIAPOSITIVA 13: 4. PRUEBAS Y RESULTADOS (IV) - EVOLUCIÓN POR ÉPOCAS Y ENTREGABLE
+% LÁMINA 10: 3. DESARROLLO (IV) — PIPELINE SINTÉTICO Y FÓRMULA CLAVE #2
 % =========================================================================
 \begin{frame}[plain]
-    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Desempeño Experimental y Evolución por Épocas}
+    \immuneSectionHeader{3.}{DESARROLLO}{Pipeline de Datos Sintéticos Basado en el EDA (Fórmula \#2)}
 
     \begin{columns}[T, onlytextwidth]
-        \begin{column}{0.47\textwidth}
-            {\bfseries\fontsize{10.5}{12}\selectfont\color{immuneDarkTeal}CONVERGENCIA DE LA ARQUITECTURA CRNN}
-            \vspace{0.08cm}
+        \begin{column}{0.50\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}MODELADO FÍSICO DE IMPACTOS ($29\,953$ PISTAS)}
             
-            \renewcommand{\arraystretch}{1.15}
+            \cajaFormulaClave{6.6cm}{FÓRMULA CLAVE \#2: ECUACIÓN FÍSICA DEL IMPACTO SINTÉTICO}{%
+                $s_{\text{imp}}[n] = 0.7 \sin\!\left(2\pi \frac{f_0}{f_s} n\right) e^{-\beta n T_s} + 0.3 \, w_c[n] e^{-\gamma n T_s}$%
+            }
+
+            {\fontsize{7.5}{9.1}\selectfont
+            Para resolver el desbalance de la clase \texttt{Target\_Rhythmic}, generamos mensajes reales de auxilio (\texttt{SOS}, \texttt{HELP}, \texttt{OK}, \texttt{USAR}) guiados por la física del EDA:
+            \begin{itemize}
+                \setlength{\itemsep}{2pt}
+                \item \textbf{Componente \textit{Thud} ($70\%$):} Onda sinusoidal a la resonancia $f_0$ del muro que se apaga exponencialmente a tasa $\beta = \ln(100)/t_{\text{thud}}$ (vibración profunda del concreto).
+                \item \textbf{Componente \textit{Crack} ($30\%$):} Pulso de banda ancha $w_c[n]$ con extinción rápida $\gamma \gg \beta$ (chasquido inicial de la roca o metal).
+                \item \textbf{Factor Humano y Material Fijo:} Incluye temblor muscular (\textit{jitter} $\sigma=0.3$) y mantiene constante el material dentro de cada audio de $4.0\text{ s}$ para evitar el irreal ``efecto xilófono''.
+            \end{itemize}}
+        \end{column}
+
+        \begin{column}{0.47\textwidth}
+            \centering
+            \imagenOPlaceholder{6.2cm}{4.3cm}{LaTex_figuras/fig3_filtrado_fase_cero_out.png}{LaTex_figuras/fig3_filtrado_fase_cero_out.png}{Rescate de Impactos Morse tras Limpieza de Fase Cero}{fig3_filtrado_fase_cero_out.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 11: 3. DESARROLLO (V) — ESTRATEGIA ANTI-DATA LEAKAGE
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{3.}{DESARROLLO}{Prevención de Data Leakage: Piscinas Estancas (\textit{Pools})}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \tarjetaConPestana{6.7cm}{4.1cm}{\textless REPOSITORIOS SEPARADOS (FASE 1)\textgreater}{%
+                {\bfseries\fontsize{8.5}{10}\selectfont\color{immuneDarkTeal}Aislamiento Físico del Ruido de Fondo}\par\vspace{4pt}
+                {\fontsize{7.6}{9.3}\selectfont
+                \textbf{El Riesgo:} Si se utiliza la misma grabación real de una excavadora para contaminar audios sintéticos de entrenamiento y de validación, la red neuronal memoriza la excavadora en lugar de aprender a detectar a la víctima.\par\vspace{5pt}
+                \textbf{Solución en AURA 5:} Desde el disco duro en la Fase 1, las grabaciones de ruido real de la Zona Cero se dividen en \textbf{dos repositorios separados}:
+                \begin{itemize}
+                    \setlength{\itemsep}{2pt}
+                    \item \textbf{Pool Train ($80\%$):} Exclusivo para generar y mezclar muestras de entrenamiento.
+                    \item \textbf{Pool Validación ($20\%$):} Exclusivo para evaluación; jamás es visto durante el entrenamiento.
+                \end{itemize}}%
+            }
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \tarjetaConPestana{6.3cm}{4.1cm}{\textless PARTICIÓN AGRUPADA (FASE 2)\textgreater}{%
+                {\bfseries\fontsize{8.5}{10}\selectfont\color{immuneDarkTeal}División por Archivo (\texttt{StratifiedGroupKFold})}\par\vspace{4pt}
+                {\fontsize{7.6}{9.3}\selectfont
+                \textbf{El Riesgo:} Cuando una grabación larga real se divide en varios fragmentos de $4.0\text{ s}$ (\texttt{audio\_part0}, \texttt{audio\_part1}...), un split aleatorio simple envía trozos de la misma persona tanto a \textit{Train} como a \textit{Test}.\par\vspace{5pt}
+                \textbf{Solución en AURA 5:}
+                \begin{itemize}
+                    \setlength{\itemsep}{2pt}
+                    \item El particionador extrae la raíz original del archivo (\texttt{grupo\_base}) y aplica \textbf{\texttt{StratifiedGroupKFold}}.
+                    \item Todos los fragmentos de un mismo evento van juntos a Entrenamiento ($52\,417$ tensores) o juntos a Validación ($13\,159$ tensores).
+                \end{itemize}}%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 12: 3. DESARROLLO (VI) — RED WIDE & DEEP, SERIES TEMPORALES Y FÓRMULA #3
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{3.}{DESARROLLO}{Red CRNN \textit{Wide \& Deep}, Series Temporales y Balanceo (\#3)}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.54\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}MODELADO CON MEMORIA (\texttt{USARWideDeepModel})}
+            
+            \apartadoImmune{1) Rama Deep: CNN2D + Series Temporales GRU ($\to \mathbb{R}^{64}$)}
+            {\fontsize{6.9}{8.2}\selectfont
+            Dos bloques \texttt{Conv2d} extraen patrones del Espectrograma Mel y entregan una \textbf{serie temporal de $101$ pasos} a una red \textbf{GRU de 2 capas}. \textbf{Nuestro trabajo toma en cuenta el pasado:} en cada instante $t$, el estado $h_t$ retiene la memoria de los impactos previos ($h_{t-1}, h_{t-2}\dots$) para descifrar la cadencia del código Morse.}
+
+            \apartadoImmune{2) Rama Wide: Indicadores Físicos Directos ($\to \mathbb{R}^{16}$)}
+            {\fontsize{6.9}{8.2}\selectfont
+            Un Perceptrón Multicapa (MLP) procesa 3 métricas globales del bloque de $4\text{ s}$ (\textit{Energía RMS}, \textit{Cruces por Cero ZCR} y \textit{Centroide de Frecuencia}) y se fusiona con la rama Deep ($\mathbf{z}_{\text{fus}} \in \mathbb{R}^{80}$) hacia las 4 clases operativas.}
+
+            \cajaFormulaClave{7.1cm}{FÓRMULA CLAVE \#3: PONDERACIÓN INVERSA EN FUNCIÓN DE PÉRDIDA}{%
+                $w_c = \frac{N_{\text{total}}}{C \cdot N_c} \implies \mathbf{w} = [2.686, \, 12.055, \, 0.366, \, 1.233]^T$%
+            }
+        \end{column}
+
+        \begin{column}{0.43\textwidth}
+            \centering
+            \imagenOPlaceholder{5.3cm}{2.6cm}{img_immune/arquitectura_wide_deep.png}{arquitectura_wide_deep.png}{Arquitectura Híbrida CRNN Wide \& Deep de AURA 5}{arquitectura_wide_deep.png}
+            
+            \vspace{0.12cm}
+            \setlength{\fboxsep}{5pt}%
+            \setlength{\fboxrule}{1.1pt}%
+            \fcolorbox{immuneCyan}{immuneCardBg}{%
+                \parbox{5.2cm}{%
+                    \raggedright
+                    {\bfseries\fontsize{7.8}{9.2}\selectfont\color{immuneDarkTeal}STACK TECNOLÓGICO DE AURA 5}\\[2pt]
+                    {\fontsize{7.0}{8.5}\selectfont
+                    \textbf{Hardware:} Sensor HIKMICRO AD21P y GPU NVIDIA GeForce RTX 4060 (8 GB VRAM).\par
+                    \textbf{Ingeniería de Datos:} Python 3.10, \texttt{NumPy}, \texttt{SciPy}, \texttt{Librosa} y \texttt{SoundFile} (\texttt{PCM\_16}).\par
+                    \textbf{Deep Learning:} \texttt{PyTorch}, \texttt{TorchAudio} y \texttt{Scikit-Learn}.}%
+                }%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 13: 4. PRUEBAS Y RESULTADOS (I) — CAPTURA DIGITAL EN ZONA CERO
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Adquisición de datos en Zona Cero}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}1. ENVOLVENTE DE IMPACTO REAL}
+            \vspace{0.06cm}
+            \centering
+            \imagenOPlaceholder{6.0cm}{3.4cm}{LaTex_figuras/fig1_impacto_real0.png}{LaTex_figuras/fig1_impacto_real0.png}{Impacto Real en Zona Cero y Envolvente de Decaimiento}{fig1_impacto_real0.png}
+            \vspace{0.06cm}
+            \raggedright
+            {\fontsize{7.3}{8.9}\selectfont
+            
+            \textbf{Envolvente:} Captura a $16\text{ kHz}$ de un golpe sobre mampostería en la Zona Cero. Se observa cómo la envolvente roja mide con exactitud la caída de energía en el hormigón y cómo la ventana inferior captura $48$ muestras limpias en apenas $3.0\text{ ms}$.}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}2. RESOLUCIÓN DE 16 BITS PARA MICRO-SEÑALES}
+            \vspace{0.06cm}
+            \centering
+            \imagenOPlaceholder{6.0cm}{3.4cm}{LaTex_figuras/fig2_cuantificacion.png}{LaTex_figuras/fig2_cuantificacion.png}{Fidelidad de Cuantificación a 16 Bits y Cota de Error}{fig2_cuantificacion.png}
+            \vspace{0.06cm}
+            \raggedright
+            {\fontsize{7.3}{8.9}\selectfont
+            \textbf{Sensibilidad:} Con $65\,536$ niveles de resolución digital y el piso térmico del sensor a $-80\text{ dBFS}$ actuando como estabilizador natural (\textit{dither}), el error de digitalización no supera $\pm 1.52 \times 10^{-5}\text{ V}$, evitando perder golpes débiles de víctimas agotadas.}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =========================================================================
+% LÁMINA 14: 4. PRUEBAS Y RESULTADOS (II) — EVOLUCIÓN POR ÉPOCAS Y MLOPS
+% =========================================================================
+\begin{frame}[plain]
+    \immuneSectionHeader{4.}{PRUEBAS Y RESULTADOS}{Evolución por Épocas}
+
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.46\textwidth}
+            {\bfseries\fontsize{9.8}{11.2}\selectfont\color{immuneDarkTeal}CONVERGENCIA DE LA RED CRNN EN GPU}
+            \vspace{0.06cm}
+            
+            \renewcommand{\arraystretch}{1.12}
             \resizebox{\textwidth}{!}{%
             \begin{tabular}{ccccc}
                 \toprule
@@ -693,169 +752,135 @@
                 05 / 20 & 0.3755 & 0.3396 & 0.8241 & --- \\
                 10 / 20 & 0.3313 & 0.3454 & 0.8044 & --- \\
                 14 / 20 & 0.3133 & 0.3097 & 0.8512 & --- \\
-                \rowcolor{immuneCyan!18}
-                \textbf{19 / 20} & \textbf{0.2694} & \textbf{0.3184} & \textbf{0.8631} & \textbf{0.9927} \\
+                \midrule
+                \textbf{19 / 20} & \textbf{0.2694} & \textbf{0.3184} & \textcolor{immuneDarkTeal}{\textbf{0.8631}} & \textcolor{immuneDarkTeal}{\textbf{0.9927}} \\
+                \midrule
                 20 / 20 & 0.2664 & 0.3089 & 0.8459 & --- \\
                 \bottomrule
             \end{tabular}%
             }
             \renewcommand{\arraystretch}{1.0}
 
-            \vspace{0.15cm}
-            \apartadoImmune{Hito de Promoción a Producción (Época 19)}
-            {\fontsize{7.7}{9.4}\selectfont
-            Entrenamiento ejecutado en GPU RTX 4060 (optimizador Adam, $\text{lr}=10^{-3}$, \texttt{weight\_decay} $=10^{-4}$, $B=64$). En la \textbf{época 19} el sistema alcanzó su óptimo con \textbf{$\text{F1-Macro} = 0.8631$} y \textbf{$\text{ROC-AUC} = 0.9927$} sobre $13\,159$ tensores de validación, promoviendo los pesos a \texttt{produccion/modelo\_usar\_v2.pth}.}
-
-            \apartadoImmune{Entregable Final Demostrativo}
-            {\fontsize{7.7}{9.4}\selectfont
-            Pipeline modular completo (Fases 1 y 2), tableros de auditoría acústica EDA e inferencia validada con trazabilidad en \texttt{registro\_produccion.json}.}
+            \vspace{0.10cm}
+            \apartadoImmune{Óptimo en Época 19}
+            {\fontsize{7.4}{9.0}\selectfont
+            Evaluado sobre $13\,159$ tensores de validación, \textbf{AURA 5} alcanzó en la \textbf{época 19} un \textbf{$\text{F1-Score Macro} = 0.8631$} y un \textbf{$\text{ROC-AUC} = 0.9927$}. El módulo \texttt{guardar\_modelo\_produccion} audita automáticamente el archivo \texttt{registro\_produccion.json} y solo promueve los nuevos pesos (\texttt{modelo\_usar\_v2.pth}) si superan la marca histórica, impidiendo regresiones en campo.}
         \end{column}
 
-        \begin{column}{0.50\textwidth}
+        \begin{column}{0.51\textwidth}
             \centering
-            % PLACEHOLDER PARA LA EVOLUCIÓN POR ÉPOCAS DEL MODELO
-            \imagenOPlaceholder{7.1cm}{5.4cm}{evolucion_epocas_crnn.png}{img_immune/evolucion_epocas_crnn.png}{Curvas de Evolución por Épocas (Loss, F1-Macro y ROC-AUC)}{evolucion_epocas_crnn.png}
+            \imagenOPlaceholder{6.5cm}{4.5cm}{evolucion_epocas_crnn.png}{img_immune/evolucion_epocas_crnn.png}{Curvas de Evolución por Épocas de AURA 5 (Loss, F1-Macro y ROC-AUC)}{evolucion_epocas_crnn.png}
         \end{column}
     \end{columns}
 \end{frame}
 
 % =========================================================================
-% DIAPOSITIVA 14: 5. CONCLUSIONES Y TRABAJOS FUTUROS (PÁGINA 8 DE LA PLANTILLA)
+% LÁMINA 15: 5. CONCLUSIONES Y FUTURO TRABAJO
 % =========================================================================
 \begin{frame}[plain]
-    \immuneSectionHeader{5.}{CONCLUSIONES}{Síntesis de Logros, Sinergias y Trabajos Futuros}
+    \immuneSectionHeader{5.}{CONCLUSIONES}{Impacto Operativo y Hoja de Ruta del Sistema AURA 5}
 
-    \begin{tikzpicture}[remember picture, overlay]
-        % --- FILA SUPERIOR: 4 COLUMNAS DE CONCLUSIONES CON ICONOS VECTORIALES ---
-        % Conclusión 1
-        \begin{scope}[shift={([xshift=2.65cm, yshift=-2.75cm]current page.north west)}]
-            \draw[immuneDarkTeal, line width=1.2pt] (0,0) -- (0.25,0.18) -- (0.5,0.02) -- (0.75,0.22);
-            \foreach \x/\y in {0/0, 0.25/0.18, 0.5/0.02, 0.75/0.22} \fill[white, draw=immuneDarkTeal, line width=1.1pt] (\x,\y) circle (0.06cm);
-            \node[anchor=north west, text width=2.85cm, align=left] at (0.85, 0.35) {%
-                {\bfseries\fontsize{8.2}{9.5}\selectfont\color{immuneCyan}$>$ CONCLUSIÓN 1}\\[2pt]
-                {\fontsize{6.8}{8.3}\selectfont\color{immuneText}
-                \textbf{Fidelidad A/D y Dither:} El muestreo a $16\text{ kHz}$ (Nyquist) y la cuantificación PCM de $16\text{ bits}$ con \textit{dither} natural ($-80\text{ dBFS}$) capturaron micro-vibraciones sin \textit{aliasing} ni truncamiento.}
-            };
-        \end{scope}
+    % --- FILA SUPERIOR: 4 COLUMNAS DE CONCLUSIONES ---
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.23\textwidth}
+            {\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneCyan}\textgreater\ CONCLUSIÓN 1}\\[2pt]
+            {\fontsize{6.9}{8.4}\selectfont\color{immuneText}
+            \textbf{Filtrado sin Desfase:} El filtrado de fase cero ($\tau_g = 0$) limpió la señal conservando la información de cada impacto para la red recurrente.}
+        \end{column}
+        \begin{column}{0.23\textwidth}
+            {\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneCyan}\textgreater\ CONCLUSIÓN 2}\\[2pt]
+            {\fontsize{6.9}{8.4}\selectfont\color{immuneText}
+            \textbf{Síntesis basado en el EDA:} Las $29\,953$ pistas Morse replicaron la caída de energía real del hormigón ($60.62\text{ ms}$ vs. $67.73\text{ ms}$) resolviendo el desbalance.}
+        \end{column}
+        \begin{column}{0.23\textwidth}
+            {\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneCyan}\textgreater\ CONCLUSIÓN 3}\\[2pt]
+            {\fontsize{6.9}{8.4}\selectfont\color{immuneText}
+            \textbf{Validación sin fuga de datos:} El uso de \textit{repositorios separados} (80/20) para la base de ruido y \texttt{StratifiedGroupKFold} evitó el \textit{Data Leakage} sobre los $65\,576$ tensores.}
+        \end{column}
+        \begin{column}{0.23\textwidth}
+            {\bfseries\fontsize{8.0}{9.4}\selectfont\color{immuneCyan}\textgreater\ CONCLUSIÓN 4}\\[2pt]
+            {\fontsize{6.9}{8.4}\selectfont\color{immuneText}
+            \textbf{Precisión:} La fusión \textit{Wide \& Deep} con capas GRU alcanzó un $\text{F1-Macro} = 0.8631$ y un $\text{ROC-AUC} = 0.9927$.}
+        \end{column}
+    \end{columns}
 
-        % Conclusión 2
-        \begin{scope}[shift={([xshift=5.95cm, yshift=-2.75cm]current page.north west)}]
-            \draw[immuneDarkTeal, line width=1.1pt, rounded corners=1pt] (0,0.05) rectangle (0.45,0.32);
-            \draw[immuneDarkTeal, line width=1.1pt, rounded corners=1pt, fill=white] (0.22,-0.08) rectangle (0.65,0.18);
-            \node[anchor=north west, text width=2.85cm, align=left] at (0.78, 0.35) {%
-                {\bfseries\fontsize{8.2}{9.5}\selectfont\color{immuneCyan}$>$ CONCLUSIÓN 2}\\[2pt]
-                {\fontsize{6.8}{8.3}\selectfont\color{immuneText}
-                \textbf{Fase Cero (\texttt{filtfilt}):} El filtrado IIR Butterworth de 4.º orden suprimió la deriva estructural ($<150\text{ Hz}$) con retardo de grupo nulo ($\tau_g(\Omega)=0$), preservando la cadencia Morse.}
-            };
-        \end{scope}
+    \vspace{0.25cm}
+    {\color{immuneCyan!50}\hrule height 0.8pt}
+    \vspace{0.18cm}
 
-        % Conclusión 3
-        \begin{scope}[shift={([xshift=9.25cm, yshift=-2.75cm]current page.north west)}]
-            \draw[immuneDarkTeal, line width=1.2pt] (0,0) -- (0.25,0.18) -- (0.5,0.02) -- (0.75,0.22);
-            \foreach \x/\y in {0/0, 0.25/0.18, 0.5/0.02, 0.75/0.22} \fill[white, draw=immuneDarkTeal, line width=1.1pt] (\x,\y) circle (0.06cm);
-            \node[anchor=north west, text width=2.85cm, align=left] at (0.85, 0.35) {%
-                {\bfseries\fontsize{8.2}{9.5}\selectfont\color{immuneCyan}$>$ CONCLUSIÓN 3}\\[2pt]
-                {\fontsize{6.8}{8.3}\selectfont\color{immuneText}
-                \textbf{Síntesis Física y Cero Fuga:} La envolvente de Hilbert permitió sintetizar $29\,953$ muestras rítmicas ($t_{\text{thud}} = 60.62\text{ ms}$) aisladas en \textit{Disjoint Pools} y \texttt{StratifiedGroupKFold}.}
-            };
-        \end{scope}
+    % --- FILA INFERIOR: TRIPLE SINERGIA Y TRABAJOS FUTUROS ---
+    \begin{columns}[T, onlytextwidth]
+        \begin{column}{0.34\textwidth}
+            \setlength{\fboxsep}{5pt}%
+            \setlength{\fboxrule}{1.2pt}%
+            \fcolorbox{immuneCyan}{immuneCardBg}{%
+                \parbox{4.2cm}{%
+                    \centering
+                    {\bfseries\fontsize{7.8}{9.2}\selectfont\color{immuneDarkTeal}PILARES DE AURA 5}\\[4pt]
+                    \setlength{\fboxsep}{3pt}%
+                    \colorbox{immuneDarkTeal}{\parbox{3.8cm}{\centering\color{white}\bfseries\tiny 1. Ingeniería Acústica y EDA Físico}}\\[3pt]
+                    \colorbox{immuneCyan!85!black}{\parbox{3.8cm}{\centering\color{white}\bfseries\tiny 2. Series Temporales CRNN Wide \& Deep}}\\[3pt]
+                    \colorbox{immuneDarkTeal}{\parbox{3.8cm}{\centering\color{white}\bfseries\tiny 3. Toma de Decisión y MLOps}}%
+                }%
+            }
+        \end{column}
 
-        % Conclusión 4
-        \begin{scope}[shift={([xshift=12.55cm, yshift=-2.75cm]current page.north west)}]
-            \draw[immuneDarkTeal, line width=1.1pt] (0,0.02) rectangle (0.6,0.35);
-            \draw[immuneDarkTeal, line width=1.1pt, ->] (0.15,-0.12) -- (0.15,0.2);
-            \draw[immuneDarkTeal, line width=1.1pt, ->] (0.30,-0.12) -- (0.30,0.28);
-            \draw[immuneDarkTeal, line width=1.1pt, ->] (0.45,-0.12) -- (0.45,0.16);
-            \node[anchor=north west, text width=2.65cm, align=left] at (0.72, 0.35) {%
-                {\bfseries\fontsize{8.2}{9.5}\selectfont\color{immuneCyan}$>$ CONCLUSIÓN 4}\\[2pt]
-                {\fontsize{6.8}{8.3}\selectfont\color{immuneText}
-                \textbf{Alto Desempeño CRNN:} La fusión \textit{Wide \& Deep} alcanzó un $\text{F1-Macro} = 0.8631$ y $\text{ROC-AUC} = 0.9927$ sobre $65\,576$ tensores bajo SNR destructivo.}
-            };
-        \end{scope}
-
-        % --- FILA INFERIOR IZQUIERDA: DIAGRAMA DE VENN DE 3 SINERGIAS ---
-        \begin{scope}[shift={([xshift=4.3cm, yshift=-6.65cm]current page.north west)}]
-            \draw[immuneCyan, line width=1.5pt, fill=immuneCyan!8, fill opacity=0.5] (0, 0) circle (0.98cm);
-            \draw[immuneCyan, line width=1.5pt, fill=immuneCyan!8, fill opacity=0.5] (1.35, 0) circle (0.98cm);
-            \draw[immuneCyan, line width=1.5pt, fill=immuneCyan!8, fill opacity=0.5] (0.675, -1.05) circle (0.98cm);
-            \node[align=center, font=\bfseries\tiny, text=immuneDarkTeal] at (-0.15, 0.15) {SINERGIA 1\\PDS Físico\\(Fase Cero)};
-            \node[align=center, font=\bfseries\tiny, text=immuneDarkTeal] at (1.50, 0.15) {SINERGIA 2\\IA Híbrida\\(Wide \& Deep)};
-            \node[align=center, font=\bfseries\tiny, text=immuneDarkTeal] at (0.675, -1.25) {SINERGIA 3\\Toma de Decisión\\Táctica USAR};
-        \end{scope}
-
-        % --- FILA INFERIOR DERECHA: TRABAJOS FUTUROS ---
-        \node[anchor=north west, text width=8.2cm, align=left] at ([xshift=7.35cm, yshift=-5.75cm]current page.north west) {%
-            {\bfseries\fontsize{10}{12}\selectfont\color{immuneCyan}$>>>>>$\color{immuneDarkTeal}TRABAJOS FUTUROS}\\[5pt]
-            {\fontsize{7.5}{9.5}\selectfont\color{immuneText}
-            \textcolor{immuneCyan}{\bfseries $>$} \textbf{Cuantización INT8 y Despliegue en Edge AI:} Exportar \texttt{modelo\_usar\_v2.pth} a ONNX / TensorRT para inferencia autónoma en NVIDIA Jetson Orin Nano o Raspberry Pi 5 directamente en la Zona Cero.\par\vspace{3pt}
-            \textcolor{immuneCyan}{\bfseries $>$} \textbf{Triangulación Espacial 3D mediante Arreglos TDOA:} Sincronizar múltiples sensores HIKMICRO AD21P aplicando correlación cruzada generalizada con transformada de fase (\textbf{GCC-PHAT}) para localizar coordenadas $(x, y, z)$.\par\vspace{3pt}
-            \textcolor{immuneCyan}{\bfseries $>$} \textbf{Mecanismos \textit{Conformer} y Difusión Latente:} Integrar autoatención temporal y restauración generativa de voz humana severamente ocluida.}
-        };
-    \end{tikzpicture}
+        \begin{column}{0.63\textwidth}
+            {\bfseries\fontsize{9.2}{10.8}\selectfont\color{immuneCyan}\textgreater\textgreater\textgreater\textgreater\textgreater\color{immuneDarkTeal}TRABAJOS FUTUROS}\\[3pt]
+            {\fontsize{7.2}{8.8}\selectfont\color{immuneText}
+            \textcolor{immuneCyan}{\bfseries \textgreater} \textbf{Despliegue en Edge AI (Cuantización INT8):} Exportar \textbf{AURA 5} a ONNX / TensorRT para inferencia autónoma en NVIDIA Jetson Orin Nano o Raspberry Pi 5 integrada en el maletín del sensor.\par\vspace{2pt}
+            \textcolor{immuneCyan}{\bfseries \textgreater} \textbf{Triangulación Espacial 3D mediante Arreglos de Sensores:} Sincronizar múltiples sensores AD21P aplicando correlación cruzada (\textbf{GCC-PHAT}) para localizar coordenadas $(x, y, z)$ bajo el escombro.\par\vspace{2pt}
+            \textcolor{immuneCyan}{\bfseries \textgreater} \textbf{Arquitecturas \textit{Conformer} y Difusión Latente:} Incorporar autoatención temporal y restauración generativa para limpiar voces humanas severamente ocluidas por muros.}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % =========================================================================
-% DIAPOSITIVA 15: CIERRE Y AGRADECIMIENTOS (PÁGINA 9 DE LA PLANTILLA)
+% LÁMINA 16: CIERRE, AGRADECIMIENTOS Y REFERENCIAS
 % =========================================================================
+{
+\usebackgroundtemplate{%
+    \IfFileExists{img_immune/image_7.jpg}{%
+        \includegraphics[width=\paperwidth, height=\paperheight]{img_immune/image_7.jpg}%
+    }{%
+        \setlength{\fboxsep}{0pt}%
+        \colorbox{immuneDeepBg}{\parbox[b][\paperheight][c]{\paperwidth}{\hfill}}%
+    }%
+}
 \begin{frame}[plain]
-    \begin{tikzpicture}[remember picture, overlay]
-        % Fondo oscuro de ondas (image9.jpeg / image6.jpeg o degradado vectorial)
-        \IfFileExists{image9.jpeg}{%
-            \node[anchor=south west, inner sep=0pt] at (current page.south west) 
-                {\includegraphics[width=16cm, height=9cm]{image9.jpeg}};
-        }{%
-            \shade[top color=immuneDeepBg, bottom color=immuneDarkTeal!85!black] 
-                (current page.south west) rectangle (current page.north east);
-            % Ondas decorativas suaves estilo página 9
-            \draw[immuneCyan!25, line width=2.5pt] ([xshift=0cm, yshift=1.5cm]current page.south west) 
-                .. controls ([xshift=6cm, yshift=6.5cm]current page.south west) and ([xshift=11cm, yshift=2cm]current page.south west) .. 
-                ([xshift=16cm, yshift=5.5cm]current page.south west);
-            \draw[immuneCyan!15, line width=5pt] ([xshift=0cm, yshift=0.5cm]current page.south west) 
-                .. controls ([xshift=7cm, yshift=5.5cm]current page.south west) and ([xshift=12cm, yshift=1cm]current page.south west) .. 
-                ([xshift=16cm, yshift=4.5cm]current page.south west);
-        }
+    \vspace*{0.50cm}
+    \centering
+    % 1. Logo IMMUNE superior
+    \IfFileExists{img_immune/image3.png}{%
+        \includegraphics[width=2.9cm]{img_immune/image3.png}%
+    }{%
+        {\bfseries\fontsize{15}{17}\selectfont\color{white}I M M U N E}\\[1pt]
+        {\fontsize{6}{7}\selectfont\color{white!80}T E C H N O L O G Y \ \ I N S T I T U T E}%
+    }
 
-        % Logo IMMUNE blanco centrado arriba
-        \node[anchor=north] at ([yshift=-1.45cm]current page.north) {%
-            \IfFileExists{image15.png}{%
-                \includegraphics[width=3.2cm]{image15.png}%
-            }{%
-                \begin{tabular}{c}
-                    {\bfseries\fontsize{16}{18}\selectfont\color{white}I M M U N E}\\[-1pt]
-                    {\fontsize{6}{7}\selectfont\color{white!85}T E C H N O L O G Y \ \ I N S T I T U T E}
-                \end{tabular}%
-            }%
-        };
+    \vspace{0.40cm}
 
-        % Escuadras blancas de encuadre (┌ y ┘) idénticas a la plantilla
-        \draw[white, line width=4pt] ([xshift=2.5cm, yshift=-3.35cm]current page.north west) 
-            -- ([xshift=2.5cm, yshift=-2.6cm]current page.north west) 
-            -- ([xshift=3.25cm, yshift=-2.6cm]current page.north west);
-        \draw[white, line width=4pt] ([xshift=12.4cm, yshift=-5.85cm]current page.north west) 
-            -- ([xshift=13.15cm, yshift=-5.85cm]current page.north west) 
-            -- ([xshift=13.15cm, yshift=-5.1cm]current page.north west);
+    % 2. Caja central de Agradecimientos y Referencias
+    \setlength{\fboxsep}{12pt}%
+    \setlength{\fboxrule}{1.5pt}%
+    \fcolorbox{immuneCyan}{immuneDeepBg}{%
+        \parbox{11.0cm}{%
+            \raggedright
+            {\bfseries\fontsize{17}{20}\selectfont\color{immuneCyan}Agradecimientos y comentarios finales\_}\\[0.22cm]
+            {\fontsize{8.0}{10.0}\selectfont\color{white!95}
+            \textbf{Apoyo Académico y Dirección Científica:} Prof. Daniel Paredero (\textit{IMMUNE Technology Institute}) y Prof. Gerlis Caropresse (\textit{Universidad Central de Venezuela}).\\[3pt]
+            \textbf{Validación Operativa e Instrumentación Acústica:} Brigadas de rescate mexicanas \textit{Los Topos} por la caracterización real de la Zona Cero y equipo de \textit{HIKMICRO} por la provisión del transductor piezoeléctrico de contacto AD21P y la cámara acústica superficial AI56.}\\[0.22cm]
+            {\bfseries\fontsize{7.8}{9.2}\selectfont\color{immuneCyan}Referencias Bibliográficas Base:}\\[2pt]
+            {\scriptsize\color{white!85}
+            [1] Proakis, J. G., \& Manolakis, D. G. (2006). \textit{Digital signal processing: Principles, algorithms, and applications} (4.ª ed.). Pearson.\\[1pt]
+            [2] Oppenheim, A. V., \& Schafer, R. W. (2010). \textit{Discrete-time signal processing} (3.ª ed.). Prentice Hall.}%
+        }%
+    }
 
-        % Texto central en Turquesa + Bloque de Agradecimientos específicos del proyecto
-        \node[anchor=west, text width=8.5cm, align=left] at ([xshift=4.3cm, yshift=-4.55cm]current page.north west) {%
-            {\fontsize{21}{25}\selectfont\color{immuneCyan}Agradecimientos y\\comentarios finales\textbf{\_}}\\[0.35cm]
-            {\fontsize{8.2}{10.5}\selectfont\color{white!92}
-            \textbf{Apoyo Académico y Técnico:} Prof. Gerlis Caropresse (\textit{Universidad Central de Venezuela}) y Prof. Daniel Paredero (\textit{IMMUNE Technology Institute}).\\[3pt]
-            \textbf{Operaciones e Instrumentación en Campo:} Brigadas de rescate mexicanas \textit{Los Topos} y equipo de \textit{HIKMICRO} (transductor piezoeléctrico AD21P y cámara acústica AI56).}\\[0.25cm]
-            {\scriptsize\color{immuneCyan}Referencias principales: \cite{Proakis} Proakis \& Manolakis (2006); \cite{Oppenheim} Oppenheim \& Schafer (2010).}
-        };
-
-        % Bibliografía invisible para que las citas [1] y [2] compilen sin warnings
-        \node[opacity=0, text width=1cm] at (current page.south west) {%
-            \begin{thebibliography}{9}
-                \bibitem{Proakis} Proakis (2006).
-                \bibitem{Oppenheim} Oppenheim (2010).
-            \end{thebibliography}%
-        };
-
-        % Pie de página institucional
-        \node[anchor=south] at ([yshift=0.65cm]current page.south) 
-            {\bfseries\fontsize{9.5}{11}\selectfont\color{white}\url{https://immune.institute}};
-    \end{tikzpicture}
+    \vfill
+    {\bfseries\fontsize{9.5}{11}\selectfont\color{white}\url{https://immune.institute}}
+    \vspace*{0.30cm}
 \end{frame}
+}
 
 \end{document}
